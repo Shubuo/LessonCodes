@@ -1,0 +1,59 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# TensorFlow/Keras
+*.h5
+*.keras
+model_architecture.png
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Data files (optional - remove if you want to include data)
+*.csv
+*.xlsx
+*.json
+# Comment out the line below if you want to include images
+# *.jpg
+# *.jpeg
+# *.png
+
+# Model files
+*.pkl
+*.joblib
+*.model

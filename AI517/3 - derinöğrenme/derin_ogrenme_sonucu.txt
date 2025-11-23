@@ -1,0 +1,90 @@
+/home/brk/miniconda3/envs/lesson/lib/python3.10/site-packages/torchvision/io/image.py:13: UserWarning: Failed to load image Python extension: 'libc10_cuda.so: cannot open shared object file: No such file or directory'If you don't plan on using image functionality from `torchvision.io`, you can ignore this warning. Otherwise, there might be something wrong with your environment. Did you have `libjpeg` or `libpng` installed before building `torchvision` from source?
+  warn(
+Uyarı: Matplotlib yüklü değil, grafikler oluşturulmayacak.
+================================================================================
+DERİN ÖĞRENME İLE GÖRÜNTÜ SINIFLANDIRMA PROJESİ (PYTORCH)
+================================================================================
+Kullanılan Cihaz: cpu
+
+================================================================================
+1. VERİ SETİ BİLGİLERİ VE PARAMETRELER
+================================================================================
+
+Toplam Görüntü Sayısı: 105
+Sınıf Bazında Dağılım:
+  1. Filizlenme Dönemi: 35 görüntü
+  2. Olgunlaşma Dönemi: 35 görüntü
+  3. Kış Uykusu Dönemi: 35 görüntü
+
+================================================================================
+2. VERİ YÜKLEME VE HAZIRLAMA
+================================================================================
+Eğitim Seti: 84 görüntü
+Test Seti: 21 görüntü
+
+================================================================================
+3. MODELLERİN TANIMLANMASI
+================================================================================
+CNN Modeli ve VGG16 Modeli oluşturuldu.
+
+================================================================================
+4. MODELLERİN EĞİTİMİ
+================================================================================
+
+Özel CNN Eğitimi Başlıyor (5 Epoch)...
+Epoch 1/5 - Loss: 8.2493 - Acc: 0.6548
+Epoch 2/5 - Loss: 2.5332 - Acc: 0.9524
+Epoch 3/5 - Loss: 4.2399 - Acc: 0.8929
+Epoch 4/5 - Loss: 0.0000 - Acc: 1.0000
+Epoch 5/5 - Loss: 0.0820 - Acc: 0.9762
+Özel CNN Eğitimi Tamamlandı. Süre: 138s
+
+VGG16 Transfer Learning Eğitimi Başlıyor (5 Epoch)...
+Epoch 1/5 - Loss: 1.8196 - Acc: 0.5595
+Epoch 2/5 - Loss: 1.3567 - Acc: 0.7619
+Epoch 3/5 - Loss: 0.3689 - Acc: 0.9286
+Epoch 4/5 - Loss: 0.1595 - Acc: 0.9643
+Epoch 5/5 - Loss: 0.1305 - Acc: 0.9762
+VGG16 Transfer Learning Eğitimi Tamamlandı. Süre: 226s
+
+================================================================================
+5. DEĞERLENDİRME VE SONUÇLAR
+================================================================================
+
+--- Özel CNN Modeli Raporu ---
+                   precision    recall  f1-score   support
+
+Filizlenme Dönemi       1.00      1.00      1.00         7
+Olgunlaşma Dönemi       1.00      1.00      1.00         7
+Kış Uykusu Dönemi       1.00      1.00      1.00         7
+
+         accuracy                           1.00        21
+        macro avg       1.00      1.00      1.00        21
+     weighted avg       1.00      1.00      1.00        21
+
+
+--- VGG16 Transfer Learning Modeli Raporu ---
+                   precision    recall  f1-score   support
+
+Filizlenme Dönemi       1.00      1.00      1.00         7
+Olgunlaşma Dönemi       1.00      1.00      1.00         7
+Kış Uykusu Dönemi       1.00      1.00      1.00         7
+
+         accuracy                           1.00        21
+        macro avg       1.00      1.00      1.00        21
+     weighted avg       1.00      1.00      1.00        21
+
+
+================================================================================
+SONUÇ KARŞILAŞTIRMASI
+================================================================================
+Model                     | Test Doğruluğu 
+---------------------------------------------
+Özel CNN                  | 1.0000
+VGG16 Transfer Learning   | 1.0000
+
+Kazanan: Özel CNN (Fark: 0.00%)
+
+================================================================================
+PROJE TAMAMLANDI!
+================================================================================

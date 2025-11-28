@@ -53,6 +53,11 @@ model_architecture.png
 # *.jpeg
 # *.png
 
+# Large dataset folders (excluded due to size)
+# proje_veri_seti: Deep learning training images for plant growth stages (~96MB)
+# Contains 1-2MB PNG images for classification (filizlenme, olgunlasma, kis_uykusu)
+proje_veri_seti/
+
 # Model files
 *.pkl
 *.joblib

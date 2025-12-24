@@ -61,3 +61,12 @@ model_architecture.png
 # Data sets
 AI517/veri_setleri/bag-veriseti/
 *.zip
+# Images and large generated files
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+**/results/
+**/__pycache__/
+*.txt

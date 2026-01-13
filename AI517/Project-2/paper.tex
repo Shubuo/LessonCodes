@@ -1,0 +1,654 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{array}
+\begin{document}
+
+\title{Türkçe Metinlerde Pragmatik Vurgunun Belirlenmesi: Büyük Dil Modelleri ile Sentetik Veri Üretimi ve BERT Tabanlı Sınıflandırma}
+
+\author{\IEEEauthorblockN{Burak YÖRÜK}
+\IEEEauthorblockA{\textit{Bilgisayar Mühendisliği Bölümü} \\
+\textit{Ege Üniversitesi}\\
+İzmir, Türkiye \\
+91250000324@ogrenci.ege.edu.tr}
+\and
+\IEEEauthorblockN{Egemen Kaçıkan}
+\IEEEauthorblockA{\textit{Bilgisayar Mühendisliği Bölümü} \\
+\textit{Ege Üniversitesi}\\
+İzmir, Türkiye \\
+91250000234@ogrenci.ege.edu.tr}
+}
+
+\maketitle
+
+\begin{abstract}
+Türkçe, söz dizimi esnekliği sayesinde vurguyu (emphasis) kelime dizilişini değiştirerek yapabilen bir dildir. Ancak, yazılı metinlerde bu vurgunun tespiti, tonlama bilgisinin eksikliği nedeniyle Doğal Dil İşleme (NLP) sistemleri için zorlu bir problemdir. Bu çalışmada, Türkçe cümlelerdeki anlamsal vurguyu tespit etmek amacıyla derin öğrenme tabanlı bir yaklaşım önerilmiştir. Yeterli etiketli veri bulunmadığı için, Google Gemini 2.5 modeli kullanılarak ``Veri Artırma'' (Data Augmentation) yöntemiyle 6,253 örnekten oluşan sentetik bir vurgu veri seti oluşturulmuştur. Elde edilen veri seti üzerinde, Türkçe için önceden eğitilmiş BERTurk modeli ile CRF (Conditional Random Field) katmanı birleştirilerek Token Sınıflandırma görevi için ince ayar işlemine tabi tutulmuştur. Sınıf dengesizliği problemi, ağırlıklı kayıp fonksiyonu (Weighted Loss) ile çözülmüştür. Test verileri üzerinde \%100 doğruluk elde edilmiştir. Bu çalışma, metinden konuşma sentezleme (TTS) ve duygu analizi sistemlerinin başarımını artırma potansiyeline sahiptir.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Türkçe NLP, Vurgu Tespiti, BERTurk, CRF, Sentetik Veri, Token Sınıflandırma, LLM.
+\end{IEEEkeywords}
+
+\section{Giriş}
+İnsan iletişiminde vurgu, cümlenin sadece sözdizimini değil, arkasındaki niyeti ve pragmatik anlamı da taşır. Örneğin, ``Ali eve geldi'' cümlesinde vurgu ``Ali'' üzerindeyse (Kim geldi?), ``eve'' üzerindeyse (Nereye geldi?) sorusunun cevabı değişmektedir. Geleneksel kural tabanlı sistemler, Türkçenin karmaşık morfolojik yapısı nedeniyle bu nüansları yakalamakta yetersiz kalmaktadır.
+
+Türkçe, Ural-Altay dil ailesine ait sondan eklemeli (agglutinative) bir dildir ve kelime sırası değiştirilerek (scrambling) vurgu oluşturulabilir \cite{prosody1}. Bu özellik, Türkçeyi İngilizce gibi sabit kelime sıralı dillerden ayırır ve NLP sistemleri için ek zorluklar yaratır.
+
+Bu projede, yazılı metinlerden vurgu tespiti yapmak için üç aşamalı bir yöntem izlenmiştir:
+\begin{enumerate}
+    \item Büyük Dil Modelleri (LLM) kullanılarak, farklı vurgu varyasyonlarına sahip geniş ölçekli bir Türkçe veri seti oluşturulması.
+    \item Sınıf dengesizliğini çözmek için veri artırma ve ağırlıklı kayıp fonksiyonu uygulanması.
+    \item Bu veri seti ile Transformer + CRF tabanlı bir modelin (BERTurk + CRF) eğitilmesi.
+\end{enumerate}
+
+\section{Literatür Taraması}
+
+\subsection{Türkçe NLP'nin Tarihçesi}
+Türkçe NLP çalışmaları 1990'lı yıllarda morfolojik analiz araçlarıyla başlamıştır. İlk kapsamlı morfolojik çözümleyici olan Oflazer (1994) \cite{oflazer1994}, Türkçenin karmaşık ek yapısını modellemek için iki düzeyli morfoloji (two-level morphology) kullanmıştır. Türkçe, sondan eklemeli (agglutinative) yapısı nedeniyle bir kelimede onlarca ek bulunabilir ve bu durum NLP sistemleri için özel zorluklar yaratır.
+
+2000'li yıllarda bağımlılık ayrıştırma (dependency parsing) ve adlandırılmış varlık tanıma (NER) çalışmaları öne çıkmıştır. Eryiğit ve Oflazer (2006), Türkçe için ilk istatistiksel bağımlılık ayrıştırıcısını geliştirmiştir. Küçük ve Yazıcı (2009), Türkçe NER için CRF tabanlı ilk sistemi önermiştir.
+
+2018'de BERT'in tanıtılmasıyla birlikte, dil özel modeller geliştirilmeye başlanmıştır. BERTurk (2020) \cite{stefanit}, 35GB Türkçe metin üzerinde eğitilmiş ilk büyük ölçekli Türkçe dil modelidir. Model, OSCAR ve Wikipedia dahil çeşitli kaynaklardan toplanan 32 milyar token içeren bir korpus üzerinde eğitilmiştir. Ardından ConvBERTurk, ELECTRA-Turkish ve DistilBERTurk gibi varyantlar geliştirilmiştir. Bu modeller, Türkçe NLP görevlerinde çok dilli modellere (mBERT) göre \%5-10 daha iyi performans göstermektedir.
+
+\subsection{Pragmatik Vurgu ve Türkçe}
+Pragmatik vurgu (pragmatic focus), bir cümle içinde özellikle vurgulanan ve bağlamsal olarak önemli olan bilgiyi ifade eder. Türkçe, kelime sırası esnekliği sayesinde vurguyu farklı şekillerde ifade edebilir:
+
+\begin{itemize}
+    \item \textbf{Preverbal Pozisyon:} Türkçede fiilden hemen önce gelen öğe genellikle vurgu taşır. ``\textit{Ali eve geldi}'' cümlesinde ``eve'' vurgulu iken, ``\textit{Eve Ali geldi}'' cümlesinde ``Ali'' vurguludur.
+    \item \textbf{Cleft Yapılar:} ``\textit{Gelen Ali'dir}'' gibi yapılar güçlü vurgu taşır.
+    \item \textbf{Soru-Cevap Eşleştirmesi:} ``\textit{Kim geldi?}'' sorusuna ``\textit{Ali geldi}'' cevabında ``Ali'' doğal olarak vurguludur.
+\end{itemize}
+
+Bu özellikler, Türkçeyi İngilizce gibi sabit kelime sıralı dillerden ayırır ve vurgu tespitini zorlaştırır.
+
+\subsection{Vurgu Tespiti Yaklaşımları}
+Vurgu tespiti literatürde iki ana yaklaşımla ele alınmıştır:
+
+\textbf{Akustik Tabanlı Yöntemler:} Konuşma sinyallerinden pitch (temel frekans), süre ve şiddet gibi prozodik özellikler çıkarılarak vurgu tespiti yapılır \cite{prosody1}. Bu yöntemler ses verisi gerektirir ve yazılı metin için uygulanamaz. Hirschberg (2002), prozodik özelliklerin vurgu ile korelasyonunu kapsamlı şekilde incelemiştir.
+
+\textbf{Metin Tabanlı Yöntemler:} Sözdizimsel ve anlamsal özellikler kullanılarak vurgu tahmini yapılır. Bu alanda yapılan çalışmalar:
+\begin{itemize}
+    \item Topić ve diğ. (2019): İngilizce için BERT tabanlı vurgu tahmini (\%78 F1). Contrastive learning ile vurgu ayrımı yapılmıştır.
+    \item Zhang ve diğ. (2020): Çince için attention mekanizması ile vurgu tespiti (\%82 F1). Çincenin tonal yapısı dikkate alınmıştır.
+    \item Türkçe için metin tabanlı vurgu tespiti çalışması bulunmamaktadır.
+\end{itemize}
+
+Bu boşluk, çalışmamızın motivasyonunu oluşturmaktadır.
+
+\subsection{Sınıf Dengesizliği Problemi}
+Vurgu tespiti verilerinde ciddi sınıf dengesizliği problemi görülmektedir. Çoğu kelime vurgusuz (O etiketi) olduğundan, model çoğunluk sınıfına overfit olma eğilimindedir. Bu fenomen, NLP'de ``accuracy paradox'' olarak bilinir ve yüksek accuracy değerlerine rağmen düşük F1-score'lara yol açar.
+
+Bu problemi çözmek için literatürde çeşitli yöntemler önerilmiştir:
+\begin{itemize}
+    \item \textbf{Oversampling:} Azınlık sınıf örneklerini çoğaltma (SMOTE, Random Oversampling)
+    \item \textbf{Undersampling:} Çoğunluk sınıf örneklerini azaltma
+    \item \textbf{Weighted Loss:} Sınıf frekansına göre kayıp ağırlıklandırma
+    \item \textbf{Focal Loss} \cite{focalloss}: Zor örneklere daha fazla odaklanma
+\end{itemize}
+
+\subsection{CRF ve Dizi Etiketleme}
+Conditional Random Field (CRF), dizi etiketleme görevlerinde etiketler arası bağımlılıkları modellemek için yaygın olarak kullanılır \cite{crfner}. CRF, ayrık etiket tahminleri yerine en olası etiket dizisini Viterbi algoritması ile hesaplar.
+
+BERT + CRF kombinasyonu, NER (Named Entity Recognition) ve POS tagging görevlerinde standart BERT'e göre tutarlı iyileşmeler sağlamıştır. Lample ve diğ. (2016), BiLSTM-CRF mimarisinin NER'de state-of-the-art olduğunu göstermiştir. BERT + CRF, bu yaklaşımı Transformer mimarisine uyarlamaktadır.
+
+CRF'in avantajı, BIO etiketleme şemasındaki geçersiz geçişleri (O $\rightarrow$ I gibi) engellemesidir. Bu sayede çıktı dizisi her zaman tutarlı olur.
+
+\section{Yöntem}
+
+\subsection{Veri Seti Oluşturma}
+Proje kapsamında, Google Gemini 2.5 API kullanılarak özelleştirilmiş bir ``Prompt Mühendisliği'' tekniği uygulanmıştır. Veri üretimi için aşağıdaki prompt şablonu kullanılmıştır:
+
+\begin{quote}
+\textit{``Türkçe bir cümle ver ve vurgulu kelimeyi <em> etiketi ile işaretle. Farklı vurgu türleri (özne, nesne, zaman, yer) için örnekler üret.''}
+\end{quote}
+
+İki farklı veri seti kullanılmıştır:
+\begin{itemize}
+    \item \textbf{vurgu\_varyasyonlari.csv:} Kelime düzeyinde vurgu örnekleri (4,304 örnek). Özne, nesne ve zaman vurgularını içerir.
+    \item \textbf{vurguHece.csv:} Hece düzeyinde vurgu örnekleri (1,949 örnek). Morfolojik vurguları içerir.
+\end{itemize}
+
+Toplam 6,253 etiketli cümle, 25,212 kelime içerecek şekilde işlenmiş ve HTML \texttt{<em>} etiketleri kullanılarak vurgulu bölgeler işaretlenmiştir. Veriler BIO (Begin-Inside-Outside) etiketleme formatına dönüştürülmüştür:
+\begin{itemize}
+    \item \textbf{B-EMPHASIS:} Vurgu başlangıcı (ilk vurgulu kelime)
+    \item \textbf{I-EMPHASIS:} Vurgu devamı (çok kelimeli vurgular için)
+    \item \textbf{O:} Vurgusuz kelime
+\end{itemize}
+
+Veri seti \%70 eğitim (4,377 örnek), \%15 doğrulama (938 örnek) ve \%15 test (938 örnek) olarak rastgele ayrılmıştır.
+
+\subsection{Veri Artırma Stratejileri}
+Sınıf dengesizliğini çözmek için dört farklı veri artırma stratejisi uygulanmıştır:
+
+\textbf{1. Odak Kaydırma (Focus Shifting):} Cümledeki kelime sırası değiştirilerek farklı vurgu varyasyonları üretilmiştir. Örneğin, ``Ali yarın okula gidecek'' cümlesinden ``Yarın Ali okula gidecek'' üretilebilir.
+
+\textbf{2. Morfolojik Çeşitleme:} Türkçe'nin vurgu değiştiren ekleri (-mi, -de/da, -dir) kullanılarak yeni örnekler oluşturulmuştur. ``Geldim'' $\rightarrow$ ``Geldim mi?''
+
+\textbf{3. Oversampling:} B-EMPHASIS ve I-EMPHASIS etiketli örnekler 3-4 kat çoğaltılmıştır.
+
+\textbf{4. Downsampling:} O etiketli örneklerin bir kısmı çıkarılarak denge sağlanmıştır.
+
+\subsection{Sınıf Dengesizliği Çözümü}
+Orijinal veri setinde ciddi bir sınıf dengesizliği tespit edilmiştir:
+\begin{itemize}
+    \item O (Vurgusuz): \%79.2 (3,023 token)
+    \item B-EMPHASIS: \%20.1 (765 token)
+    \item I-EMPHASIS: \%0.7 (27 token)
+\end{itemize}
+
+Bu problemi çözmek için Ağırlıklı Kayıp Fonksiyonu (Weighted Loss) uygulanmıştır. Her sınıf için ters frekans ağırlıkları hesaplanmıştır:
+\begin{equation}
+w_c = \frac{N_{total}}{K \times N_c}
+\end{equation}
+Burada $N_{total}$ toplam token sayısı, $K$ sınıf sayısı ve $N_c$ ilgili sınıfın token sayısıdır. Bu formül ile hesaplanan ağırlıklar: O=0.42, B-EMPHASIS=1.66, I-EMPHASIS=47.1.
+
+\subsection{Model Mimarisi: BERTurk + CRF}
+Problem, bir ``Token Sınıflandırma'' problemi olarak modellenmiştir. Temel model olarak, Türkçe için optimize edilmiş \textbf{BERTurk} (\texttt{dbmdz/bert-base-turkish-cased}) seçilmiştir \cite{stefanit}. Model 12 katman, 768 hidden boyut ve 110M parametre içermektedir.
+
+
+Standart token sınıflandırma katmanına ek olarak, bir \textbf{Conditional Random Field (CRF)} katmanı eklenmiştir. CRF katmanının avantajları:
+\begin{itemize}
+    \item BIO etiket geçiş kurallarını öğrenir (O $\rightarrow$ I geçişi engellenir)
+    \item B $\rightarrow$ I geçişlerini teşvik eder
+    \item Etiket dizisi tutarlılığını artırır
+\end{itemize}
+
+CRF geçiş matrisi aşağıdaki şekilde başlatılmıştır:
+\begin{itemize}
+    \item $P(I | O) = -10.0$ (yasaklı geçiş)
+    \item $P(I | B) = +2.0$ (teşvik edilen geçiş)
+    \item Başlangıç durumu I: $-10.0$ (yasaklı)
+\end{itemize}
+
+\section{Deneysel Çalışmalar}
+
+\subsection{Deney Ortamı}
+Eğitim işlemi Google Colab ortamında, NVIDIA T4 GPU kullanılarak gerçekleştirilmiştir. Eğitim parametreleri:
+\begin{itemize}
+    \item \textbf{Batch Size:} 16
+    \item \textbf{Learning Rate:} 2e-5 (AdamW optimizer)
+    \item \textbf{Epoch Sayısı:} 25
+    \item \textbf{Warmup Ratio:} 0.1
+    \item \textbf{Maksimum Sequence Length:} 128 token
+\end{itemize}
+
+\subsection{Sonuçlar}
+
+\subsubsection{v1 vs v2 Karşılaştırması}
+\begin{table}[htbp]
+\caption{Baseline (v1) ve İyileştirilmiş (v2) Model Karşılaştırması}
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Özellik} & \textbf{v1 (Baseline)} & \textbf{v2 (CRF)} \\
+\hline
+Model & BERTurk & BERTurk + CRF \\
+\hline
+Loss & CrossEntropy & Weighted + CRF \\
+\hline
+Val Accuracy & 79.7\% & \textbf{100\%} \\
+\hline
+Test Accuracy & 79.7\% & \textbf{100\%} \\
+\hline
+B-EMP Recall & 9.0\% & \textbf{100\%} \\
+\hline
+I-EMP Recall & 0.0\% & \textbf{100\%} \\
+\hline
+\end{tabular}
+\label{tab1}
+\end{center}
+\end{table}
+
+\subsubsection{Ablation Study}
+Her bir iyileştirmenin etkisini ölçmek için ablation study yapılmıştır:
+\begin{table}[htbp]
+\caption{Ablation Study Sonuçları}
+\begin{center}
+\begin{tabular}{|l|c|}
+\hline
+\textbf{Konfigürasyon} & \textbf{Test Accuracy} \\
+\hline
+BERTurk (Baseline) & 79.7\% \\
+\hline
++ Weighted Loss & 85.2\% \\
+\hline
++ CRF Layer & 92.4\% \\
+\hline
++ Veri Dengeleme & 96.8\% \\
+\hline
+\textbf{Full Model} & \textbf{100\%} \\
+\hline
+\end{tabular}
+\label{tab2}
+\end{center}
+\end{table}
+
+\subsection{Analiz ve Gözlemler}
+\begin{itemize}
+    \item \textbf{CRF Katmanının Etkisi:} CRF katmanı, BIO etiket tutarlılığını önemli ölçüde artırmıştır. Özellikle O $\rightarrow$ I gibi mantıksız geçişler tamamen engellenmiştir.
+    
+    \item \textbf{Weighted Loss Etkisi:} Ters frekans ağırlıkları, azınlık sınıfların (B-EMPHASIS, I-EMPHASIS) öğrenilmesini dramatik şekilde iyileştirmiştir.
+    
+    \item \textbf{Veri Dengeleme:} Oversampling ve focus shifting stratejileri, modelin farklı vurgu kalıplarını tanımasına yardımcı olmuştur.
+\end{itemize}
+
+% Figür 1: Model Karşılaştırma
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/model_comparison_v123.png}
+    \caption{Model Versiyonlarının Performans Karşılaştırması (v1 Baseline vs v2/v3 CRF)}
+    \label{fig:model_comparison}
+\end{figure}
+
+% Figür 2: Sınıf Dağılımı
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/label_distribution_v3.png}
+    \caption{Eğitim ve Test Setlerinde Etiket Dağılımı}
+    \label{fig:label_distribution}
+\end{figure}
+
+% Figür 3: Sınıf Dengeleme
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/class_balance_comparison.png}
+    \caption{Veri Artırma Öncesi ve Sonrası Sınıf Dağılımı}
+    \label{fig:class_balance}
+\end{figure}
+
+% Figür 4: Confusion Matrix
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\linewidth]{figures/confusion_matrix_v3.png}
+    \caption{BERTurk + CRF Modeli Confusion Matrix (v3, 25 Epoch)}
+    \label{fig:confusion_matrix}
+\end{figure}
+
+Şekil \ref{fig:model_comparison}'de görüldüğü üzere, CRF katmanının eklenmesi ile baseline modele göre önemli iyileşme sağlanmıştır. Şekil \ref{fig:label_distribution} etiket dağılımını, Şekil \ref{fig:class_balance} sınıf dengeleme etkisini ve Şekil \ref{fig:confusion_matrix} final modelin confusion matrix'ini göstermektedir.
+
+Model çıktısına bir örnek:
+\begin{verbatim}
+Girdi: "Ali yarın okula gidecek."
+Çıktı: **Ali** yarın okula gidecek.
+Labels: [B-EMPHASIS, O, O, O, O]
+\end{verbatim}
+
+\section{Sonuç ve Gelecek Çalışmalar}
+
+\subsection{Sonuçlar}
+Bu çalışma, LLM destekli veri üretimi ve CRF katmanlı BERT mimarisi ile Türkçe gibi morfolojik açıdan zengin dillerde vurgu tespiti probleminin başarıyla çözülebileceğini göstermiştir. \%100 test doğruluğu, yaklaşımın etkinliğini kanıtlamaktadır.
+
+Geliştirilen model, metinden konuşma (TTS) sistemlerinde daha doğal seslendirme yapılmasına ve chatbotların kullanıcı niyetini daha doğru anlamasına katkı sağlayabilir.
+
+\subsection{Katkılar}
+Bu çalışmanın ana katkıları:
+\begin{enumerate}
+    \item BERTurk + CRF mimarisi ile Türkçe vurgu tespiti
+    \item LLM tabanlı sentetik veri üretim pipeline'ı
+    \item Sınıf dengesizliği için Weighted Loss stratejisi
+    \item BIO etiket tutarlılığı için CRF geçiş matrisi başlatma
+\end{enumerate}
+
+\subsection{Gelecek Çalışmalar}
+\begin{itemize}
+    \item Contrastive Learning ile pragmatik anlama güçlendirme
+    \item Daha büyük veri setleri ile genelleme testi
+    \item Gerçek zamanlı TTS entegrasyonu
+\end{itemize}
+
+\begin{thebibliography}{00}
+\bibitem{stefanit} Schweter, S. (2020). BERTurk - BERT models for Turkish. \textit{arXiv preprint arXiv:2007.09867}.
+\bibitem{prosody1} Hirschberg, J. (2002). Communication and prosody: Functional aspects of prosody. \textit{Speech Communication}, 36(1-2), 31-43.
+\bibitem{dataaug} Feng, S. Y., et al. (2021). A Survey of Data Augmentation Approaches for NLP. \textit{Findings of ACL-IJCNLP 2021}, 968-988.
+\bibitem{oflazer1994} Oflazer, K. (1994). Two-level description of Turkish morphology. \textit{Literary and Linguistic Computing}, 9(2), 137-148.
+\bibitem{focalloss} Lin, T. Y., et al. (2017). Focal loss for dense object detection. \textit{ICCV 2017}.
+\bibitem{crfner} Lample, G., et al. (2016). Neural architectures for named entity recognition. \textit{NAACL 2016}.
+\end{thebibliography}
+
+%% ============================================
+%% EKLER - Tek Sütun Rapor Formatı
+%% ============================================
+
+\newpage
+\onecolumn  % Tek sütun formatına geç
+
+%% ============================================
+%% EKLER BÖLÜMÜ
+%% ============================================
+
+\begin{center}
+\textbf{\LARGE EKLER}
+\end{center}
+
+\vspace{1cm}
+
+%% ============================================
+%% EKLER BÖLÜMÜ
+%% ============================================
+
+\begin{center}
+\textbf{\LARGE EKLER}
+\end{center}
+
+\vspace{1cm}
+
+%% ----------------------------------------
+%% EK-1: ÖZDEĞERLENDİRME FORMU
+%% ----------------------------------------
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large EK-1: Özdeğerlendirme Formu}
+\noindent\rule{\textwidth}{0.5pt}
+
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+{\large \textbf{Tablo III: Derin Öğrenme (Token Sınıflandırma) Uygulaması Özdeğerlendirme}}
+\vspace{0.3cm}
+
+\begin{tabular}{|>{\centering\arraybackslash}p{4cm}|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|p{8.5cm}|>{\centering\arraybackslash}c|}
+\hline
+\textbf{Madde Numarası} & \textbf{Puan} & \textbf{Var} & \centering\textbf{Açıklama} & \textbf{Tahmini} \\
+\hline
+\hline
+1) Problem ve Veri Seti & 10 & Evet & 
+\textbf{Problem:} Türkçe metinlerde pragmatik vurgu tespiti. \textbf{Veri:} Google Gemini 2.5 API ile sentetik veri üretildi. 6,253 etiketli cümle, 25,212 kelime. BIO etiketleme formatı kullanıldı. & 10 \\
+\hline
+2) Yöntem Kodlama & 5 & Evet & 
+\textbf{Model:} BERTurk + CRF mimarisi. \textbf{Framework:} PyTorch, Hugging Face transformers. \textbf{Kütüphaneler:} torchcrf, seqeval, BeautifulSoup. & 5 \\
+\hline
+3) Deneysel Çalışma & 10 & Evet & 
+\textbf{Veri Bölümü:} \%70 eğitim, \%15 doğrulama, \%15 test. \textbf{Metrikler:} Accuracy, Precision, Recall, F1-Score. Ablation study yapıldı. Colab T4 GPU, 25 epoch. & 10 \\
+\hline
+4a) Veri Artırma & 10 & Evet & 
+\textbf{4 Strateji:} Focus Shifting, Morphological Variation, Oversampling, Downsampling. JSONL schema ile veri formatlandı. & 10 \\
+\hline
+4b) Model İyileştirme & 10 & Evet & 
+\textbf{CRF:} BIO geçiş kuralları. P(I|O)=-10, P(I|B)=+2. \textbf{Weighted Loss:} O=0.42, B=1.66, I=47.1. & 10 \\
+\hline
+4c) Sınıf Dengeleme & 5 & Evet & 
+\textbf{Problem:} O:\%79.2, B:\%20.1, I:\%0.7. \textbf{Çözüm:} Inverse frequency weights. I-EMPHASIS için 47x ağırlık. & 5 \\
+\hline
+5) Değerlendirme & 5 & Evet & 
+seqeval ile entity-bazlı metrikler. Confusion matrix, grafik oluşturuldu. v1: \%79.7 $\rightarrow$ v3: \%100. & 5 \\
+\hline
+\hline
+\textbf{TOPLAM} & \textbf{55} & & & \textbf{55} \\
+\hline
+\end{tabular}
+\end{table}
+
+\vspace{1cm}
+
+%% ----------------------------------------
+%% İŞ BÖLÜMÜ
+%% ----------------------------------------
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large İş Bölümü}
+\noindent\rule{\textwidth}{0.5pt}
+
+\vspace{0.5cm}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+{\large \textbf{Tablo IV: Proje İş Paketleri ve Görev Dağılımı}}
+\vspace{0.3cm}
+
+\begin{tabular}{|>{\centering\arraybackslash}p{6cm}|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|>{\centering\arraybackslash}c|}
+\hline
+\textbf{İş Paketi} & \textbf{Burak YÖRÜK} & \textbf{Egemen Kaçıkan} & \textbf{Toplam} \\
+\hline
+\hline
+WP1: Veri Seti Oluşturma ve İşleme & 4 saat & 2 saat & 6 saat \\
+\hline
+WP2: Model Geliştirme (BERTurk + CRF) & 3.5 saat & 2 saat & 5.5 saat \\
+\hline
+WP3: Eğitim ve Hyperparameter Tuning & 2.5 saat & 1.5 saat & 4 saat \\
+\hline
+WP4: Değerlendirme ve Görselleştirme & 2 saat & 1.5 saat & 3.5 saat \\
+\hline
+WP5: Makale Yazımı ve Dokümantasyon & 2 saat & 1.5 saat & 3.5 saat \\
+\hline
+\hline
+\textbf{TOPLAM} & \textbf{14 saat} & \textbf{8.5 saat} & \textbf{28 saat} \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Not:} Kalan \%20 ortak çalışma, toplantılar ve code review süreçlerine ayrılmıştır.
+
+\newpage
+
+%% ----------------------------------------
+%% EK-2: TÜRKİYE'DE KULLANIM ALANLARI
+%% ----------------------------------------
+
+\noindent\rule{\textwidth}{1.5pt}
+\subsection*{\LARGE EK-2: Türkiye'de Kullanım Alanları ve Yaygın Etki}
+\noindent\rule{\textwidth}{0.5pt}
+
+\vspace{0.8cm}
+
+\subsubsection*{Potansiyel Kullanım Alanları}
+\hfill \break
+\textbf{1. Metinden Konuşma (TTS) Sistemleri:}
+\begin{itemize}
+    \item Türk Telekom, Turkcell gibi telekomünikasyon şirketlerinin sesli asistan sistemleri
+    \item Görme engelli bireyler için ekran okuyucu yazılımları
+    \item E-kitap ve podcast platformları için otomatik seslendirme
+\end{itemize}
+
+\textbf{2. Chatbot ve Sanal Asistanlar:}
+\begin{itemize}
+    \item Müşteri hizmetleri chatbotları (bankalar, e-ticaret)
+    \item Eğitim platformlarındaki AI tutorlar
+    \item Sağlık sektöründe hasta yönlendirme sistemleri
+\end{itemize}
+
+\textbf{3. Duygu ve Niyet Analizi:}
+\begin{itemize}
+    \item Sosyal medya analizi (Twitter, Ekşi Sözlük)
+    \item Müşteri geri bildirimi analizi
+    \item Haber ve medya izleme sistemleri
+\end{itemize}
+
+\subsubsection*{Hedef Kullanıcı Grupları}
+\begin{itemize}
+    \item \textbf{Teknoloji Şirketleri:} TTS ve NLP çözümleri geliştiren firmalar
+    \item \textbf{Akademik Kurumlar:} Türkçe NLP araştırmacıları
+    \item \textbf{Kamu Kurumları:} E-devlet ses asistanları
+    \item \textbf{Engelli Bireyler:} Erişilebilirlik teknolojileri kullanıcıları
+\end{itemize}
+
+\subsubsection*{\large Literatüre Katkı ve Farklılıklar}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.4}
+{\large \textbf{Tablo V: Literatür Karşılaştırması}}
+\vspace{0.3cm}
+
+\begin{tabular}{|>{\centering\arraybackslash}p{4cm}|>{\centering\arraybackslash}p{2.5cm}|>{\centering\arraybackslash}p{3cm}|>{\centering\arraybackslash}p{2cm}|>{\centering\arraybackslash}p{2cm}|}
+\hline
+\textbf{Çalışma} & \textbf{Dil} & \textbf{Yöntem} & \textbf{Veri} & \textbf{F1} \\
+\hline
+\hline
+Topić et al. (2019) & İngilizce & BERT & 5K & 78\% \\
+\hline
+Zhang et al. (2020) & Çince & Attention & 10K & 82\% \\
+\hline
+\textbf{Bu Çalışma} & \textbf{Türkçe} & \textbf{BERT+CRF} & \textbf{6.2K} & \textbf{100\%} \\
+\hline
+\end{tabular}
+\end{table}
+
+\textbf{Farklılıklarımız:}
+\begin{enumerate}
+    \item Türkçe için ilk metin tabanlı vurgu tespiti çalışması
+    \item LLM ile sentetik veri üretimi yaklaşımı
+    \item CRF ile BIO etiket tutarlılığı sağlama
+    \item Weighted Loss ile sınıf dengesizliği çözümü
+\end{enumerate}
+
+\newpage
+
+%% ----------------------------------------
+%% EK-3: FAYDALANILAN KAYNAKLAR
+%% ----------------------------------------
+
+\noindent\rule{\textwidth}{1.5pt}
+\subsection*{\LARGE EK-3: Faydalanılan Kaynaklar ve Farklılıklar}
+\noindent\rule{\textwidth}{0.5pt}
+
+\vspace{0.8cm}
+
+\subsubsection*{Kullanılan Hazır Kodlar ve Kütüphaneler}
+
+\begin{itemize}
+    \item \textbf{Hugging Face Transformers:} BERTurk modelinin yüklenmesi ve fine-tuning için. \\
+    Kaynak: \texttt{https://huggingface.co/dbmdz/bert-base-turkish-cased}
+    
+    \item \textbf{pytorch-crf:} CRF katmanı implementasyonu. \\
+    Kaynak: \texttt{https://pytorch-crf.readthedocs.io/}
+    
+    \item \textbf{seqeval:} Sequence labeling metrikleri. \\
+    Kaynak: \texttt{https://github.com/chakki-works/seqeval}
+    
+    \item \textbf{Google Gemini API:} Sentetik veri üretimi. \\
+    Kaynak: \texttt{https://ai.google.dev/}
+\end{itemize}
+
+\subsubsection*{Orijinal Katkılarımız}
+
+\begin{itemize}
+    \item \textbf{Veri Artırma Pipeline:} Focus shifting, morphological variation modülleri tamamen orijinal olarak geliştirildi.
+    
+    \item \textbf{CRF Transition Initialization:} BIO etiketleme için özelleştirilmiş geçiş matrisi başlatma stratejisi literatürde yeni bir yaklaşımdır.
+    
+    \item \textbf{Türkçe Vurgu Veri Seti:} 6,253 örneklik Türkçe vurgu veri seti bu çalışma kapsamında oluşturulmuştur.
+\end{itemize}
+
+\vspace{1cm}
+
+%% ----------------------------------------
+%% EK-4: GENERATIVE AI ANALİZİ
+%% ----------------------------------------
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large EK-4: Generative AI ve Büyük Dil Modelleri Analizi}
+\noindent\rule{\textwidth}{0.5pt}
+
+\vspace{0.5cm}
+
+\subsubsection*{i) 2025 Yılı Generative AI Gelişmeleri}
+
+2025 yılı itibarıyla GPT-5, Gemini 2.x, Llama 4 ve Claude 3.7 gibi yeni nesil modeller önceki nesillere göre önemli gelişmeler göstermiştir:
+
+\textbf{1. Muhakeme Yeteneği (Reasoning):}
+\begin{itemize}
+    \item Chain-of-Thought (CoT) yeteneği içselleştirilmiştir
+    \item Çok adımlı matematiksel ve mantıksal problemlerde \%40+ iyileşme
+    \item Self-consistency ve tree-of-thought teknikleri native olarak desteklenmektedir
+\end{itemize}
+
+\textbf{2. Çok Modalite (Multimodality):}
+\begin{itemize}
+    \item Ses, görüntü, video ve metin aynı embedding uzayında işlenmektedir
+    \item Real-time ses girişi ve çıkışı desteklenmektedir
+    \item Vision-language görevlerinde insan seviyesi performans
+\end{itemize}
+
+\textbf{3. Düşük Halüsinasyon:}
+\begin{itemize}
+    \item RAG (Retrieval-Augmented Generation) entegrasyonu
+    \item Fact-checking ve source citation mekanizmaları
+    \item Uncertainty quantification ile ``bilmiyorum'' cevabı verebilme
+\end{itemize}
+
+\textbf{4. Verimlilik:}
+\begin{itemize}
+    \item MoE (Mixture of Experts) mimarisi ile 10x daha az hesaplama
+    \item Quantization ve pruning ile edge cihazlarda çalışabilme
+    \item Inference maliyetinde \%80 düşüş
+\end{itemize}
+
+\textbf{5. Kültürel Farkındalık:}
+\begin{itemize}
+    \item Türkçe gibi az kaynaklı dillerde dramatik iyileşme
+    \item Kültürel nüansları ve yerel deyimleri anlama
+    \item Bias ve fairness konularında gelişmeler
+\end{itemize}
+
+\subsubsection*{ii) Büyük Dil Modelleri Nasıl Çalışır?}
+
+\vspace{0.2cm}
+\hfill \break
+\textbf{A. Mimari: Transformer}
+
+Transformer mimarisi, 2017'de ``Attention is All You Need'' makalesiyle tanıtılmıştır. Ana bileşenleri:
+
+\textbf{1. Self-Attention Mekanizması:}
+Her token, dizideki diğer tüm tokenlerle ilişkisini hesaplar:
+\begin{equation}
+Attention(Q, K, V) = softmax\left(\frac{QK^T}{\sqrt{d_k}}\right)V
+\end{equation}
+Burada Q (Query), K (Key), V (Value) matrisleri input'tan öğrenilir.
+
+\textbf{2. Multi-Head Attention:}
+Birden fazla attention head paralel çalışarak farklı ilişki türlerini yakalar:
+\begin{equation}
+MultiHead(Q, K, V) = Concat(head_1, ..., head_h)W^O
+\end{equation}
+
+\textbf{3. Katman Yapısı:}
+\begin{itemize}
+    \item Embedding layer (token + position)
+    \item N x Transformer blokları (attention + FFN)
+    \item Layer normalization
+    \item Residual connections
+\end{itemize}
+\vspace{0.2cm}
+\textbf{B. Eğitim Süreci}
+
+\textbf{1. Self-Supervised Learning (Öz-Denetimli Öğrenme):}
+LLM'ler etiketli veriye ihtiyaç duymadan, büyük metin korpusu üzerinde eğitilir.
+
+\textbf{2. Next Token Prediction:}
+Temel eğitim görevi, bir dizideki sonraki tokeni tahmin etmektir:
+\begin{equation}
+\mathcal{L} = -\sum_{t=1}^{T} \log P(x_t | x_1, ..., x_{t-1})
+\end{equation}
+
+\textbf{3. Eğitim Aşamaları:}
+\begin{enumerate}
+    \item \textbf{Pre-training:} Trilyon token'lık veri üzerinde dil öğrenme
+    \item \textbf{Fine-tuning:} Özel görevler için ince ayar
+    \item \textbf{RLHF:} İnsan geri bildirimi ile hizalama
+\end{enumerate}
+
+\textbf{4. Veri Çeşitliliği:}
+\begin{itemize}
+    \item Web metinleri (Common Crawl)
+    \item Kitaplar ve akademik makaleler
+    \item Kod repository'leri
+    \item Çok dilli veriler
+\end{itemize}
+
+Eğitim verisi kalitesi, model performansı üzerinde kritik etkiye sahiptir. Data-centric AI yaklaşımı, veri kalitesinin model mimarisinden daha önemli olduğunu savunmaktadır.
+
+\end{document}

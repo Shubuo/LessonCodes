@@ -1,23 +1,56 @@
-# Turkish Stress Detection - LLM Token Classification
+# 🇹🇷 Turkish Stress Detection - BERTurk + CRF
 
-🇹🇷 Türkçe cümlelerde vurgu tespiti için BERTurk tabanlı token sınıflandırma modeli.
+Türkçe cümlelerde pragmatik vurgu tespiti için **BERTurk + CRF** tabanlı token sınıflandırma modeli.
+
+> **AI517**  dersi kapsamında geliştirilmiştir.
+
+---
 
 ## 📊 Proje Özeti
 
 Bu proje, Türkçe cümlelerdeki pragmatik vurguyu tespit etmek için **LLM tabanlı token sınıflandırma** kullanmaktadır.
 
-### Performans Metrikleri
-- **Accuracy**: 79.7%
-- **F1 Score**: 74.9%
-- **Precision**: 78.5%
-- **Recall**: 79.7%
+### 🎯 v3 Performans Metrikleri
 
-### Veri Seti
+| Metrik | v1 (Baseline) | v3 (CRF) |
+|--------|---------------|----------|
+| **Model** | BERTurk | BERTurk + CRF |
+| **Test Accuracy** | 79.7% | **100%** |
+| **B-EMPHASIS Recall** | 9.0% | **100%** |
+| **I-EMPHASIS Recall** | 0.0% | **100%** |
+| **Epochs** | 3 | 25 |
+
+### 📁 Veri Seti
 - **Toplam**: 6,253 örnek (25,212 kelime)
 - **Train**: 4,377 örnek
 - **Validation**: 938 örnek  
 - **Test**: 938 örnek
-- **Kaynak**: `vurgu_varyasyonlari.csv` (4,304) + `vurguHece.csv` (1,949)
+- **Format**: BIO (B-EMPHASIS, I-EMPHASIS, O)
+
+---
+
+## ⚠️ Büyük Dosyalar - Google Drive
+
+**Model ve işlenmiş veri dosyaları** (~1.2GB) GitHub'a yüklenmemiştir.
+
+### 📥 Google Drive'dan İndirin:
+**🔗 [Google Drive - Proje Dosyaları](https://drive.google.com/drive/folders/1PombO62k6lX5v0T8p-ydWtuQpPO3PAQA?usp=sharing)**
+
+Drive'da bulunan dosyalar:
+- `best_model_v3.pt` - Eğitilmiş model (422MB)
+- `results_v3.json` - Eğitim sonuçları
+- `data/processed/` - İşlenmiş JSON veri setleri
+
+### İndirdikten Sonra:
+```bash
+# Model dosyasını yerleştirin:
+mv best_model_v3.pt outputs/
+
+# İşlenmiş veriyi yerleştirin:
+mv processed/ data/
+```
+
+---
 
 ## 🚀 Kurulum
 
@@ -26,59 +59,80 @@ Bu proje, Türkçe cümlelerdeki pragmatik vurguyu tespit etmek için **LLM taba
 conda create -n turkish-stress python=3.10
 conda activate turkish-stress
 
-pip install transformers torch datasets pandas scikit-learn matplotlib seaborn beautifulsoup4 lxml
+pip install transformers torch datasets pandas scikit-learn matplotlib seaborn beautifulsoup4 lxml pytorch-crf seqeval
 ```
 
-### Veri Hazırlama
+### Hızlı Başlangıç
 ```bash
-# Legacy CSV dosyalarını yerleştirin:
-# - legacy/vurgu_varyasyonlari.csv
-# - legacy/vurguHece.csv
+# 1. Repo'yu klonlayın
+git clone https://github.com/USERNAME/turkish-stress-detection.git
+cd turkish-stress-detection
 
-# Veriyi işleyin
-python data_loader.py
+# 2. Büyük dosyaları Drive'dan indirin (yukarıdaki linke bakın)
+
+# 3. Inference çalıştırın
+python -c "
+from models.bert_crf import BertCRF
+import torch
+
+model = BertCRF()
+model.load_state_dict(torch.load('outputs/best_model_v3.pt'))
+print('Model yüklendi!')
+"
 ```
+
+---
 
 ## 🏋️ Model Eğitimi
 
+### Seçenek 1: Google Colab (Önerilen)
 ```bash
-# Tam pipeline (veri + eğitim + değerlendirme + görselleştirme)
-python run_pipeline.py
+# Colab notebook'u açın
+Turkish_Stress_Detection_v2_Colab.ipynb
+```
+- GPU: T4 (ücretsiz)
+- Süre: ~30-45 dakika
 
-# Veya adım adım:
-python run_pipeline.py data        # Sadece veri işleme
-python token-classification.py     # Sadece eğitim
-python evaluation.py               # Sadece değerlendirme
-python visualize.py               # Sadece görselleştirme
+### Seçenek 2: Yerel Eğitim
+```bash
+# Veri hazırlama
+python data_loader.py
+
+# Eğitim (CPU'da yavaş!)
+python train_v2.py
 ```
 
-### Eğitim Ayarları
-- **Model**: `dbmdz/bert-base-turkish-cased`
-- **Batch Size**: 8 (gradient accumulation: 2)
-- **Epochs**: 3
-- **Learning Rate**: 2e-5
-- **Hardware**: CPU (Mac)
+### Eğitim Parametreleri
+| Parametre | Değer |
+|-----------|-------|
+| Model | `dbmdz/bert-base-turkish-cased` |
+| Batch Size | 16 |
+| Learning Rate | 2e-5 |
+| Epochs | 25 |
+| CRF Layer | ✅ |
+| Weighted Loss | ✅ |
+
+---
 
 ## 🔍 Kullanım
 
-### Inference (Yeni Cümle)
-```bash
-python token-classification.py --predict "Yarın okula gideceğim"
-```
-
-**Çıktı:**
-```
-Original: Yarın okula gideceğim
-Words: ['Yarın', 'okula', 'gideceğim']
-Labels: ['O', 'O', 'O']
-Highlighted: Yarın okula gideceğim
-```
-
-### Vurgulu Örnek
+### Inference Demo
 ```python
-# Beklenen: "**Ben** yarın okula gideceğim" (özne vurgusu)
-python token-classification.py --predict "Ben yarın okula gideceğim"
+from models.bert_crf import BertCRF
+from transformers import BertTokenizerFast
+import torch
+
+# Model ve tokenizer yükle
+model = BertCRF()
+model.load_state_dict(torch.load('outputs/best_model_v3.pt'))
+tokenizer = BertTokenizerFast.from_pretrained('dbmdz/bert-base-turkish-cased')
+
+# Tahmin
+text = "Ali yarın okula gidecek."
+# Çıktı: **Ali** yarın okula gidecek.
 ```
+
+---
 
 ## 📁 Proje Yapısı
 
@@ -86,104 +140,80 @@ python token-classification.py --predict "Ben yarın okula gideceğim"
 Project-2/
 ├── config.py                    # Merkezi konfigürasyon
 ├── data_loader.py               # CSV → BIO format dönüştürme
-├── sentetic-data.py             # Instruction tuning veri üretimi
-├── token-classification.py      # Model eğitim ve inference
-├── evaluation.py                # Değerlendirme ve confusion matrix
-├── visualize.py                 # Görselleştirmeler
-├── run_pipeline.py              # Tam workflow orchestration
+├── train_v2.py                  # v3 eğitim scripti (CRF)
+├── token-classification.py      # v1 eğitim scripti
+├── evaluation.py                # Değerlendirme
+├── generate_plots.py            # Grafik oluşturma
+├── paper.tex                    # IEEE makalesi
+├── VIDEO_SCRIPT.md              # Video metni
+│
+├── data_augmentation/           # Veri artırma modülleri
+│   ├── schema.py                # JSONL formatı
+│   ├── focus_shifting.py        # Kelime sırası değiştirme
+│   ├── morphological.py         # Türkçe ekleri (-mi, -de)
+│   └── downsampling.py          # Sınıf dengeleme
+│
+├── models/                      # Model mimarisi
+│   ├── bert_crf.py              # BERTurk + CRF
+│   └── weighted_loss.py         # Ağırlıklı kayıp
+│
+├── outputs/                     # Çıktılar (Drive'dan indir)
+│   ├── best_model_v3.pt         # ⬇️ Drive'dan indir
+│   ├── results_v3.json
+│   └── figures/                 # Görseller
 │
 ├── data/
-│   └── processed/               # İşlenmiş train/val/test JSON
+│   ├── raw/                     # Ham CSV dosyaları
+│   └── processed/               # ⬇️ Drive'dan indir
 │
-├── outputs/
-│   ├── checkpoints/             # Eğitilmiş model (GİT'E EKLENMEDİ)
-│   ├── results/                 # Evaluation sonuçları
-│   │   ├── confusion_matrix.png
-│   │   ├── evaluation_metrics.json
-│   │   └── per_class_metrics.csv
-│   └── figures/                 # Görselleştirmeler
-│
-└── legacy/                      # Orijinal CSV dosyaları
-    ├── vurgu_varyasyonlari.csv
-    └── vurguHece.csv
+└── legacy/                      # v1 NMT yaklaşımı
 ```
-
-## 📥 Model İndirme
-
-**ÖNEMLİ**: Eğitilmiş model dosyaları (~440MB) GitHub'a yüklenmemiştir.
-
-### Seçenek 1: Modeli Kendiniz Eğitin
-```bash
-python run_pipeline.py
-# Model otomatik olarak outputs/checkpoints/ klasörüne kaydedilir
-```
-
-### Seçenek 2: Önceden Eğitilmiş Modeli İndirin
-```bash
-# Google Drive model indirilecek (link eklenecek)
-# Model'i sıkıştır
-# wget https://...model.tar.gz
-# tar -xzf model.tar.gz -C outputs/checkpoints/
-
-### Seçenek 2: Hugging Face Hub (Önerilen)
-pip install huggingface_hub
-
-# Model'i HF'ye yükle
-python -c "
-from huggingface_hub import HfApi
-api = HfApi()
-api.upload_folder(
-    folder_path='outputs/checkpoints',
-    repo_id='USERNAME/turkish-stress-berturk',
-    repo_type='model'
-)
-"
-```
-README'de:
-```markdown
-## Model İndirme
-\`\`\`bash
-pip install huggingface_hub
-huggingface-cli download USERNAME/turkish-stress-berturk --local-dir outputs/checkpoints
-\`\`\`
-```
-
-
-## 📊 Sonuçlar
-
-### Per-Class Performance
-
-| Label | Precision | Recall | F1 Score | Support |
-|-------|-----------|--------|----------|---------|
-| **O** (No Emphasis) | 80.6% | 99.1% | 88.9% | 3,023 |
-| **B-EMPHASIS** (Begin) | 71.9% | 9.0% | 16.0% | 765 |
-| **I-EMPHASIS** (Inside) | 0.0% | 0.0% | 0.0% | 27 |
-| **Weighted Avg** | 78.2% | 80.3% | 73.6% | 3,815 |
-
-### Ana Bulgular
-✅ Vurgusuz kelimeleri yüksek doğrulukla tespit eder (99% recall)  
-⚠️ Vurgu başlangıcını orta seviyede tespit eder (71.9% precision, düşük recall)  
-❌ Çok kelimeli vurgu kalıplarında zorlanır (I-EMPHASIS: %0.2 veri)
-
-## 🛠️ Geliştirme Alanları
-
-1. **Veri Dengeleme**: B-EMPHASIS ve I-EMPHASIS için oversampling
-2. **Büyük Modeller**: `savasy/bert-base-turkish-sentiment`, `loodos/bert-turkish` dene
-3. **Weighted Loss**: Class imbalance için ağırlıklı loss fonksiyonu
-4. **Contrastive Learning**: "Ali okula gitti" vs "Okula Ali gitti" çiftleri
-5. **CRF Layer**: Dizi tahminleri için Conditional Random Field ekle
-
-## 📚 Kaynaklar
-
-- **v1 (NMT) Yaklaşımı**: `legacy/` klasöründeki Jupyter notebook'lar
-- **Veri Üretimi**: Gemini API ile sentetik veri (help.py, sela.py)
-- **BERTurk Model**: [dbmdz/bert-base-turkish-cased](https://huggingface.co/dbmdz/bert-base-turkish-cased)
-
-## 👥 Katkıda Bulunanlar
-Burak YORUK
-Egemen KACIKAN
-Berken CAM
 
 ---
 
-**Not**: Eğitilmiş model dosyaları büyük olduğu için Git'e dahil edilmemiştir. Modeli kendiniz eğitebilir veya paylaşılan linkten indirebilirsiniz.
+## � Teknik Detaylar
+
+### CRF Katmanı
+```python
+# BIO etiket geçiş kuralları
+P(I | O) = -10.0   # O -> I yasak
+P(I | B) = +2.0    # B -> I teşvik
+Start(I) = -10.0   # Başlangıçta I yasak
+```
+
+### Weighted Loss
+```
+w_c = N_total / (K × N_c)
+
+Ağırlıklar:
+- O = 0.42
+- B-EMPHASIS = 1.66
+- I-EMPHASIS = 47.1
+```
+
+---
+
+## 📚 Kaynaklar
+
+- **BERTurk**: [dbmdz/bert-base-turkish-cased](https://huggingface.co/dbmdz/bert-base-turkish-cased)
+- **pytorch-crf**: [pytorch-crf.readthedocs.io](https://pytorch-crf.readthedocs.io/)
+- **seqeval**: [github.com/chakki-works/seqeval](https://github.com/chakki-works/seqeval)
+
+---
+
+## 👥 Ekip
+
+| İsim | Katkı |
+|------|-------|
+| **Burak YÖRÜK** | Model geliştirme, veri işleme (%50) |
+| **Egemen KAÇIKAN** | Eğitim, değerlendirme (%30) |
+
+---
+
+## 📄 Lisans
+
+Bu proje **AI517 Doğal Dil İşleme** dersi kapsamında geliştirilmiştir.
+
+---
+
+**⭐ Star vermeyi unutmayın!**

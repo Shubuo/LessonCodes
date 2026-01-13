@@ -1,0 +1,276 @@
+
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                max-width: 1200px;
+                margin: 20px auto;
+                padding: 20px;
+                background: #f5f5f5;
+            }
+            h1 {
+                color: #2c3e50;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px;
+            }
+            .prediction {
+                background: white;
+                margin: 20px 0;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .sentence {
+                font-size: 18px;
+                margin: 10px 0;
+                line-height: 1.6;
+            }
+            .word {
+                display: inline-block;
+                margin: 2px 4px;
+                padding: 4px 8px;
+                border-radius: 4px;
+            }
+            .emphasis {
+                background: #ffeb3b;
+                font-weight: bold;
+                border: 2px solid #ffc107;
+            }
+            .correct {
+                background: #4caf50;
+                color: white;
+            }
+            .incorrect {
+                background: #f44336;
+                color: white;
+            }
+            .labels {
+                font-size: 12px;
+                color: #666;
+                margin-top: 5px;
+            }
+            .score {
+                font-size: 14px;
+                color: #555;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🔍 Turkish Stress Detection - Sample Predictions</h1>
+    
+        <div class="prediction">
+            <h3>Example 1</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">Ankara'ya</span><span class="word" title="True: O, Pred: O">otobüsle</span><span class="word" title="True: O, Pred: O">gideceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, B-EMPHASIS, O, O<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 2</h3>
+            <div class="score">Word-level Accuracy: 100.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Dün</span><span class="word" title="True: O, Pred: O">gece</span><span class="word" title="True: O, Pred: O">çok</span><span class="word" title="True: O, Pred: O">ilginç</span><span class="word" title="True: O, Pred: O">bir</span><span class="word" title="True: O, Pred: O">rüya</span><span class="word emphasis" title="True: B-EMPHASIS, Pred: B-EMPHASIS">`gördüm`.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, O, O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O, O, O, O, B-EMPHASIS
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 3</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">okula</span><span class="word" title="True: O, Pred: O">otobüsle</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">gideceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 4</h3>
+            <div class="score">Word-level Accuracy: 80.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">akşam</span><span class="word" title="True: O, Pred: O">eve</span><span class="word" title="True: O, Pred: O">erken</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">geleceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 5</h3>
+            <div class="score">Word-level Accuracy: 100.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Sentence</span><span class="word" title="True: O, Pred: O">(TR)</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O<br>
+                <strong>Pred labels:</strong> O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 6</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">sabah</span><span class="word" title="True: O, Pred: O">kütüphanede</span><span class="word" title="True: O, Pred: O">buluşalım.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> B-EMPHASIS, O, O, O<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 7</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">toplantıya</span><span class="word" title="True: O, Pred: O">erken</span><span class="word" title="True: O, Pred: O">geleceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, B-EMPHASIS, O, O<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 8</h3>
+            <div class="score">Word-level Accuracy: 100.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word emphasis" title="True: B-EMPHASIS, Pred: B-EMPHASIS">`Bu`</span><span class="word" title="True: O, Pred: O">akşam</span><span class="word" title="True: O, Pred: O">yemeği</span><span class="word" title="True: O, Pred: O">annemle</span><span class="word" title="True: O, Pred: O">birlikte</span><span class="word" title="True: O, Pred: O">yapacağım.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> B-EMPHASIS, O, O, O, O, O<br>
+                <strong>Pred labels:</strong> B-EMPHASIS, O, O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 9</h3>
+            <div class="score">Word-level Accuracy: 83.3%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">toplantıya</span><span class="word" title="True: O, Pred: O">o</span><span class="word" title="True: O, Pred: O">da</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">gelecek</span><span class="word" title="True: O, Pred: O">mi?</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, O, B-EMPHASIS, O<br>
+                <strong>Pred labels:</strong> O, O, O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 10</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Bugün</span><span class="word" title="True: O, Pred: O">okula</span><span class="word" title="True: O, Pred: O">otobüsle</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">gitmeliyim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 11</h3>
+            <div class="score">Word-level Accuracy: 66.7%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">okula</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">gideceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 12</h3>
+            <div class="score">Word-level Accuracy: 100.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Sentence</span><span class="word" title="True: O, Pred: O">(TR)</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O<br>
+                <strong>Pred labels:</strong> O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 13</h3>
+            <div class="score">Word-level Accuracy: 75.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word" title="True: O, Pred: O">Akşam</span><span class="word" title="True: O, Pred: O">yemeği</span><span class="word" title="True: O, Pred: O">çok</span><span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">lezzetliydi.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> O, O, O, B-EMPHASIS<br>
+                <strong>Pred labels:</strong> O, O, O, O
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 14</h3>
+            <div class="score">Word-level Accuracy: 33.3%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">seni</span><span class="word incorrect" title="True: O, Pred: B-EMPHASIS">arayacağım.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> B-EMPHASIS, O, O<br>
+                <strong>Pred labels:</strong> O, O, B-EMPHASIS
+            </div>
+        </div>
+        
+        <div class="prediction">
+            <h3>Example 15</h3>
+            <div class="score">Word-level Accuracy: 80.0%</div>
+            
+            <div class="sentence">
+                <strong>Original:</strong><br>
+        <span class="word emphasis incorrect" title="True: B-EMPHASIS, Pred: O">Yarın</span><span class="word" title="True: O, Pred: O">akşam</span><span class="word" title="True: O, Pred: O">eve</span><span class="word" title="True: O, Pred: O">erken</span><span class="word" title="True: O, Pred: O">geleceğim.</span>
+            </div>
+            <div class="labels">
+                <strong>True labels:</strong> B-EMPHASIS, O, O, O, O<br>
+                <strong>Pred labels:</strong> O, O, O, O, O
+            </div>
+        </div>
+        
+    </body>
+    </html>
+    

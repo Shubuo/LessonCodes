@@ -64,6 +64,7 @@ AI517/veri_setleri/bag-veriseti/
 # Images and large generated files
 *.png
 *.jpg
+*.pdf
 *.jpeg
 *.gif
 *.svg

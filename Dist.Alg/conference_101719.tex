@@ -1,0 +1,279 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage{algorithm}
+
+\graphicspath{{results/}}
+
+\begin{document}
+
+\title{Performance Evaluation of Sequential and Distributed Minimum Dominating Set Algorithms in Dynamic Flying Ad-Hoc Networks}
+
+\author{\IEEEauthorblockN{Burak YORUK}
+\IEEEauthorblockA{\textit{Department of Computer Engineering} \\
+\textit{Ege University}\\
+İzmir, TURKEY \\
+ORCID: 0000-0001-8980-191X}
+}
+
+\maketitle
+
+%% ============================================
+%% ABSTRACT (300 words - shortened)
+%% ============================================
+\begin{abstract}
+Flying Ad-hoc Networks (FANETs) have emerged as a critical technology for disaster recovery, environmental monitoring, and military applications. A fundamental challenge in FANETs is constructing a virtual backbone through the Minimum Dominating Set (MDS) problem. This report investigates two MDS algorithms: Seq\_MDS (centralized greedy) and Span\_MDS (distributed local maxima).
+
+We developed a simulation framework using Python, NetworkX, and SimPy with Gauss-Markov mobility model for realistic 3D drone trajectories. Experiments were conducted on three scenarios (20, 35, 50 drones) over 600 seconds with 5 random seeds each.
+
+Key findings reveal significant trade-offs: Span\_MDS produces 2.10x smaller dominating sets but Seq\_MDS is 13.42x faster due to zero message overhead. Under dynamic mobility with 3.12 connection changes per second, Span\_MDS demonstrated superior adaptability. We conclude that Seq\_MDS suits small static networks while Span\_MDS is essential for large mobile swarms requiring fault tolerance.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Distributed Algorithms, Minimum Dominating Set, FANET, Gauss-Markov Mobility, UAV Swarms
+\end{IEEEkeywords}
+
+%% ============================================
+%% 1. INTRODUCTION (1+ page with related work)
+%% ============================================
+\section{Introduction}
+
+\subsection{Problem Background}
+Flying Ad-hoc Networks (FANETs) represent a specialized class of Mobile Ad-hoc Networks (MANETs) consisting of multiple Unmanned Aerial Vehicles (UAVs) that communicate without fixed infrastructure. Applications range from search and rescue operations to precision agriculture, border surveillance, and autonomous delivery systems \cite{b7}.
+
+A fundamental challenge in FANETs is the construction of a network backbone---a subset of nodes coordinating network-wide operations. This backbone construction is modeled as the Minimum Dominating Set (MDS) problem: given graph $G = (V, E)$, find the smallest subset $D \subseteq V$ such that every node is either in $D$ or adjacent to a node in $D$. The MDS problem is NP-hard in general graphs \cite{b6}.
+
+\subsection{Related Work and Past Approaches}
+The dominating set problem has been extensively studied in distributed computing literature. Several key approaches have been proposed:
+
+\textbf{Greedy Centralized Algorithms:} Guha and Khuller \cite{b6} proposed a greedy algorithm achieving $O(\ln \Delta)$ approximation ratio. While effective, centralized approaches require global topology knowledge, making them impractical for dynamic networks with frequent topology changes.
+
+\textbf{Distributed Algorithms:} Wu and Li \cite{b5} introduced marking-based distributed algorithms for connected dominating sets in ad-hoc networks. Their approach uses local information but suffers from producing larger sets compared to centralized methods.
+
+\textbf{Mobility-Aware Approaches:} Bekhti et al. \cite{b4} applied Gauss-Markov mobility models to FANETs, demonstrating the importance of temporal correlation in drone movement. However, their work focused on routing rather than backbone construction.
+
+\textbf{Rule-k Pruning:} Dai and Wu proposed rule-k based pruning to reduce dominating set size in wireless networks. This technique removes redundant dominators whose neighbors are already covered by other dominators.
+
+\textbf{Limitations of Previous Work:} Existing approaches have several limitations:
+\begin{itemize}
+    \item Centralized algorithms assume instantaneous global knowledge
+    \item Most distributed algorithms are designed for 2D networks
+    \item Limited evaluation under realistic 3D mobility models
+    \item Lack of comprehensive comparison between centralized and distributed approaches under identical dynamic conditions
+\end{itemize}
+
+\subsection{Our Contributions}
+This report addresses these limitations by:
+\begin{enumerate}
+    \item Implementing both Seq\_MDS (centralized) and Span\_MDS (distributed) algorithms within a unified simulation framework
+    \item Integrating the Gauss-Markov 3D mobility model for realistic FANET simulation
+    \item Conducting extensive experiments across multiple network scales and mobility scenarios
+    \item Providing quantitative comparison of MDS size, execution time, message complexity, and mobility adaptation
+\end{enumerate}
+
+\subsection{Report Organization}
+Section II describes the implemented algorithms with complexity analysis. Section III presents our simulation environment, datasets, and experimental results. Section IV concludes with findings and recommendations.
+
+%% ============================================
+%% 2. IMPLEMENTED ALGORITHMS (1 page)
+%% ============================================
+\section{Implemented Algorithms}
+
+\subsection{Sequential MDS Algorithm (Algorithm 11.1)}
+The Seq\_MDS follows a centralized greedy strategy with complete graph knowledge. Nodes are colored White (uncovered), Black (dominator), or Gray (dominated).
+
+\textbf{Algorithm Steps:}
+\begin{enumerate}
+    \item Initialize all nodes as White
+    \item Compute ``span'' for each node: White neighbors + self (if White)
+    \item Select node with maximum span (tie-break by lowest ID)
+    \item Add selected node to dominating set (Black)
+    \item Color its neighbors Gray
+    \item Repeat until all nodes covered
+\end{enumerate}
+
+\textbf{Complexity:}
+\begin{itemize}
+    \item Time: $O(|V| \cdot \Delta)$ where $\Delta$ is maximum degree
+    \item Messages: $0$ (centralized)
+    \item Approximation: $O(\ln(\Delta + 1))$
+\end{itemize}
+
+\subsection{Spanning MDS Algorithm (Algorithm 11.2)}
+Span\_MDS is fully distributed---nodes make decisions using only neighbor information.
+
+\textbf{State Transitions:} White $\rightarrow$ Black (local max span) or White $\rightarrow$ Gray (neighbor is Black).
+
+\textbf{Per-Node Algorithm:}
+\begin{enumerate}
+    \item Start as White with span = degree + 1
+    \item Each round: broadcast INFO(state, span) to neighbors
+    \item Collect neighbor INFO messages
+    \item If span $>$ all White neighbors' spans: become Black, broadcast DOMINATOR
+    \item Upon receiving DOMINATOR from neighbor: become Gray
+    \item Terminate when Black or Gray
+\end{enumerate}
+
+\textbf{Complexity:}
+\begin{itemize}
+    \item Time: $O(\text{Diameter})$ rounds
+    \item Messages: $O(|V| \cdot \Delta)$
+\end{itemize}
+
+%% ============================================
+%% 3. PERFORMANCE EVALUATIONS (1.5+ pages)
+%% ============================================
+\section{Performance Evaluations}
+
+\subsection{Simulation Environment}
+We developed a Python-based simulation framework:
+\begin{itemize}
+    \item \textbf{NetworkX:} Graph creation and manipulation
+    \item \textbf{SimPy:} Discrete-event simulation for message passing
+    \item \textbf{Gauss-Markov Model:} 3D mobility with temporal correlation
+    \item \textbf{Matplotlib:} Visualization and plotting
+\end{itemize}
+
+\subsection{Dataset and Network Generation}
+
+\subsubsection{Synthetic Drone Networks}
+We generated Random Geometric Graphs (RGG) representing drone swarms:
+\begin{itemize}
+    \item \textbf{Area:} $1000m \times 1000m \times 200m$ (3D)
+    \item \textbf{Communication Range:} $150m$
+    \item \textbf{Initial Positions:} Uniformly distributed
+    \item \textbf{Connectivity:} Largest connected component extracted
+\end{itemize}
+
+\subsubsection{Gauss-Markov Mobility Model}
+The mobility model generates realistic trajectories using:
+\begin{equation}
+v_n(t) = \alpha \cdot v_n(t-1) + (1-\alpha) \cdot \bar{v} + \sqrt{1-\alpha^2} \cdot w_n
+\end{equation}
+where $\alpha \in [0,1]$ controls memory, $\bar{v}$ is mean velocity, and $w_n$ is Gaussian noise. Parameters used:
+\begin{itemize}
+    \item Memory factor $\alpha = 0.75$
+    \item Mean velocity $\bar{v} = 10$ m/s
+    \item Velocity variance $\sigma_v = 3$ m/s
+\end{itemize}
+
+\subsubsection{Real-World Dataset: SNAP P2P-Gnutella}
+We also tested on the SNAP P2P-Gnutella04 peer-to-peer network dataset:
+\begin{itemize}
+    \item \textbf{Source:} Stanford Network Analysis Project
+    \item \textbf{Original Size:} 10,876 nodes, 39,994 edges
+    \item \textbf{Sampled Size:} 500 nodes (largest connected component)
+    \item \textbf{Purpose:} Validate algorithms on real-world topology
+\end{itemize}
+
+\subsection{Test Scenarios}
+Three mobility scenarios were evaluated for $T=600$ seconds:
+\begin{enumerate}
+    \item \textbf{Mobile\_Small\_Swarm:} 20 drones
+    \item \textbf{Mobile\_Medium\_Swarm:} 35 drones
+    \item \textbf{Mobile\_Large\_Swarm:} 50 drones
+\end{enumerate}
+
+Each scenario used 5 random seeds with sampling every 10 seconds, yielding 60 topology snapshots per seed.
+
+\subsection{Results}
+
+\begin{table}[H]
+\centering
+\caption{Average Performance Metrics}
+\begin{tabular}{@{}lcccc@{}}
+\toprule
+\textbf{Scenario} & \textbf{Alg} & \textbf{MDS Size} & \textbf{Time (s)} & \textbf{Msgs/Node} \\
+\midrule
+Small (20) & Seq & 12.11 & 0.0001 & 0.00 \\ 
+           & Span & 7.43 & 0.0011 & 1.27 \\
+\midrule
+Medium (35) & Seq & 15.80 & 0.0002 & 0.00 \\ 
+            & Span & 7.39 & 0.0024 & 1.64 \\
+\midrule
+Large (50) & Seq & 19.51 & 0.0003 & 0.00 \\ 
+           & Span & 7.73 & 0.0042 & 1.80 \\
+\bottomrule
+\end{tabular}
+\label{tab:results}
+\end{table}
+
+\subsubsection{MDS Size Analysis}
+Span\_MDS consistently produces smaller dominating sets (Fig. \ref{fig:comprehensive}). The improvement ratio increases with network size: 1.63x (Small) to 2.52x (Large). This is attributed to local maxima decisions that implicitly prune redundant dominators.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{comprehensive_results.png}
+\caption{Comprehensive comparison of algorithms across all metrics.}
+\label{fig:comprehensive}
+\end{figure}
+
+\subsubsection{Execution Time}
+Seq\_MDS is 13.42x faster on average due to:
+\begin{itemize}
+    \item No message passing simulation
+    \item Immediate greedy decisions
+    \item No round synchronization overhead
+\end{itemize}
+
+\subsubsection{Message Complexity}
+Span\_MDS averages 1.57 messages per node. While non-trivial, this enables fault tolerance and scalability advantages.
+
+\subsubsection{Mobility Adaptation}
+With 3.12 connection changes per second, both algorithms maintain valid dominating sets (Fig. \ref{fig:mobility}). Span\_MDS shows more stable MDS sizes due to local re-evaluation capability.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{mobility_performance.png}
+\caption{Performance under mobility showing MDS size variation.}
+\label{fig:mobility}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.48\textwidth]{topology_evolution_Mobile_Medium_Swarm.png}
+\caption{Topology evolution at t=0s, t=300s, t=599s.}
+\label{fig:topology}
+\end{figure}
+
+%% ============================================
+%% 4. CONCLUSIONS (0.5 page)
+%% ============================================
+\section{Conclusions}
+
+We evaluated two Minimum Dominating Set algorithms for dynamic Flying Ad-hoc Networks. The centralized Seq\_MDS algorithm used a greedy approach with global topology knowledge, while the distributed Span\_MDS allowed nodes to make local decisions based on neighbor communication. Our simulation framework integrated the Gauss-Markov mobility model to generate realistic 3D drone trajectories, creating challenging dynamic topologies.
+
+Our experimental findings revealed important trade-offs between solution quality and efficiency. The distributed Span\_MDS algorithm produced dominating sets 2.10x smaller on average, reaching 2.52x improvement in the Large Swarm scenario. This demonstrates the effectiveness of local maxima-based decisions in reducing backbone redundancy. However, Seq\_MDS was 13.42x faster due to zero communication overhead. Under dynamic conditions with 3.12 connection changes per second, Span\_MDS showed superior adaptability without requiring global coordination. Based on these findings, we recommend Seq\_MDS for small, static networks where central control is feasible, and Span\_MDS for larger, mobile swarms requiring scalability and fault tolerance.
+
+%% ============================================
+%% REFERENCES
+%% ============================================
+\begin{thebibliography}{00}
+\bibitem{b1} H. Attiya and J. Welch, \textit{Distributed Computing: Fundamentals, Simulations and Advanced Topics}, 2nd ed. Wiley-IEEE Press, 2004.
+
+\bibitem{b2} D. Peleg, \textit{Distributed Computing: A Locality-Sensitive Approach}. SIAM, 2000.
+
+\bibitem{b3} B. Liang and Z. J. Haas, ``Predictive distance-based mobility management for PCS networks,'' in \textit{Proc. IEEE INFOCOM}, pp. 1377--1384, 1999.
+
+\bibitem{b4} M. Bekhti et al., ``Gauss-Markov Mobility Model for Flying Ad Hoc Networks,'' \textit{IEEE ICC}, 2017.
+
+\bibitem{b5} J. Wu and H. Li, ``On calculating connected dominating set for efficient routing in ad hoc wireless networks,'' \textit{DIALM}, pp. 7--14, 1999.
+
+\bibitem{b6} S. Guha and S. Khuller, ``Approximation algorithms for connected dominating sets,'' \textit{Algorithmica}, vol. 20, no. 4, pp. 374--387, 1998.
+
+\bibitem{b7} I. Bekmezci et al., ``Flying Ad-Hoc Networks (FANETs): A survey,'' \textit{Ad Hoc Networks}, vol. 11, no. 3, pp. 1254--1270, 2013.
+
+\bibitem{b8} B. Yoruk, ``Distributed MDS Simulation Framework,'' Ege University, Dec. 2025.
+\end{thebibliography}
+
+\end{document}

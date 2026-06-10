@@ -1,0 +1,7 @@
+------------------------------------------------------------
+Server listening on TCP port 5001
+TCP window size: 1.00 MByte (WARNING: requested  512 KByte)
+------------------------------------------------------------
+[  1] local 10.0.0.2 port 5001 connected with 10.0.0.1 port 46294 (icwnd/mss/irtt=14/1448/48254)
+[ ID] Interval       Transfer     Bandwidth
+[  1] 0.0000-17.2035 sec   996 KBytes   474 Kbits/sec

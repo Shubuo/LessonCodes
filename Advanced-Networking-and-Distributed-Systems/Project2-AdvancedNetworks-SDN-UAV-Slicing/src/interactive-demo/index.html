@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN Priority Slicing Simulation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-blur bg-blur-1"></div>
+    <div class="bg-blur bg-blur-2"></div>
+
+    <div class="app-container">
+        <header class="glass-panel header">
+            <div class="title-area">
+                <h1>SDN Network Slicing & QoS Management</h1>
+                <p>Interactive Parameter Simulation</p>
+            </div>
+            <div class="controls">
+                <button id="btn-besteffort" class="btn btn-danger">Best-Effort (No QoS)</button>
+                <button id="btn-sdn" class="btn btn-success">Enable SDN Slicing</button>
+            </div>
+        </header>
+
+        <main class="dashboard-grid">
+            
+            <!-- Left Column: Topology & Logs -->
+            <div class="left-col">
+                <section class="glass-panel topology-section">
+                    <h2>Network Topology Visualization</h2>
+                    <div class="topology-canvas" id="topology-canvas">
+                        <div class="node host uav" id="node-h1">
+                            <div class="node-icon">🚁</div>
+                            <div class="node-label">h1 (UAV)</div>
+                            <div class="node-sub">Critical TCP</div>
+                        </div>
+                        <div class="node host bg-source" id="node-h3">
+                            <div class="node-icon">💻</div>
+                            <div class="node-label">h3 (Source)</div>
+                            <div class="node-sub">Heavy UDP</div>
+                        </div>
+                        <div class="node switch s1" id="node-s1">
+                            <div class="node-icon">🖧</div>
+                            <div class="node-label">s1</div>
+                        </div>
+                        <div class="node switch s2" id="node-s2">
+                            <div class="node-icon">🖧</div>
+                            <div class="node-label">s2</div>
+                        </div>
+                        <div class="node host edge-server" id="node-h2">
+                            <div class="node-icon">🖥️</div>
+                            <div class="node-label">h2 (Edge)</div>
+                        </div>
+                        <div class="node host cloud" id="node-h4">
+                            <div class="node-icon">☁️</div>
+                            <div class="node-label">h4 (Cloud)</div>
+                        </div>
+
+                        <svg class="lines-layer">
+                            <line x1="15%" y1="20%" x2="40%" y2="50%" class="link"></line>
+                            <line x1="15%" y1="80%" x2="40%" y2="50%" class="link"></line>
+                            <line x1="40%" y1="50%" x2="60%" y2="50%" class="link link-s1-s2"></line>
+                            <line x1="60%" y1="50%" x2="85%" y2="20%" class="link"></line>
+                            <line x1="60%" y1="50%" x2="85%" y2="80%" class="link"></line>
+                        </svg>
+
+                        <div class="bottleneck-label">
+                            <span class="label-text">Bottleneck (<span id="canvas-bw">10</span> Mbps)</span>
+                            <div id="sdn-shield" class="sdn-shield hidden">QoS Active</div>
+                        </div>
+
+                        <div id="packet-layer"></div>
+                    </div>
+                </section>
+
+                <section class="glass-panel log-section">
+                    <div class="log-header">
+                        <h2>Simulation Snapshots</h2>
+                        <button id="btn-snapshot" class="btn btn-primary">📸 Save Snapshot</button>
+                    </div>
+                    <div class="table-container">
+                        <table id="log-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>SDN State</th>
+                                    <th>BG Traffic</th>
+                                    <th>BW (Mbps)</th>
+                                    <th>Delay (ms)</th>
+                                    <th>Queue</th>
+                                    <th>UAV TCP</th>
+                                    <th>BG UDP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="log-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Metrics & Params -->
+            <div class="right-col">
+                <div class="glass-panel metric-card uav-card">
+                    <div class="metric-header">
+                        <h3>h1 → h2 (Critical TCP)</h3>
+                        <div class="status-dot active-uav"></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="metric-h1-throughput">0.00</span> <span class="unit">Mbps</span>
+                    </div>
+                    <div class="metric-chart">
+                        <div class="bar-fill" id="bar-h1"></div>
+                    </div>
+                </div>
+
+                <div class="glass-panel metric-card bg-card">
+                    <div class="metric-header">
+                        <h3>h3 → h4 (Background UDP)</h3>
+                        <div class="status-dot active-bg" id="status-h3"></div>
+                    </div>
+                    <div class="metric-value">
+                        <span id="metric-h3-throughput">0.00</span> <span class="unit">Mbps</span>
+                    </div>
+                    <div class="metric-chart">
+                        <div class="bar-fill" id="bar-h3"></div>
+                    </div>
+                </div>
+
+                <section class="glass-panel params-section">
+                    <h3>Environment Parameters</h3>
+                    
+                    <div class="param-group toggle-group">
+                        <label>Background UDP Traffic</label>
+                        <button id="btn-toggle-bg" class="btn btn-warning">Traffic ON</button>
+                    </div>
+
+                    <div class="param-group">
+                        <label>Bottleneck Bandwidth: <span class="val-highlight" id="val-bw">10</span> Mbps</label>
+                        <input type="range" id="input-bw" min="1" max="100" value="10">
+                    </div>
+                    
+                    <div class="param-group">
+                        <label>Link Delay: <span class="val-highlight" id="val-delay">20</span> ms</label>
+                        <input type="range" id="input-delay" min="1" max="100" value="20">
+                    </div>
+                    
+                    <div class="param-group">
+                        <label>Queue Size: <span class="val-highlight" id="val-queue">20</span> pkts</label>
+                        <input type="range" id="input-queue" min="10" max="1000" value="20">
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

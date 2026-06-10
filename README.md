@@ -1,72 +1,32 @@
-# Yapay Zeka - 583839
+# Academic & Lesson Projects (2026)
 
-This repository contains machine learning projects developed for the Artificial Intelligence course (583839).
+This repository serves as a centralized hub for various advanced academic projects, covering Artificial Intelligence, Natural Language Processing, Distributed Systems, and Swarm Robotics.
 
-## Project 1: Machine Learning (Proje1_MakineOgrenmesi)
+## 📂 Repository Structure
 
-A comprehensive machine learning project covering classification, clustering, regression, and deep learning.
+### 1. [AI & Deep Learning - NLP Emphasis Project](./AI-DeepLearning-NLP_Emphasis_Project/)
+This directory contains comprehensive machine learning and deep learning projects with a strong emphasis on NLP.
+*   **Project-1 (Machine Learning & DL):**
+    *   Covers foundational Classification (Random Forest, SVM, KNN).
+    *   Clustering & Regression analysis.
+    *   Deep Learning (CNNs, Transfer Learning with VGG16) for image classification.
+*   **Project-2 (Turkish Pragmatic Stress Detection):**
+    *   An advanced token classification NLP project.
+    *   Utilizes **BERT + CRF** architecture combined with **Supervised Contrastive Learning (SCL)**.
+    *   Includes a complete evaluation pipeline, presentation assets, and LaTeX paper drafts.
 
-### Project Structure
+### 2. [Advanced Networking and Distributed Systems](./Advanced-Networking-and-Distributed-Systems/)
+Contains simulation and networking projects focused on UAVs and distributed algorithms.
+*   **Project 1 (Distributed Algorithms & MDS Simulation):**
+    *   Simulates Minimum Dominating Set (MDS) algorithms on dynamic networks.
+    *   Integrates **Gauss-Markov Mobility Models** to simulate realistic drone movements and measure topology stability over time.
+*   **Project 2 (SDN & UAV Slicing):**
+    *   Explores Software-Defined Networking concepts in the context of UAV (Unmanned Aerial Vehicle) network slicing.
 
-```
-Proje1_MakineOgrenmesi/
-│
-├── 1_Siniflandirma/
-│   └── Proje1_Bolum1_Siniflandirma.ipynb
-│
-├── 2_Kumeleme_Regresyon/
-│   └── Proje1_Bolum2_Kumeleme_Regresyon.ipynb
-│
-├── 3_DerinOgrenme/
-│   ├── Proje1_Bolum3_DerinOgrenme.ipynb
-│   └── proje_veri_seti/
-│       ├── bardak/
-│       ├── kalem/
-│       └── klavye/
-│
-└── Proje1_Raporu/
-```
+### 3. [Swarm Drone Literature Curator](./swarm-drone-literature-curator/)
+An automated literature curation and presentation pipeline.
+*   Aims to automatically download, summarize, and curate academic papers on Multi-Agent Systems and Swarm Drones.
+*   Uses LLMs and the `Marp` framework to automatically compile research findings into presentation-ready markdown slides and PDF reports.
 
-### Part 1: Classification
-- Exploratory Data Analysis (EDA)
-- Multiple classification algorithms (Random Forest, SVM, Naive Bayes, K-NN)
-- Model comparison and evaluation
-- Performance metrics and visualization
-
-### Part 2: Clustering and Regression
-- **Clustering Analysis:**
-  - K-Means, Agglomerative Clustering, DBSCAN
-  - Elbow Method for optimal cluster selection
-  - Silhouette Score and Adjusted Rand Index evaluation
-  
-- **Regression Analysis:**
-  - Linear Regression, Ridge, Lasso
-  - Random Forest Regressor, SVR
-  - MSE, RMSE, MAE, R² metrics
-
-### Part 3: Deep Learning
-- Image classification with Convolutional Neural Networks (CNN)
-- Transfer Learning with VGG16
-- Data Augmentation techniques
-- Model training, evaluation, and deployment
-
-## Requirements
-
-```bash
-pip install pandas numpy matplotlib seaborn scikit-learn tensorflow keras pillow opencv-python
-```
-
-## Usage
-
-1. Clone the repository
-2. Install required packages
-3. Open Jupyter Notebook files
-4. Follow the instructions in each notebook
-
-## Author
-
-Developed as part of the Artificial Intelligence course - 583839
-
-## License
-
-This project is for educational purposes.
+---
+*Note: Large model weights (e.g., PyTorch `.pt` files) and extensive datasets are tracked via `.gitignore` and are excluded from this repository due to size limits. Please refer to individual project READMEs for instructions on downloading required models/data.*

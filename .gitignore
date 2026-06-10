@@ -57,6 +57,8 @@ model_architecture.png
 *.pkl
 *.joblib
 *.model
+*.pt
+*.pth
 
 # Data sets
 AI517/veri_setleri/bag-veriseti/

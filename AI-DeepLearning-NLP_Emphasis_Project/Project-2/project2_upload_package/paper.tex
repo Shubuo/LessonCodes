@@ -1,0 +1,389 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{placeins}
+\usepackage{float}
+\usepackage{array}
+
+\begin{document}
+
+\title{Türkçe Metinlerde Pragmatik Vurgunun Belirlenmesi: Sentetik Veri, BERTurk, CRF ve Denetimli Karşıtlamalı Öğrenme}
+
+\author{\IEEEauthorblockN{Burak YÖRÜK}
+\IEEEauthorblockA{\textit{Bilgisayar Mühendisliği Bölümü} \\
+\textit{Ege Üniversitesi}\\
+İzmir, Türkiye \\
+91250000324@ogrenci.ege.edu.tr}
+}
+
+\maketitle
+
+\begin{abstract}
+Türkçe, pragmatik vurguyu çoğu zaman kelime sırası ve bağlam üzerinden kurabilen bir dil olduğu için, yazılı metinde bu vurguyu otomatik yakalamak kolay değildir. Bu çalışmada bu problemi daha düzenli inceleyebilmek için sentetik veri üretimi, BERTurk tabanlı token sınıflandırma, CRF tabanlı yapı kısıtları ve cümle düzeyinde denetimli karşıtlamalı öğrenme aynı deney hattında birleştirilmiştir. Ham sentetik havuz 6{,}253 örnekten oluşmaktadır; filtreleme sonrası 5{,}209 örnek train/validation/test ayrımında kullanılmıştır. Ayrıca iki kamusal Türkçe veri kaynağından 1{,}000 örneklik bir OOD kümesi türetilmiştir. Sonuçlara bakıldığında, baseline çapraz entropi modeline göre BERT+CRF+SCL yaklaşımı test kümesinde weighted F1 skorunu 0.8820'dan 0.8842'ye, macro F1 skorunu 0.6607'den 0.7026'ya ve I-EMPHASIS F1 skorunu 0.4375'ten 0.5556'ya çıkarmıştır. Buna karşılık OOD tarafında weighted F1 yaklaşık aynı kalmış, I-EMPHASIS performansı ise sıfıra düşmüştür. Bu da dağılım dışı genellemenin halen açık bir problem olduğunu göstermektedir.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Türkçe NLP, vurgu tespiti, BERTurk, CRF, supervised contrastive learning, sentetik veri.
+\end{IEEEkeywords}
+
+\section{Giriş (Introduction)}
+Pragmatik vurgu, bir cümle içinde konuşanın öne çıkarmak istediği bilgi parçasını belirler. Türkçede bu vurgu çoğu zaman prozodik sinyallerin yanı sıra kelime sırasıyla da ifade edilir. ``Ali eve geldi'' ve ``Eve Ali geldi'' cümleleri aynı sözcükleri içermesine rağmen, bağlama göre farklı öğeleri öne çıkarır. Bu durum metinden konuşma sentezi, diyalog sistemleri ve niyet analizi gibi alanlarda vurgu bilgisini önemli hale getirir.
+
+Metin tabanlı vurgu tespitinin temel zorluğu, eğitim verisinin sınırlı ve dengesiz olmasıdır. Vurgusuz tokenler çoğunluğu oluştururken, çok kelimeli vurgu bölgelerini temsil eden I-EMPHASIS etiketi son derece seyrektir. Bu nedenle yalnızca toplam doğruluk veya weighted F1 gibi metriklere bakmak yeterli değildir; azınlık sınıf davranışını ayrıca izlemek gerekir.
+
+Bu çalışmanın ana hedefi, Türkçe pragmatik vurgu tespiti için uçtan uca, tekrar üretilebilir bir deney hattı oluşturmaktır. Bu hatta üç temel katkı yer almaktadır:
+\begin{enumerate}
+    \item sentetik vurgu verisinin temizlenip BIO etiketli token sınıflandırma şemasına dönüştürülmesi,
+    \item BERTurk omurgası üzerine CRF ve cümle düzeyinde supervised contrastive learning (SCL) eklenmesi,
+    \item baseline, geliştirilmiş model ve OOD değerlendirmesinin aynı sonuç deposunda karşılaştırılması.
+\end{enumerate}
+
+\section{Literatür Taraması (Related Work)}
+Türkçe NLP çalışmaları morfolojik çözümleme ile başlamış, daha sonra ayrıştırma, NER ve transformer tabanlı temsil öğrenmeye doğru evrilmiştir. Oflazer'in iki seviyeli morfoloji yaklaşımı Türkçenin eklemeli yapısını modellemek için temel bir başlangıç noktası sunmuştur \cite{oflazer1994}. Sonraki yıllarda Türkçe için istatistiksel ve sinir ağ tabanlı etiketleme çalışmaları artmış, BERT'in ortaya çıkmasıyla birlikte dil-özel encoder modelleri öne çıkmıştır.
+
+BERTurk, Türkçe için en yaygın kullanılan ön-eğitimli encoder modellerinden biridir ve çok dilli modellere kıyasla Türkçe görevlerde daha güçlü sonuçlar vermektedir \cite{stefanit}. Sequence labeling problemlerinde ise CRF katmanı, BIO etiket geçişlerini yapısal olarak denetleyebildiği için sık tercih edilir \cite{crfner}. Bu yaklaşım özellikle O $\rightarrow$ I gibi geçersiz geçişleri baskılayarak daha tutarlı çıktı dizileri üretir.
+
+Denetimli karşıtlamalı öğrenme, ön-eğitimli dil modellerinin sınıf ayrıştırıcılığını güçlendirmek için önerilmiş bir yöntemdir \cite{gunel2021}. Bu çalışmada SCL doğrudan token seviyesinde değil, cümle temsilini taşıyan CLS vektörü üzerinden uygulanmıştır. Böylece tek kelimelik vurgu ve çok kelimeli vurgu örüntülerinin cümle düzeyinde ayrıştırılması hedeflenmiştir.
+
+Mevcut repo kapsamındaki incelemeye göre Türkçe pragmatik vurgu tespitini, sentetik veri, token BIO etiketleme, CRF ve OOD stres testi ile aynı deney hattında birleştiren bir çalışma örneğine rastlanmamıştır. Bu boşluk, çalışmanın motivasyonunu oluşturmaktadır.
+
+\section{Yöntem (Method)}
+\subsection{Veri Hazırlama}
+Veri kaynağı iki sentetik CSV havuzundan oluşmaktadır: kelime düzeyinde vurgu varyasyonları ve hece/vurgu açıklamaları içeren ikinci bir yardımcı havuz. Ham havuz toplam 6{,}253 örnek içermektedir. Ancak geçersiz satırlar, boş ifadeler ve BIO üretimine uygun olmayan örnekler filtrelendikten sonra 5{,}209 örnek deney kümesine alınmıştır.
+
+Filtrelenmiş sentetik veri aşağıdaki şekilde ayrılmıştır:
+
+\begin{table}[H]
+\centering
+\caption{Sentetik veri ayrımı}
+\begin{tabular}{lr}
+\toprule
+Bölüm & Örnek Sayısı \\
+\midrule
+Train & 3{,}646 \\
+Validation & 781 \\
+Test & 782 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Ek olarak, kamusal Türkçe yorum ve tweet kaynaklarından toplam 1{,}000 cümle örneklenmiş ve aynı şemaya dönüştürülmüştür. Bu küme OOD değerlendirmesi için tutulmuştur. OOD etiketleri otomatik öneri niteliğinde olduğu için, bu split genelleme stresi ölçmek amacıyla kullanılmış ve sınırlılık olarak raporlanmıştır.
+
+\subsection{Veri Dengesizligi Profili}
+Görevin zorlugunu belirleyen ana unsur, sinif dagilimindaki ciddi dengesizliktir. Ham token dagilimina bakildiginda O etiketi acik ara cogunluktadir; B-EMPHASIS daha seyrek, I-EMPHASIS ise yok denecek kadar azdir. Bu nedenle yalniz toplam weighted F1 degeri ile karar vermek, modelin asil arastirma hedefi olan vurgu bolgesinin devamini ne kadar iyi ayirdigini gostermez.
+
+\begin{table}[H]
+\centering
+\caption{Ham veri split ozellikleri}
+\begin{tabular}{lccc}
+\toprule
+Split & Ortalama cumle uzunlugu & O orani & I-EMPHASIS orani \\
+\midrule
+Train & 5.29 & 80.8\% & 0.6\% \\
+Validation & 5.27 & 80.3\% & 0.7\% \\
+Test & 5.23 & 80.9\% & 0.3\% \\
+OOD & 11.29 & 89.6\% & 1.5\% \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Tablo, iki ek zorlugu da gosterir. Birincisi, I-EMPHASIS sinifi hem ID hem OOD split'lerinde cok dusuk frekanslidir. Ikincisi, OOD cumleleri sentetik split'lere gore yaklasik iki kat daha uzundur. Bu durum, modelin hem veri dagilimi hem de cumle yapisi acisindan daha zorlu bir ortama tasindigini gostermektedir.
+
+\subsection{Etiketleme Şeması}
+Her örnek kelime listesi ve BIO etiket dizisi ile temsil edilmektedir:
+\begin{itemize}
+    \item B-EMPHASIS: vurgulu bölgenin ilk tokeni,
+    \item I-EMPHASIS: vurgulu bölgenin devamı,
+    \item O: vurgusuz token.
+\end{itemize}
+
+Bu şema, vurgu konumunu açık hale getirmenin yanında CRF için yapısal kısıtların tanımlanmasını da kolaylaştırmaktadır.
+
+\subsection{Model Mimarisi}
+Nihai model bert\_crf modülü içinde gerçeklenen BERT+CRF+SCL mimarisidir. Yapı iki paralel dal içermektedir:
+\begin{enumerate}
+    \item \textbf{Token sınıflandırma dalı:} BERTurk hidden state'leri üzerinden doğrusal emission katmanı ve CRF decoder çalışır.
+    \item \textbf{Cümle düzeyi karşıtlamalı dal:} CLS temsili, projection head üzerinden 768 $\rightarrow$ 256 $\rightarrow$ 128 boyutlarına indirgenir ve contrastive etiketlerle SCL kaybı hesaplanır.
+\end{enumerate}
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=0.95\textwidth]{outputs/results/final_sections_3_8/section3_topology.png}
+\caption{Nihai BERT+CRF+SCL mimarisi}
+\label{fig:topology}
+\end{figure*}
+
+CRF geçiş matrisine aşağıdaki ön kabuller gömülmüştür:
+\begin{itemize}
+    \item $O \rightarrow I = -10.0$
+    \item $start(I) = -10.0$
+    \item $B \rightarrow I = +2.0$
+    \item $I \rightarrow I = +1.0$
+\end{itemize}
+
+Toplam kayıp aşağıdaki biçimdedir:
+\begin{equation}
+\mathcal{L}_{total} = \mathcal{L}_{crf} + \lambda \mathcal{L}_{scl}
+\end{equation}
+Bu çalışmada $\lambda = 0.2$ olarak seçilmiştir.
+
+\section{Deneysel Çalışmalar (Experimental Work)}
+\subsection{Deney Koşulları}
+Bu bölümde iki ana hattı karşılaştırdım. Deneyler yerel Apple Silicon ortamında MPS hızlandırması ile yürütüldü. Karşılaştırma için kullanılan modeller şunlardır:
+\begin{itemize}
+    \item \textbf{Baseline CE:} hazır token classification head + cross-entropy
+    \item \textbf{BERT+CRF+SCL:} özel CRF decoder + projection head + supervised contrastive loss
+\end{itemize}
+
+Nihai model tarafında kullanılan temel ayarlar aşağıdadır:
+\begin{itemize}
+    \item encoder learning rate: $2e^{-5}$
+    \item head learning rate: $1e^{-4}$
+    \item batch size: 8
+    \item epoch: 3
+    \item dropout: 0.1
+    \item temperature: 0.07
+    \item projection dim: 128
+\end{itemize}
+
+\subsection{Ana Sonuçlar}
+Test ve OOD karşılaştırması Tablo~\ref{tab:mainresults}'te verilmiştir.
+
+\begin{table*}[t]
+\centering
+\caption{Model karşılaştırması}
+\label{tab:mainresults}
+\small
+\resizebox{\textwidth}{!}{
+\begin{tabular}{llcccccc}
+\toprule
+Model & Split & Weighted F1 & Macro F1 & Precision & Recall & I-F1 & I-Recall \\
+\midrule
+Baseline CE & Test & 0.8820 & 0.6607 & 0.8877 & 0.8938 & 0.4375 & 0.3333 \\
+BERT+CRF+SCL & Test & \textbf{0.8842} & \textbf{0.7026} & \textbf{0.8888} & \textbf{0.8951} & \textbf{0.5556} & \textbf{0.4762} \\
+Baseline CE & OOD & \textbf{0.8500} & 0.3181 & 0.8153 & \textbf{0.8937} & 0.0000 & 0.0000 \\
+BERT+CRF+SCL & OOD & 0.8487 & \textbf{0.3196} & \textbf{0.8156} & 0.8898 & 0.0000 & 0.0000 \\
+\bottomrule
+\end{tabular}
+}
+\end{table*}
+
+Burada ilk bakışta toplam weighted F1 farkı küçük görünmektedir. Fakat tabloyu sınıf dengesizliği üzerinden okuyunca asıl önemli farkın I-EMPHASIS tarafında çıktığı görülmektedir. Test kümesinde bu sınıfın F1 skoru 0.4375'ten 0.5556'ya, recall değeri ise 0.3333'ten 0.4762'ye yükselmiştir. Benim için bu artış, toplam skordaki küçük oynamadan daha anlamlıdır.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=\linewidth]{outputs/results/comparisons/model_comparison.png}
+\caption{ID ve OOD split'lerinde model karşılaştırması}
+\label{fig:modelcomp}
+\end{figure}
+
+\subsection{Ablation ve Tuning Gözlemleri}
+Karşılaştırma artefact'ları, nihai konfigürasyonun daha iyi bir denge sunduğunu göstermektedir. dropout=0.2 ve head\_lr=5e-5 varyantları testte daha düşük azınlık sınıf başarımı vermiştir. Ayrıca BERT2D pilotu pratikte entegre edilebilir olsa da, ana BERTurk hattının gerisinde kalmıştır.
+
+\subsection{Sınıf Bazlı Hata Analizi}
+Test kümesindeki sınıf bazlı metrikler, iyileştirmenin hangi etiketlerde yoğunlaştığını daha açık göstermektedir.
+
+\begin{table}[H]
+\centering
+\caption{Test kümesinde sınıf bazlı karşılaştırma}
+\footnotesize
+\begin{tabular}{llccc}
+\toprule
+Etiket & Model & Precision & Recall & F1 \\
+\midrule
+O & Baseline CE & 0.9024 & 0.9785 & 0.9389 \\
+O & BERT+CRF+SCL & 0.9048 & 0.9772 & 0.9396 \\
+B-EMPHASIS & Baseline CE & 0.8190 & 0.4807 & 0.6058 \\
+B-EMPHASIS & BERT+CRF+SCL & 0.8135 & 0.4914 & 0.6127 \\
+I-EMPHASIS & Baseline CE & 0.6364 & 0.3333 & 0.4375 \\
+I-EMPHASIS & BERT+CRF+SCL & 0.6667 & 0.4762 & 0.5556 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Burada üç gözlem öne çıkmaktadır. Birincisi, çoğunluk sınıfı olan O etiketinde iki model arasında zaten çok küçük fark vardır; bu da toplam weighted F1 skorunun neden sınırlı değiştiğini açıklar. İkincisi, B-EMPHASIS etiketinde küçük fakat yönlü bir geri çağırım artışı vardır. Üçüncüsü, çok kelimeli vurgu bölgesini temsil eden I-EMPHASIS sınıfında hem precision hem recall artmıştır; bu artış, CRF yapısal kısıtları ile CLS tabanlı karşıtlamalı temsilin birlikte çalışmasının beklenen sonucudur.
+
+\subsection{Nitel Ornek Incelemesi}
+Sayisal metriklerin yaninda, hazir tahmin ornekleri modelin hangi durumlarda zorlandigini daha okunur bicimde gostermektedir. Tablo~\ref{tab:qualitative} final artefact'lari arasinda yer alan ornek tahminlerden secilmistir.
+
+\begin{table*}[t]
+\centering
+\caption{Hazir tahminlerden secilen nitel ornekler}
+\label{tab:qualitative}
+\begin{tabular}{p{2cm}p{6.1cm}p{2.2cm}p{2.2cm}p{4.5cm}}
+\toprule
+Ornek & Cumle & Gercek vurgu & Tahmin & Gozlem \\
+\midrule
+var\_2142 & Dun gece cok ilginc bir ruya gordum. & gordum (B) & gordum (B) & Tek tokenli ve cumle sonunda yer alan vurgu oruntusu dogru yakalanmistir. \\
+var\_1263 & Yarin Ankara'ya otobusle gidecegim. & Ankara'ya (B) & yok & Yer oznesinin vurgulandigi ornekte model vurgu sinyalini tamamen kacirmistir. \\
+var\_3501 & Yarin okula otobusle gidecegim. & gidecegim (B) & yok & Cumle sonu vurgu her zaman yakalanmamakta; seyrek kaliplarin halen kirilgan oldugu gorulmektedir. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+Bu tablo iki farkli davranisi ayirmaya yardimci olur. Dogru tahmin edilen orneklerde vurgu konumu, sentetik egitim setinde sik rastlanan kaliplara benzemektedir. Hata yapilan orneklerde ise model ya yer odakli vurgu sinyalini bastirmakta ya da tek dogru B-EMPHASIS konumunu O sinifina cekmektedir. Dolayisiyla hata analizi, yalniz seyrek I-EMPHASIS degil, B-EMPHASIS'in baglama duyarli konumlarinda da hala gelistirme payi oldugunu gostermektedir.
+
+\subsection{Tekrar Üretilebilirlik ve Teslim Artefact'ları}
+Bu çalışma yalnız makale metniyle değil, aynı zamanda aynı klasör yapısı altında tutulan kod, sonuç ve sunum artefact'ları ile teslim edilmektedir. Baseline eğitim hattı, geliştirilmiş model eğitimi, değerlendirme ve karşılaştırma adımları ayrı Python dosyalarına bölünmüştür; bu sayede deney zincirinin farklı aşamaları bağımsız biçimde yeniden çalıştırılabilir hale gelmektedir. Sonuç klasörü altında tutulan JSON, CSV ve görsel dosyaları ise makaledeki tüm metrikleri doğrudan desteklemektedir. Bu yapı, ekran kaydı ile yapılacak video demosunda da yayın metni ile çalışan sistem arasında izlenebilir bir bağ kurulmasını sağlamaktadır.
+
+\subsection{Pratik Çıkarımlar ve Kullanım Perspektifi}
+Bu çalışmanın pratik değeri yalnız metrik artışında değil, teslim biçiminde de ortaya çıkmaktadır. Video demosunda gösterilen notebook, hazır sonuç artefact'larını ve kritik kod parçalarını aynı akış içinde sunabildiği için, makale ile çalışan sistem arasındaki iz sürülebilirlik güçlenmektedir. Akademik teslimlerde sık görülen sorunlardan biri, metriklerin belgede yer almasına rağmen bunların hangi kod ve hangi çıktı dosyası ile üretildiğinin açık olmamasıdır. Bu repo yapısı bu sorunu azaltmak için özellikle korunmuştur.
+
+Uygulama açısından değerlendirildiğinde, sistemin en güçlü yönü sentetik veri içinde azınlık vurgu örüntülerini baseline modele göre daha iyi ayırabilmesidir. Buna karşılık OOD sonuçları, gerçek dünya verisine yaklaşıldığında modelin çok kelimeli vurgu bölgelerinde hızla zorlandığını göstermektedir. Dolayısıyla bu çalışma, bir son ürün iddiasından çok, iyi belgelenmiş ve karşılaştırmalı biçimde raporlanmış bir araştırma prototipi olarak değerlendirilmelidir.
+
+Bir diğer pratik çıkarım, değerlendirme metriklerinin nasıl okunması gerektiğidir. Weighted F1 tek başına bakıldığında iki model arasındaki fark küçük görünmektedir. Ancak sınıf bazlı tablo incelendiğinde, araştırma açısından asıl önemli kazanımın I-EMPHASIS tarafında toplandığı görülmektedir. Bu nedenle Türkçe pragmatik vurgu gibi dengesiz görevlerde, toplam skorların yanında seyrek sınıf metriklerinin raporlanması yalnız faydalı değil, zorunludur.
+
+\subsection{Sınırlılıklar}
+OOD kümesinde her iki modelin de I-EMPHASIS F1 skorunun sıfıra düşmesi, veri dağılımı kaymasının halen temel problem olduğunu göstermektedir. Bu sonuç, önerilen mimarinin yalnızca ID test kümesinde değil, daha geniş bağlamlarda da manuel denetimli veriyle desteklenmesi gerektiğine işaret etmektedir.
+
+\section{Sonuç (Conclusion)}
+Bu çalışma, Türkçe pragmatik vurgu tespiti için sentetik veri üretimi, BIO etiketleme, CRF tabanlı yapı kısıtları ve supervised contrastive learning bileşenlerini tek bir deney hattında birleştirmiştir. Elde edilen sonuçlar, toplam weighted F1 kazanımının sınırlı olmasına rağmen, azınlık sınıfı olan I-EMPHASIS üzerinde anlamlı iyileşme sağlandığını göstermektedir.
+
+En önemli çıkarım, toplam başarı metriklerinin tek başına yeterli olmadığıdır. Özellikle vurgu bölgesinin devamını temsil eden seyrek sınıflar, model kalitesini daha hassas biçimde ortaya koymaktadır. Gelecek çalışmalarda daha fazla gerçek Türkçe veri, manuel OOD denetimi ve çok kelimeli vurgu örüntülerine özel veri artırma stratejileri öncelikli geliştirme alanları olacaktır.
+
+\begin{thebibliography}{00}
+\bibitem{vaswani2017} Vaswani, A., Shazeer, N., Parmar, N., Uszkoreit, J., Jones, L., Gomez, A. N., Kaiser, {\L}. and Polosukhin, I. (2017). Attention Is All You Need. \textit{NeurIPS 2017}.
+\bibitem{bert2019} Devlin, J., Chang, M.-W., Lee, K. and Toutanova, K. (2019). BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding. \textit{NAACL-HLT 2019}.
+\bibitem{stefanit} Schweter, S. (2020). BERTurk - BERT models for Turkish. \textit{arXiv preprint arXiv:2007.09867}.
+\bibitem{prosody1} Hirschberg, J. (2002). Communication and prosody: Functional aspects of prosody. \textit{Speech Communication}, 36(1-2), 31-43.
+\bibitem{oflazer1994} Oflazer, K. (1994). Two-level description of Turkish morphology. \textit{Literary and Linguistic Computing}, 9(2), 137-148.
+\bibitem{crfner} Lample, G., et al. (2016). Neural architectures for named entity recognition. \textit{NAACL 2016}.
+\bibitem{gunel2021} Gunel, B., et al. (2021). Supervised Contrastive Learning for Pre-trained Language Model Fine-tuning. \textit{ICLR 2021}.
+\bibitem{latif2021} Latif, S., Kim, I., Calapodescu, I. and Besacier, L. (2021). Controlling Prosody in End-to-End TTS: A Case Study on Contrastive Focus Generation. \textit{CoNLL 2021}.
+\bibitem{ersoyleyen2023} Ers\"oyleyen, E., Zeyrek, D. and \"Oter, F. (2023). Annotating and Disambiguating the Discourse Usage of the Enclitic dA in Turkish. \textit{LAW 2023}.
+\bibitem{ha2018} Ha, D. and Schmidhuber, J. (2018). World Models. \textit{NeurIPS 2018}.
+\end{thebibliography}
+
+\newpage
+\onecolumn
+
+\begin{center}
+\textbf{\LARGE EKLER}
+\end{center}
+
+\vspace{0.8cm}
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large Ek 1: Özgün Değer ve Literatüre Göre Katkı}
+\noindent\rule{\textwidth}{0.5pt}
+
+Bu çalışmanın katkısı, doğrudan yeni bir temel model önermekten çok, Türkçe pragmatik vurgu problemini uygun bir deney çerçevesine oturtmasındadır. Genel prosodi literatürü, vurgunun iletişimsel önemini uzun süredir vurgulamaktadır \cite{prosody1}. Contrastive focus üretimi üzerine çalışmalar daha çok konuşma üretimi ve TTS yönünde ilerlemiştir \cite{latif2021}. Türkçe tarafında ise odak/focus ile ilişkili bazı özel dil olayları çalışılmıştır; örneğin Türkçe enclitic \textit{dA} için söylem kullanımı ayrıştırması yapılmıştır \cite{ersoyleyen2023}. Ancak bu kaynaklar ile bu proje arasında iki temel fark vardır: burada problem yazılı Türkçe cümlelerde pragmatik vurgunun \textbf{token düzeyinde BIO etiketleme} ile modellenmesi olarak kurulmuştur; ayrıca aynı hatta baseline, BERTurk, CRF, supervised contrastive learning ve OOD testi birlikte ele alınmıştır.
+
+\textbf{Bu çalışmanın özgün değeri} sentetik Türkçe vurgu verisini, BIO tabanlı sequence labeling, CRF yapısal kısıtları, CLS tabanlı supervised contrastive learning ve OOD stres testini tek bir teslim hattında birleştirmesidir.
+
+\vspace{0.3cm}
+\begin{table}[H]
+\centering
+\caption{Ölçülebilir katkı özeti}
+\begin{tabular}{p{8cm}c}
+\toprule
+Katkı ölçütü & Değer \\
+\midrule
+Test weighted F1 farkı & +0.0022 \\
+Test macro F1 farkı & +0.0419 \\
+I-EMPHASIS F1 farkı & +0.1181 \\
+I-EMPHASIS recall farkı & +0.1429 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Bu katkı, filtreleme sonrası elde edilen 5{,}209 örneklik sentetik veri düzeni ve 782 örneklik test kümesi altında ölçülmüştür. Aynı koşullarda baseline modele göre weighted F1 skoru +0.0022, macro F1 skoru +0.0419, I-EMPHASIS F1 skoru ise +0.1181 artmıştır. Bu nedenle katkı düzeyi, toplam skorda sınırlı ama azınlık sınıfında daha belirgin bir iyileşme olarak değerlendirilebilir.
+
+\textbf{Literatüre göre katkı özeti:}
+\begin{enumerate}
+    \item Türkçe pragmatik vurgu için doğrudan \textbf{token-BIO sequence labeling} kurgusu yaygın bir standart olarak görünmemektedir; bu proje bu boşluğu pratik bir araştırma prototipi olarak doldurmaya çalışmaktadır.
+    \item Katkı yalnız toplam test skorunda değil, özellikle seyrek ve daha zor olan I-EMPHASIS sınıfı üzerindeki artışta tanımlanmıştır. Bu, dengesiz veri koşullarında daha anlamlı bir katkı ölçüsüdür.
+    \item CRF ve supervised contrastive learning birlikte kullanılarak, yapısal dizi tutarlılığı ile cümle temsili ayrıştırıcılığı aynı modelde birleştirilmiştir. Bu birleşim, literatürdeki genel fikirlerden yararlansa da, bu proje içinde Türkçe vurgu görevine özel hale getirilmiştir \cite{crfner,gunel2021}.
+    \item OOD değerlendirmesi eklenerek, sentetik dağılım içinde iyi görünen modellerin gerçek dünya benzeri dağılımlarda zorlandığı açık biçimde gösterilmiştir. Bu da çalışmanın katkısını yalnız ``başarı artışı'' olarak değil, \textbf{sınırlılığı görünür kılan dürüst bir deney kurulumu} olarak da önemli kılar.
+\end{enumerate}
+
+\textbf{Netice olarak,} çalışma Türkçe için zor, dengesiz ve veri kıtlığı bulunan bir problemi ölçülebilir, karşılaştırmalı ve tekrar üretilebilir hale getirmektedir.
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large Ek 2: Yararlanılan Kaynaklar ve Farklılıklar}
+\noindent\rule{\textwidth}{0.5pt}
+
+\textbf{Yararlanılan hazır bileşenler:}
+\begin{itemize}
+    \item Hugging Face Transformers ve BERTurk \cite{stefanit}: encoder ve tokenizer altyapısı
+    \item PyTorch ve torchcrf: eğitim döngüsü, tensör işlemleri ve CRF implementasyonu
+    \item sklearn: sınıflandırma metrikleri ve confusion matrix hesapları
+    \item matplotlib ve seaborn: görselleştirme ve sonuç artefact üretimi
+\end{itemize}
+
+\textbf{Projede yapay zeka desteği kullanılan noktalar:}
+\begin{itemize}
+    \item Veri seti üretiminin ilk fikir aşamasında bazı cümle varyantlarını çoğaltmak ve alternatif örnek taslakları düşünmek için büyük dil modeli desteğinden yararlanılmıştır.
+    \item Plan çıkarma, teslim organizasyonu, metin düzenleme ve bazı açıklama taslaklarında OpenAI Codex / GPT-5 tabanlı yardımcı üretici araçlardan destek alınmıştır; ancak bu araçlar yalnız yardımcı seviyede kullanılmış, nihai veri temizliği, etiketleme mantığı, kod yazımı, deney seçimi, metrik yorumlama ve son kararlar kullanıcı tarafından yapılmıştır.
+\end{itemize}
+
+\textbf{Projeye özgü geliştirilen parçalar:}
+\begin{itemize}
+    \item CLS temsili üzerinde çalışan supervised contrastive loss entegrasyonu
+    \item projection head ve joint loss birleştirme mantığı
+    \item hibrit OOD veri örnekleme ve dönüştürme hattı
+    \item baseline ile CRF+SCL için ayrı eğitim, değerlendirme ve karşılaştırma scriptleri
+    \item model karşılaştırma artefact üretimi
+\end{itemize}
+
+\textbf{Farklılıklar:} hazır kütüphaneler yalnız temel yapı taşlarını sağlamaktadır; vurguya özgü BIO kısıtları, contrastive sınıf tanımı, OOD değerlendirme kurgusu, sonuç karşılaştırma akışı ve teslim odaklı deney organizasyonu bu proje kapsamında özelleştirilmiştir.
+
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large Ek 3: Transformer Mimarisinin Kısa Açıklaması}
+\noindent\rule{\textwidth}{0.5pt}
+
+Transformer ``bir kelimenin anlamını yalnız kendisine bakarak değil, cümledeki diğer tüm kelimelerle ilişkisine bakarak çıkaran yapıdır.'' En önemli farkı, eski sıralı modellerde, özellikle RNN ve LSTM tarafında bilginin soldan sağa ya da sağdan sola daha zincir gibi taşınmasına karşılık, transformer yapısında model bir tokeni işlerken diğer tokenlere de aynı anda bakabilmesidir \cite{vaswani2017}. Bu yüzden uzun bağlamları yakalamakta daha güçlü hale geldiğini görmekteyiz.
+
+Geçmiş çalışmalarda önce sıralı modeller ve seq2seq yapıları bulunmaktadır. Daha sonra attention fikrinin gelişimiyle birlikte 2017'de transformer mimarisi ortaya çıkmıştır \cite{vaswani2017}. Daha sonra BERT gibi encoder tabanlı modeller \cite{bert2019} ve GPT benzeri üretici modeller yaygınlaşarak gelişmiştir. Bugün ise bu sistemler daha ileri seviyede gelişerek multimodal sistemler, ajan benzeri yapılar ve world model yaklaşımına kayan araştırmalar konuşulur hale gelmiştir \cite{ha2018}. Yani transformer'lar bitmek bir yana bugün kullanılan birçok güçlü modelin temel omurgası haline gelmiş durumdadır.
+
+Bu mimaride her token önce sayısal vektöre dönüştürülür; sonra self-attention katmanı, o tokenin diğer tokenlere ne kadar ``bakması'' gerektiğini hesaplar. Bunu sezgisel olarak düşünürsek model, cümlede hangi kelimenin hangisiyle daha ilgili olduğuna karar vermeye çalışıyor. Örneğin Türkçede bir vurgunun hangi kelimeye düştüğünü anlamak için model yalnız o kelimeyi değil, cümlenin tamamını birlikte değerlendirebilir. Bu yüzden transformer, vurgu gibi bağlam duyarlı işlerde mantıklı bir tercihtir.
+
+Bir transformer bloğu çok temel düzeyde üç parçadan oluşur:
+\begin{enumerate}
+    \item self-attention ile bağlam ilişkilerinin hesaplanması,
+    \item feed-forward katmanı ile yeni temsilin dönüştürülmesi,
+    \item residual bağlantılar ve normalization ile eğitimin dengelenmesi.
+\end{enumerate}
+
+BERT gibi modeller bu yapıyı çok katmanlı biçimde kullanır. Bu projede de BERTurk, Türkçe kelimelerin bağlama duyarlı temsillerini üretmek için kullanılmıştır; ardından CRF ve contrastive bileşenler bu temsilleri vurgu tespiti görevine uyarlamıştır. Yani transformer burada da bağlamsal temsil üreten ana omurgadır.
+
+Konuyu çalışırken ders notlarımdan ve 3Blue1Brown kanalındaki attention/transformer anlatımından faydalandım. Görselleştirme çalışmalarıyla birlikte konunun daha net oturmasını sağladığı için önermekteyim. Multi-head attention'ın matematiksel ayrıntılarını ve positional encoding'in türevlerini halen tam anlamasam da, projede gerekli olan düzeyde transformer'ı anlayıp uygulayabildiğimi düşünüyorum.
+
+\newpage
+\noindent\rule{\textwidth}{1pt}
+\subsection*{\Large Özdeğerlendirme Tablosu}
+\noindent\rule{\textwidth}{0.5pt}
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\caption{Makale ve ekler için özdeğerlendirme}
+\resizebox{\linewidth}{!}{
+\begin{tabular}{p{5.8cm}ccc p{5.2cm}}
+\toprule
+Madde & Üst Sınır & Verilen & Durum & Gerekçe \\
+\midrule
+Özet, problem tanımı ve motivasyon & 10 & 9 & İyi & Problem ve amaç açık, fakat giriş daha da genişletilebilirdi \\
+Literatür ve özgün değer & 15 & 13 & İyi & Katkı anlatıldı, ancak alan zaten sınırlı ve veri tarafı dar \\
+Yöntem ve mimari açıklığı & 20 & 17 & İyi & Veri hattı ve model yapısı açık, bazı etiketler otomatik üretildi \\
+Deneysel değerlendirme & 20 & 17 & İyi & ID ve OOD sonuçları verildi, ama OOD tarafı halen zayıf \\
+Ek 1--Ek 3 uyumu & 10 & 10 & Tam & İstenen sıra ve içerik korunmuştur \\
+Kaynak ve kod şeffaflığı & 10 & 9 & İyi & Kullanılan araçlar ve özgün parçalar ayrılmıştır \\
+Sunum / teslim bütünlüğü & 15 & 15 & Tam & Makale, video, kod ve sonuçlar birlikte sunulmuştur \\
+\midrule
+\textbf{Toplam} & \textbf{100} & \textbf{90} & \textbf{Bildiri düzeyi} & \textbf{Teslime uygun şekilde düzenlenmiş ve yapılan çalışmalar savunulmuştur. Ancak veri tarafında açık geliştirme alanı bulunmaktadır. Bulgular istenen performansa henüz ulaşmamıştır.} \\
+\bottomrule
+\end{tabular}
+}
+\end{table}
+
+\end{document}

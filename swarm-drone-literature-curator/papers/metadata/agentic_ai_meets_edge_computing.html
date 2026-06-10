@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="content-type"/>
+<title>Agentic AI Meets Edge Computing in Autonomous UAV Swarms</title>
+<!--Generated on Tue Jan 20 19:43:16 2026 by LaTeXML (version 0.8.8) http://dlmf.nist.gov/LaTeXML/.-->
+<meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport"/>
+<link href="/static/browse/0.3.4/css/arxiv-html-papers-20250916.css" rel="stylesheet" type="text/css"/>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.3/html2canvas.min.js"></script>
+<script src="/static/browse/0.3.4/js/addons_new.js"></script>
+<script src="/static/browse/0.3.4/js/feedbackOverlay.js"></script>
+<base href="/html/2601.14437v1/"/></head>
+<body>
+<nav class="ltx_page_navbar">
+<nav class="ltx_TOC">
+<ol class="ltx_toclist">
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">I </span><span class="ltx_text ltx_font_smallcaps">Introduction</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">II </span><span class="ltx_text ltx_font_smallcaps">Agentic AI Systems</span></span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS1" title="In II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">II-A</span> </span><span class="ltx_text ltx_font_italic">Background on Agentic AI </span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS2" title="In II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">II-B</span> </span><span class="ltx_text ltx_font_italic">Multi-agentic AI Frameworks</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS3" title="In II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">II-C</span> </span><span class="ltx_text ltx_font_italic">UAV Swarm Design with LangGraph </span></span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">III </span><span class="ltx_text ltx_font_smallcaps">Multi-Agentic AI for UAV Swarms</span></span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.SS1" title="In III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">III-A</span> </span><span class="ltx_text ltx_font_italic">Standalone UAV Swarm</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.SS2" title="In III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">III-B</span> </span><span class="ltx_text ltx_font_italic">Edge-enabled UAV Swarm</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.SS3" title="In III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">III-C</span> </span><span class="ltx_text ltx_font_italic">Edge/Cloud-enabled UAV Swarm</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.SS4" title="In III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">III-D</span> </span><span class="ltx_text ltx_font_italic">Applications</span></span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">IV </span><span class="ltx_text ltx_font_smallcaps">Use Case: Wildfire Search-and-Rescue (SAR)</span></span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS1" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-A</span> </span><span class="ltx_text ltx_font_italic">Mission Objectives</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS2" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-B</span> </span><span class="ltx_text ltx_font_italic">System Architecture and Operational Workflow</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS3" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-C</span> </span><span class="ltx_text ltx_font_italic">Performance Metrics</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS4" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-D</span> </span><span class="ltx_text ltx_font_italic">State-of-the-Art Baseline</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS5" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-E</span> </span><span class="ltx_text ltx_font_italic">Simulation Setting</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS6" title="In IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">IV-F</span> </span><span class="ltx_text ltx_font_italic">Experimental Results</span></span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section">
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">V </span><span class="ltx_text ltx_font_smallcaps">Open Challenges</span></span></a>
+<ol class="ltx_toclist ltx_toclist_section">
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS1" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-A</span> </span><span class="ltx_text ltx_font_italic">Efficient Onboard LLMs</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS2" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-B</span> </span><span class="ltx_text ltx_font_italic">Hallucination Mitigation</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS3" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-C</span> </span><span class="ltx_text ltx_font_italic">Robust Multi-Agent Collaboration</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS4" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-D</span> </span><span class="ltx_text ltx_font_italic">Edge Infrastructure Scalability and Reliability</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS5" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-E</span> </span><span class="ltx_text ltx_font_italic">Evaluation and Benchmarks</span></span></a></li>
+<li class="ltx_tocentry ltx_tocentry_subsection"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS6" title="In V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref"><span class="ltx_text">V-F</span> </span><span class="ltx_text ltx_font_italic">UAV Technical Limitations</span></span></a></li>
+</ol>
+</li>
+<li class="ltx_tocentry ltx_tocentry_section"><a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S6" title="In Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_title"><span class="ltx_tag ltx_tag_ref">VI </span><span class="ltx_text ltx_font_smallcaps">Conclusion</span></span></a></li>
+</ol></nav>
+</nav>
+<div class="ltx_page_main">
+<div class="ltx_page_content">
+<article class="ltx_document ltx_authors_1line">
+<h1 class="ltx_title ltx_title_document">Agentic AI Meets Edge Computing in Autonomous UAV Swarms</h1>
+<div class="ltx_authors">
+<span class="ltx_creator ltx_role_author">
+<span class="ltx_personname">Thuan Minh Nguyen, Vu Tuan Truong, and Long Bao Le
+</span><span class="ltx_author_notes">The authors are with INRS, University of Québec, Montréal, QC H5A 1K6, Canada. Emails: minh-thuan.nguyen@inrs.ca,
+tuan.vu.truong@inrs.ca, long.le@inrs.ca.
+</span></span>
+</div>
+<div class="ltx_abstract">
+<h6 class="ltx_title ltx_title_abstract">Abstract</h6>
+<p class="ltx_p" id="id1.id1">The integration of agentic AI, powered by large language models (LLMs) with autonomous reasoning, planning, and execution, into unmanned aerial vehicle (UAV) swarms opens new operational possibilities and brings the vision of the Internet of Drones closer to reality. However, infrastructure constraints, dynamic environments, and the computational demands of multi-agent coordination limit real-world deployment in high-risk scenarios such as wildfires and disaster response. This paper investigates the integration of LLM-based agentic AI and edge computing to realize scalable and resilient autonomy in UAV swarms. We first discuss three architectures for supporting UAV swarms - standalone, edge-enabled, and edge-cloud hybrid deployment - each optimized for varying autonomy and connectivity levels. Then, a use case for wildfire search and rescue (SAR) is designed to demonstrate the efficiency of the edge-enabled architecture, enabling high SAR coverage, reduced mission completion times, and a higher level of autonomy compared to traditional approaches. Finally, we highlight open challenges in integrating LLMs and edge computing for mission-critical UAV-swarm applications.</p>
+</div>
+<section class="ltx_section" id="S1">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">I </span><span class="ltx_text ltx_font_smallcaps" id="S1.1.1">Introduction</span>
+</h2>
+<div class="ltx_para" id="S1.p1">
+<p class="ltx_p" id="S1.p1.1">Unmanned aerial vehicles (UAVs), or drones, have attracted growing attention in recent years due to their capabilities in wide-area coverage, real-time sensing, and rapid deployment. When operating collaboratively as swarms, UAVs amplify these advantages and advance the vision of the Internet of Drones <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib36" title="Applications, deployments, and integration of Internet of Drones (IoD): a review">1</a>]</cite>. Such drone swarms are particularly effective for demanding tasks, such as environmental monitoring, search and rescue (SAR) operations, and wireless network provisioning.</p>
+</div>
+<div class="ltx_para" id="S1.p2">
+<p class="ltx_p" id="S1.p2.1">However, real-world UAV deployments face numerous challenges arising from dynamic conditions (e.g., environmental changes) and practical constraints such as limited Global Positioning System (GPS) access, unreliable network connectivity, and restricted human supervision. Consequently, ensuring effective UAV swarm operation under such conditions remains a major challenge. Recent advances in agentic AI, powered by large language models (LLMs) with strong reasoning capabilities <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib38" title="Chain-of-thought prompting elicits reasoning in large language models">9</a>, <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib39" title="Tree of Thoughts: deliberate problem solving with large language models">13</a>]</cite>, offer promising solutions to these issues. By integrating agentic AI, UAVs can autonomously reason, plan, and make decisions with minimal human intervention, enabling rapid adaptation to environmental dynamics and unforeseen events. For instance, an LLM-based agentic AI embedded within a UAV can perform functions traditionally handled by humans (e.g., navigation and control) through natural-language-driven instruction and decision-making. Moreover, a more advanced paradigm, known as multi-agentic AI <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib34" title="SMART-LLM: smart multi-agent robot task planning using large language models">6</a>, <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib44" title="OC-HMAS: dynamic self-organization and self-correction in heterogeneous multiagent systems using multimodal large models">4</a>]</cite>, can be employed to further enhance the capabilities of UAV swarms. In this framework, each drone functions as an autonomous agent that communicates, reasons, and collaborates with others to collectively make decisions and address complex tasks.</p>
+</div>
+<div class="ltx_para" id="S1.p3">
+<p class="ltx_p" id="S1.p3.1">Nevertheless, recent LLMs require substantial storage, computational, and energy resources, which are often limited on small aerial systems like UAVs. In addition, real-time missions typically demand low-latency decision-making, exceeding the computational capability of UAVs’ embedded hardware. Although model compression techniques such as quantization, pruning, and knowledge distillation can be employed to mitigate these challenges, they often degrade the reasoning and contextual understanding abilities of the integrated LLMs, resulting in lower mission success rates and reduced overall swarm performance.
+To sustain high performance in multi-agentic AI systems without exceeding the hardware limitations of UAVs, alternative computing paradigms such as edge and cloud computing can be employed <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib40" title="Large language models (LLMs) inference offloading and resource allocation in cloud-edge computing: an active inference approach">5</a>, <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib43" title="AutoHMA-LLM: efficient task coordination and execution in heterogeneous multi-agent systems using hybrid large language models">12</a>]</cite>. Although cloud computing offers abundant storage and computational capacity, it often introduces considerable latency due to long-distance data transmission. Moreover, UAV swarms operating in harsh or remote environments (e.g., disaster zones or wilderness regions) may experience unstable connectivity to cloud servers, potentially causing service disruptions and mission failures. To balance the aforementioned trade-offs, edge computing offers an effective alternative by distributing inference, reasoning, and data processing across UAVs and nearby edge servers <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib41" title="EdgeShard: efficient LLM inference via collaborative edge computing">14</a>]</cite>.
+However, the literature does not provide a detailed and unified account of integrating edge computing with LLM-based agentic AI for scalable, resilient, low-latency UAV swarm autonomy.
+This paper aims to address this research gap by first providing background on agentic AI, followed by a description of three alternative architectures for UAV swarms—standalone, edge-enabled, and edge/cloud-enabled UAV swarms.
+We then propose a hybrid, edge-enabled LLM-based agentic AI framework for the SAR use case using UAV swarms.</p>
+</div>
+<div class="ltx_para" id="S1.p4">
+<p class="ltx_p" id="S1.p4.1">The remainder of this paper is organized as follows. Section <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2" title="II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">II</span></a> provides background on agentic AI and presents an overview of UAV swarm design based on practical multi-agentic AI frameworks. Section <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3" title="III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">III</span></a> discusses three deployment strategies for UAV swarms powered by multi-agentic AI, namely fully standalone, edge-enabled, and hybrid edge-cloud architectures. Section <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4" title="IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">IV</span></a> illustrates the potential of agentic-AI-powered UAV swarms through a wildfire SAR use case. Finally, Section <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5" title="V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">V</span></a> highlights open challenges for such systems, and Section <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S6" title="VI Conclusion ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">VI</span></a> concludes the paper.</p>
+</div>
+</section>
+<section class="ltx_section" id="S2">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">II </span><span class="ltx_text ltx_font_smallcaps" id="S2.1.1">Agentic AI Systems</span>
+</h2>
+<div class="ltx_para" id="S2.p1">
+<p class="ltx_p" id="S2.p1.1">This section provides background on agentic AI with the introduction of several representative frameworks for practical implementation.</p>
+</div>
+<section class="ltx_subsection" id="S2.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S2.SS1.4.1.1">II-A</span> </span><span class="ltx_text ltx_font_italic" id="S2.SS1.5.2">Background on Agentic AI </span>
+</h3>
+<div class="ltx_para" id="S2.SS1.p1">
+<p class="ltx_p" id="S2.SS1.p1.1">Agentic AI refers to intelligent systems that function as autonomous, goal-directed agents capable of reasoning, adapting, and interacting with their environment in a human-like manner.
+Agentic AI systems are particularly well-suited for complex domains like UAV swarm operations, where autonomy, adaptability, and coordinated decision-making are critical. Multi-agentic AI settings further enable collaborative behaviors among agents, allowing UAV swarms to respond collectively to evolving conditions and unforeseen challenges. In the following, we present core components of an agentic AI system.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p2">
+<p class="ltx_p" id="S2.SS1.p2.1"><span class="ltx_text ltx_font_bold" id="S2.SS1.p2.1.1">Perception Module.</span> This module captures and processes diverse inputs (e.g., natural language instructions, sensor readings, visual streams, and data from external Application Programming Interfaces (APIs)) into structured representations that can be interpreted by the reasoning module. It establishes situational awareness and contextual grounding, both of which are essential for accurate understanding and informed decision-making.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p3">
+<p class="ltx_p" id="S2.SS1.p3.1"><span class="ltx_text ltx_font_bold" id="S2.SS1.p3.1.1">Reasoning Module.</span> This module processes inputs from the perception layer to interpret objectives, decompose tasks, and generate strategic plans. Using methods such as Chain-of-Thought (CoT) reasoning and iterative self-reflection, it adapts strategies to dynamic conditions and system constraints while pursuing mission goals.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p4">
+<p class="ltx_p" id="S2.SS1.p4.1"><span class="ltx_text ltx_font_bold" id="S2.SS1.p4.1.1">Action Execution Module.</span> This module materializes plans generated by the reasoning module through interfaces with external tools, APIs, and physical actuators. It converts high-level reasoning outputs into executable actions such as code generation, API calls, and control commands for embodied agents like UAVs and robots.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p5">
+<p class="ltx_p" id="S2.SS1.p5.1"><span class="ltx_text ltx_font_bold" id="S2.SS1.p5.1.1">Memory Module.</span> This module stores past observations, interactions, and learned knowledge, which are vital for coherent multi-step reasoning and long-horizon task execution. It encompasses short-term memory, which maintains active task states and recent episodic events, and long-term memory, which accumulates experiences and contextual knowledge over time. By retaining prior interactions and outcomes, this enables experiential learning, behavioral adaptation, and continuity across sequential decision-making processes.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS1.p6">
+<p class="ltx_p" id="S2.SS1.p6.1"><span class="ltx_text ltx_font_bold" id="S2.SS1.p6.1.1">Coordination Module.</span> This module facilitates multi-agent and human-AI interactions by managing dialogue flow, negotiating task allocations, and fostering consensus among agents, thereby enabling effective operation in distributed environments such as UAV swarms.</p>
+</div>
+<div class="ltx_para" id="S2.SS1.p7">
+<p class="ltx_p" id="S2.SS1.p7.1">Modern agentic AI-based platforms such as humanoid robots and drones can leverage recent vision–language–action (VLA) models to build their perception, reasoning, and execution modules. These models are capable of translating multimodal observations and natural-language instructions directly to executable actions, such as navigation or control commands. For instance, RT-2 <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib32" title="RT-2: vision-language-action models transfer web knowledge to robotic control">15</a>]</cite> builds upon large pretrained vision–language models (VLMs) and adapts them for robotic control through fine-tuning on task-specific robotic datasets. OpenVLA <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib31" title="OpenVLA: an open-source vision-language-action model">7</a>]</cite> extends this paradigm with an open-source, scalable architecture trained on the Open-X-Embodiment dataset, offering reproducible pipelines and adaptability across a wide range of robotic platforms.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S2.SS2.4.1.1">II-B</span> </span><span class="ltx_text ltx_font_italic" id="S2.SS2.5.2">Multi-agentic AI Frameworks</span>
+</h3>
+<div class="ltx_para" id="S2.SS2.p1">
+<p class="ltx_p" id="S2.SS2.p1.1">A variety of LLM-based multi-agent frameworks have recently emerged to coordinate complex and collaborative workflows in robotics. In swarm robotics, these frameworks facilitate persistent state sharing, dynamic task allocation, adaptive planning, and other capabilities crucial for maintaining autonomy under real-world constraints. Several representative frameworks applicable for UAV applications are summarized below.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p2">
+<p class="ltx_p" id="S2.SS2.p2.1"><span class="ltx_text ltx_font_bold" id="S2.SS2.p2.1.1">LangGraph</span> is a graph-based, stateful, and event-driven multi-agent framework in which nodes represent agents, tools, or memory modules, and edges define control and data flows. It supports cyclic and asynchronous execution, allowing UAVs to continuously sense, plan, and coordinate without waiting for centralized directives. In swarm mode, LangGraph eliminates single points of control by enabling agents to hand off tasks directly to peers via handoff tools. This decentralized design is particularly well-suited for autonomous UAV swarms operating in unpredictable or communication-constrained environments.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p3">
+<p class="ltx_p" id="S2.SS2.p3.1"><span class="ltx_text ltx_font_bold" id="S2.SS2.p3.1.1">AutoGen</span> is a conversation-driven framework that enables multi-agent collaboration through structured dialogue <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib30" title="AutoGen: enabling next-gen LLM applications via multi-agent conversations">10</a>]</cite>. Agents assume roles such as planner, executor, or verifier and interact via prompt engineering and message passing. In robotics, AutoGen supports high-level mission planning, tool invocation (e.g., perception or actuation APIs), and reflective reasoning via critic agents. It accommodates both human-in-the-loop (HITL) and fully autonomous operations, making it well-suited for UAV swarms. Its modular design and tool integration allow seamless interfacing with robotic subsystems, including sensor fusion and navigation modules.</p>
+</div>
+<div class="ltx_para ltx_noindent" id="S2.SS2.p4">
+<p class="ltx_p" id="S2.SS2.p4.1"><span class="ltx_text ltx_font_bold" id="S2.SS2.p4.1.1">CrewAI</span> is a lightweight, role-based framework for coordinating teams of autonomous agents. Inspired by human workflows, it assigns predefined roles (e.g., Leader, Analyzer, or Marketer) to LLM-based agents collaborating on tasks. Unlike graph-based systems, CrewAI emphasizes sequential, collaborative execution through intuitive workflows and modular role definitions. This approach is particularly well-suited for robotics applications involving modular subsystems, including perception, planning, navigation, and communication.</p>
+</div>
+<div class="ltx_para" id="S2.SS2.p5">
+<p class="ltx_p" id="S2.SS2.p5.1">These frameworks differ in architectural philosophy: LangGraph uses stateful, event-driven graph orchestration; AutoGen relies on dialogue-driven coordination; and CrewAI employs role-based sequential execution. In the following, we demonstrate how LangGraph can support the practical, end-to-end design of UAV swarms, illustrating its integration with perception, reasoning, memory, and execution modules.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S2.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S2.SS3.4.1.1">II-C</span> </span><span class="ltx_text ltx_font_italic" id="S2.SS3.5.2">UAV Swarm Design with LangGraph </span>
+</h3>
+<div class="ltx_para" id="S2.SS3.p1">
+<p class="ltx_p" id="S2.SS3.p1.1">While the preceding section discussed multi-agent frameworks, their deployment in UAV swarms requires a systematic integration of perception, reasoning, communication, and action modules. Perception is realized by transforming multimodal UAV sensor data into structured textual representations. Onboard algorithms such as YOLO perform real-time object detection on RGB and thermal imagery, while lightweight vision-language models such as LLaVA provide contextual descriptions. Together, these outputs enable the reasoning module to fuse symbolic and perceptual information.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p2">
+<p class="ltx_p" id="S2.SS3.p2.1">In the LangGraph-based UAV swarm, perception functions operate as local graph nodes within each agent, supporting autonomous situational awareness. When necessary, processed outputs are shared via the wireless mesh network to update the persistent state, allowing peers to adjust mission plans based on shared observations.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p3">
+<p class="ltx_p" id="S2.SS3.p3.1">Decision-making and task planning are distributed throughout the swarm. Each UAV includes a lightweight LLM (e.g., TinyLLaMA or Phi-3-mini) to enable low-latency plan adjustments, hazard avoidance, and local decision-making. Through LangGraph’s swarm handoff mechanism, UAVs can dynamically delegate tasks to their peers.
+The action execution layer translates reasoning outputs into concrete flight and payload actions. LangGraph tool interfaces connect with the UAV platform’s native Software Development Kit (SDK), enabling simple commands to directly control navigation, hovering, landing, or payload release.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p4">
+<p class="ltx_p" id="S2.SS3.p4.1">A robust memory module is essential for continuity in multistep reasoning, enabling UAVs to adapt effectively in dynamic environments. Short-term memory holds active task states and recent events for immediate decisions, while long-term memory retains mission history, environment maps, and coordination patterns to guide future task allocation and hazard response. In LangGraph, memory modules serve as persistent state stores accessible to relevant nodes, allowing agents to recall detections, mission context, and lessons from prior deployments.</p>
+</div>
+<div class="ltx_para" id="S2.SS3.p5">
+<p class="ltx_p" id="S2.SS3.p5.1">A self-organizing mesh network is utilized to maintain communication and coordination within the swarm. This network allows for continuous peer-to-peer negotiation without centralized control, utilizing technologies such as Wi-Fi. The LangGraph swarm’s asynchronous message-passing architecture facilitates the rapid redistribution of workloads in response to changing operational conditions, thereby enhancing system resilience and guaranteeing efficient area coverage.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S3">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">III </span><span class="ltx_text ltx_font_smallcaps" id="S3.1.1">Multi-Agentic AI for UAV Swarms</span>
+</h2>
+<div class="ltx_para" id="S3.p1">
+<p class="ltx_p" id="S3.p1.1">We now consider alternative designs for system-level deployment of UAV swarms. Specifically, we analyze three architectures—standalone, edge-enabled, and edge/cloud-enabled UAV swarms—as illustrated in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.F1" title="Figure 1 ‣ III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">1</span></a>.</p>
+</div>
+<figure class="ltx_figure" id="S3.F1"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="388" id="S3.F1.g1" src="x1.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 1: </span>Three multi-agentic AI deployment architectures for UAV swarms:
+(a) Standalone UAV swarm;
+(b) Edge-enabled UAV swarm;
+(c) Edge/cloud-enabled UAV swarm;
+(d) Applications;
+(e) UAV agent</figcaption>
+</figure>
+<section class="ltx_subsection" id="S3.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S3.SS1.4.1.1">III-A</span> </span><span class="ltx_text ltx_font_italic" id="S3.SS1.5.2">Standalone UAV Swarm</span>
+</h3>
+<div class="ltx_para" id="S3.SS1.p1">
+<p class="ltx_p" id="S3.SS1.p1.1">The first design, shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.F1" title="Figure 1 ‣ III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">1</span></a>(a), targets extreme environments with little or no communication infrastructure, such as disaster zones, remote wilderness, or adversarial regions.
+In these scenarios, each UAV functions as a self-contained intelligent agent equipped with a multimodal sensor suite that includes optical and infrared cameras, Global Navigation Satellite System (GNSS), light detection and ranging (LiDAR), inertial measurement units (IMUs), and millimeter-wave radars for strong autonomous perception. Onboard processors such as NVIDIA Jetson Orin or Qualcomm RB5 support lightweight or quantized LLMs (e.g., TinyLLaMA), enabling onboard reasoning for decision-making and task planning.</p>
+</div>
+<div class="ltx_para" id="S3.SS1.p2">
+<p class="ltx_p" id="S3.SS1.p2.1">The execution layer transforms reasoning outputs into specific actions by interacting with APIs and integrated actuators. Contemporary UAVs, such as the Skydio X10, already incorporate sophisticated control and navigation systems for autonomous obstacle evasion and accurate flight in GPS-denied or congested environments, allowing each UAV to sense, analyze, and perform tasks independently of external infrastructure.</p>
+</div>
+<div class="ltx_para" id="S3.SS1.p3">
+<p class="ltx_p" id="S3.SS1.p3.1">UAVs communicate through a multi-agent AI framework, enabling the swarm to function as a cohesive, goal-directed system without centralized control and to remain resilient under communication loss or unit failure. A self-organizing wireless mesh network using technology such as Wi-Fi supports mission updates, task allocation, and route synchronization with the ground station. This decentralized design enhances autonomy and adaptability but requires energy-efficient AI, lightweight embedded LLMs, and careful safeguards to mitigate risks from reduced human oversight.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S3.SS2.4.1.1">III-B</span> </span><span class="ltx_text ltx_font_italic" id="S3.SS2.5.2">Edge-enabled UAV Swarm</span>
+</h3>
+<div class="ltx_para" id="S3.SS2.p1">
+<p class="ltx_p" id="S3.SS2.p1.1">To enhance swarm performance while preserving decentralized autonomy, mobile ground stations serving as edge servers can be employed to support UAV swarms, as shown in
+Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.F1" title="Figure 1 ‣ III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">1</span></a>(b).
+In fact, mobile ground stations can maintain reliable and low-latency communication links with the UAV swarm, enabling high-level oversight and HITL collaboration.
+In addition, they provide user interfaces that enable command issuance, swarm monitoring, and real-time panoramic mapping of UAV positions and situational contexts.
+Moreover, these edge servers leverage high-capacity processors to run full-scale LLMs for advanced reasoning, event validation, and mission planning, while aggregating logs and sensor data for forensic analysis, post-mission learning, and regulatory compliance. This architecture balances autonomy with flexibility, making it well-suited for semi-connected, dynamic environments.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S3.SS3.4.1.1">III-C</span> </span><span class="ltx_text ltx_font_italic" id="S3.SS3.5.2">Edge/Cloud-enabled UAV Swarm</span>
+</h3>
+<div class="ltx_para" id="S3.SS3.p1">
+<p class="ltx_p" id="S3.SS3.p1.1">Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.F1" title="Figure 1 ‣ III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">1</span></a>(c) illustrates the third design, intended for large-scale missions where reliable communication and integrated edge-cloud infrastructure support the UAV swarm. This design enables the UAV swarm to operate efficiently over large areas by combining onboard decision-making with powerful edge-cloud support.
+In particular, each UAV is equipped with components, including multi-modal sensors and embedded lightweight LLMs for onboard reasoning, planning, and decentralized communication, as in the previous designs.</p>
+</div>
+<div class="ltx_para" id="S3.SS3.p2">
+<p class="ltx_p" id="S3.SS3.p2.1">Nonetheless, lightweight onboard LLMs may experience reasoning and planning limitations—including hallucinations and reduced accuracy—which raises concerns about safety, ethics, and task reliability.
+The ground stations can be leveraged to solve this problem
+where UAVs run a smaller onboard LLM to produce approximate reasoning results while the edge ground station (EGS) relies on a larger LLM to validate and, if necessary, correct these outputs.
+This approach enables rapid UAV decision-making, speeds up edge inference through parallel token verification, and reduces communication by sending concise outputs. Confidence-based uploads <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib22" title="Tabi: an efficient multi-level inference system for large language models">8</a>]</cite> further save bandwidth, while the EGS aggregates UAV inputs to build a shared situational view and support global task redistribution.</p>
+</div>
+<div class="ltx_para" id="S3.SS3.p3">
+<p class="ltx_p" id="S3.SS3.p3.1">Cloud platforms extend system capabilities with persistent data storage, global map construction, cross-swarm collaboration, and continuous model updates. The architecture also enables remote monitoring and high-level command from centralized locations. By integrating edge and cloud infrastructure, multi-agent AI-driven UAV swarms achieve scalable, intelligent, and resilient operations for large, long-duration missions.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S3.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S3.SS4.4.1.1">III-D</span> </span><span class="ltx_text ltx_font_italic" id="S3.SS4.5.2">Applications</span>
+</h3>
+<div class="ltx_para" id="S3.SS4.p1">
+<p class="ltx_p" id="S3.SS4.p1.1">Agentic AI–powered UAV swarms can be applied across diverse domains as follows.</p>
+</div>
+<div class="ltx_para" id="S3.SS4.p2">
+<p class="ltx_p" id="S3.SS4.p2.1"><span class="ltx_text ltx_font_italic" id="S3.SS4.p2.1.1">Safety and Defense:</span> Autonomous UAV swarms enable persistent surveillance, border monitoring, and threat detection in contested or infrastructure-denied environments. Through onboard reasoning and decentralized coordination, they remain resilient and maintain situational awareness under hostile conditions.</p>
+</div>
+<div class="ltx_para" id="S3.SS4.p3">
+<p class="ltx_p" id="S3.SS4.p3.1"><span class="ltx_text ltx_font_italic" id="S3.SS4.p3.1.1">Environmental Monitoring and Disaster Relief:</span> UAV swarms enable real-time environmental assessment, from air quality monitoring and wildfire tracking to search-and-rescue missions. Linked with EGSs, they rapidly identify survivors and hazard zones while adapting to dynamic disaster scenarios such as floods, earthquakes, and wildfires.</p>
+</div>
+<div class="ltx_para" id="S3.SS4.p4">
+<p class="ltx_p" id="S3.SS4.p4.1"><span class="ltx_text ltx_font_italic" id="S3.SS4.p4.1.1">Agriculture: </span>
+UAV swarms support precision agriculture by monitoring crop health, analyzing soil, and managing livestock. With distributed reasoning and multi-modal sensing, they provide large-area coverage and real-time decision-making, enhancing efficiency and sustainability in farming.</p>
+</div>
+<div class="ltx_para" id="S3.SS4.p5">
+<p class="ltx_p" id="S3.SS4.p5.1"><span class="ltx_text ltx_font_italic" id="S3.SS4.p5.1.1">Smart City:</span>
+In urban environments, UAV swarms support infrastructure inspection, traffic monitoring, and public safety. Cloud integration enables global coordination, data sharing, and remote access for city authorities, improving responsiveness and efficiency.</p>
+</div>
+<div class="ltx_para" id="S3.SS4.p6">
+<p class="ltx_p" id="S3.SS4.p6.1">These applications highlight the versatility of multi-agent AI-enabled UAV swarms, especially when coupled with edge and cloud platforms. The architecture delivers reliable autonomy, advanced reasoning, and resilient performance across diverse real-world scenarios.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S4">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">IV </span><span class="ltx_text ltx_font_smallcaps" id="S4.1.1">Use Case: Wildfire Search-and-Rescue (SAR)</span>
+</h2>
+<div class="ltx_para" id="S4.p1">
+<p class="ltx_p" id="S4.p1.1">Recent wildfires, such as those in Los
+Angeles in
+January 2025<span class="ltx_note ltx_role_footnote" id="footnote1"><sup class="ltx_note_mark">1</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">1</sup><span class="ltx_tag ltx_tag_note">1</span>“Spread of the Palisades and Eaton Fires – January 2025,” NASA Scientific Visualization Studio, 11 July 2025. [Online]. Available: <span class="ltx_ref ltx_nolink ltx_url ltx_font_typewriter ltx_ref_self">https://svs.gsfc.nasa.gov/5558/</span>.</span></span></span>, highlight the limits of traditional SAR operations in dynamic, hazardous environments. To overcome these challenges, we propose an autonomous SAR system combining multi-agent AI, UAV swarms, and edge computing.</p>
+</div>
+<section class="ltx_subsection" id="S4.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS1.4.1.1">IV-A</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS1.5.2">Mission Objectives</span>
+</h3>
+<div class="ltx_para" id="S4.SS1.p1">
+<p class="ltx_p" id="S4.SS1.p1.1">Our proposed system is designed to enable adaptive and resilient UAV swarm operations in dynamic and hazardous wildfire environments. Specifically, the design seeks to achieve the following mission objectives.
+First, it dynamically segments wildfire zones and assigns subregions to UAVs for autonomous surveying and survivor detection.
+The design supports onboard LLM-based UAV route planning, detect human presence and residual hazards using multimodal sensing. Also, the design allows transmitting situational awareness data from UAVs to the EGS for real-time monitoring and assessment.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS2.4.1.1">IV-B</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS2.5.2">System Architecture and Operational Workflow</span>
+</h3>
+<div class="ltx_para" id="S4.SS2.p1">
+<p class="ltx_p" id="S4.SS2.p1.1">Our proposed system for wildfire SAR integrates three core components—satellite image-based planning by an EGS, distributed swarm intelligence, and resilient human–machine teaming—into a unified workflow (Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F2" title="Figure 2 ‣ IV-B System Architecture and Operational Workflow ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">2</span></a>). It is designed for deployment on advanced UAVs such as the Skydio X10, which combines multimodal sensing, powerful onboard processing, and wireless communications. The framework is designed so that mission goals can be achieved by tackling four different tasks: 1) Image segmentation task to identify the wildfire area, 2) Survey-point creation task, 3) Survey-point assignment task, and 4) UAV path planning task. The first three tasks are executed by the EGS to guarantee global situational awareness and effective resource coordination, whereas the final task is performed by each UAV to achieve localized autonomy and responsiveness. Detailed operations and decision-making processes of the EGS and UAVs are described in Algorithm <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#algorithm1" title="In IV-B System Architecture and Operational Workflow ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">1</span></a>.<span class="ltx_note ltx_role_footnote" id="footnote2"><sup class="ltx_note_mark">2</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">2</sup><span class="ltx_tag ltx_tag_note">2</span>To account for the UAVs’ limited energy, computing, and storage capacities, the lightweight TinyLLaMA model is used onboard for route planning, while the more capable GPT-4.1 model is employed at the EGS, which has a richer resource pool.
+
+</span></span></span></p>
+</div>
+<figure class="ltx_figure" id="S4.F2"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_square" height="717" id="S4.F2.g1" src="x2.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 2: </span>Proposed multi-agentic AI-driven UAV swarm system for wildfire SAR.</figcaption>
+</figure>
+<figure class="ltx_float ltx_algorithm" id="algorithm1">
+<div class="ltx_listing ltx_lst_numbers_left ltx_listing" id="algorithm1.33">
+<div class="ltx_listingline" id="algorithm1.5.5">
+<span class="ltx_text" id="algorithm1.5.5.6" style="font-size:90%;"><span class="ltx_text ltx_font_bold" id="algorithm1.5.5.6.1">Input:</span> </span><span class="ltx_text" id="algorithm1.5.5.5" style="font-size:90%;">System state for <math alttext="N" class="ltx_Math" display="inline" id="algorithm1.1.1.1.m1" intent=":literal"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> UAVs <math alttext="\mathcal{U}=\{U_{1},U_{2},\dots,U_{N}\}" class="ltx_Math" display="inline" id="algorithm1.2.2.2.m2" intent=":literal"><semantics><mrow><mi class="ltx_font_mathcaligraphic">𝒰</mi><mo>=</mo><mrow><mo stretchy="false">{</mo><msub><mi>U</mi><mn>1</mn></msub><mo>,</mo><msub><mi>U</mi><mn>2</mn></msub><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><msub><mi>U</mi><mi>N</mi></msub><mo stretchy="false">}</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{U}=\{U_{1},U_{2},\dots,U_{N}\}</annotation></semantics></math>, satellite image <math alttext="I(t)" class="ltx_Math" display="inline" id="algorithm1.3.3.3.m3" intent=":literal"><semantics><mrow><mi>I</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(t)</annotation></semantics></math>, ground station position <math alttext="G" class="ltx_Math" display="inline" id="algorithm1.4.4.4.m4" intent=":literal"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>, mission command <math alttext="M" class="ltx_Math" display="inline" id="algorithm1.5.5.5.m5" intent=":literal"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math></span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.34">
+<span class="ltx_text" id="algorithm1.33.34.1" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.35">
+<span class="ltx_text ltx_font_bold" id="algorithm1.33.35.1" style="font-size:90%;">At Edge Ground Station:</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.36">
+<span class="ltx_text" id="algorithm1.33.36.1" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.33.36.2" style="font-size:90%;">while</span><span class="ltx_text" id="algorithm1.33.36.3" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.33.36.4" style="font-size:90%;">wildfire relief is active</em><span class="ltx_text" id="algorithm1.33.36.5" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.33.36.6" style="font-size:90%;">do</span><span class="ltx_text" id="algorithm1.33.36.7" style="font-size:90%;"> </span>
+</div>
+<div class="ltx_listingline" id="algorithm1.6.6">
+<span class="ltx_text" id="algorithm1.6.6.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.6.6.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.6.6.3" style="font-size:90%;">
+- Acquire latest satellite image </span><math alttext="I(t)" class="ltx_Math" display="inline" id="algorithm1.6.6.m1" intent=":literal"><semantics><mrow><mi mathsize="0.900em">I</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(t)</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.8.8">
+<span class="ltx_text" id="algorithm1.8.8.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.8.8.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.8.8.3" style="font-size:90%;">
+- Extract fire boundary </span><math alttext="\mathcal{B}(t)" class="ltx_Math" display="inline" id="algorithm1.7.7.m1" intent=":literal"><semantics><mrow><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">ℬ</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{B}(t)</annotation></semantics></math><span class="ltx_text" id="algorithm1.8.8.4" style="font-size:90%;"> from </span><math alttext="I(t)" class="ltx_Math" display="inline" id="algorithm1.8.8.m2" intent=":literal"><semantics><mrow><mi mathsize="0.900em">I</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">I(t)</annotation></semantics></math><span class="ltx_text" id="algorithm1.8.8.5" style="font-size:90%;"> using U</span><span class="ltx_text" id="algorithm1.8.8.6" style="font-size:90%;">-</span><span class="ltx_text" id="algorithm1.8.8.7" style="font-size:90%;">Net segmentation model</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.10.10">
+<span class="ltx_text" id="algorithm1.10.10.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.10.10.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.10.10.3" style="font-size:90%;">
+- Generate uniform grid within </span><math alttext="\mathcal{B}(t)" class="ltx_Math" display="inline" id="algorithm1.9.9.m1" intent=":literal"><semantics><mrow><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">ℬ</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{B}(t)</annotation></semantics></math><span class="ltx_text" id="algorithm1.10.10.4" style="font-size:90%;"> and define set of survey points </span><math alttext="\mathcal{S}(t)=\{s_{k}\}" class="ltx_Math" display="inline" id="algorithm1.10.10.m2" intent=":literal"><semantics><mrow><mrow><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒮</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><mo mathsize="0.900em">=</mo><mrow><mo maxsize="0.900em" minsize="0.900em">{</mo><msub><mi mathsize="0.900em">s</mi><mi mathsize="0.900em">k</mi></msub><mo maxsize="0.900em" minsize="0.900em">}</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{S}(t)=\{s_{k}\}</annotation></semantics></math><span class="ltx_text" id="algorithm1.10.10.5" style="font-size:90%;"> at cell centroids</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.11.11">
+<span class="ltx_text" id="algorithm1.11.11.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.11.11.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.11.11.3" style="font-size:90%;">
+- Construct mission prompt </span><math alttext="\mathcal{P}=(M,\mathcal{U},\mathcal{S}(t))" class="ltx_Math" display="inline" id="algorithm1.11.11.m1" intent=":literal"><semantics><mrow><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mo mathsize="0.900em">=</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">M</mi><mo mathsize="0.900em">,</mo><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒰</mi><mo mathsize="0.900em">,</mo><mrow><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒮</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi mathsize="0.900em">t</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{P}=(M,\mathcal{U},\mathcal{S}(t))</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.12.12">
+<span class="ltx_text" id="algorithm1.12.12.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.12.12.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.12.12.3" style="font-size:90%;">
+- Obtain survey-point assignment solution via LLM-based mission planner: </span><math alttext="\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})" class="ltx_Math" display="inline" id="algorithm1.12.12.m1" intent=":literal"><semantics><mrow><msubsup><mrow><mo maxsize="0.900em" minsize="0.900em">{</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><mo maxsize="0.900em" minsize="0.900em">}</mo></mrow><mrow><mi mathsize="0.900em">i</mi><mo mathsize="0.900em">=</mo><mn mathsize="0.900em">1</mn></mrow><mi mathsize="0.900em">N</mi></msubsup><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">Planner</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.13.13">
+<span class="ltx_text" id="algorithm1.13.13.2" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.13.13.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.13.13.4" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.13.13.5" style="font-size:90%;">if</span><span class="ltx_text" id="algorithm1.13.13.6" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.13.13.1" style="font-size:90%;"><math alttext="\sum_{i}|\mathcal{A}_{i}|&gt;|\mathcal{S}(t)|" class="ltx_Math" display="inline" id="algorithm1.13.13.1.m1" intent=":literal"><semantics><mrow><mrow><msub><mo>∑</mo><mi>i</mi></msub><mrow><mo lspace="0em" stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mrow><mo>&gt;</mo><mrow><mo stretchy="false">|</mo><mrow><mi class="ltx_font_mathcaligraphic">𝒮</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">|</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{i}|\mathcal{A}_{i}|&gt;|\mathcal{S}(t)|</annotation></semantics></math></em><span class="ltx_text" id="algorithm1.13.13.7" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.13.13.8" style="font-size:90%;">then</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.14.14">
+<span class="ltx_text" id="algorithm1.14.14.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.14.14.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.14.14.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.14.14.4" style="font-size:90%;">
+- Append “You are hallucinating, creating more survey points than required. Do not invent, modify, or add any new points.” to </span><math alttext="\mathcal{P}" class="ltx_Math" display="inline" id="algorithm1.14.14.m1" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><annotation encoding="application/x-tex">\mathcal{P}</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.15.15">
+<span class="ltx_text" id="algorithm1.15.15.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.15.15.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.15.15.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.15.15.4" style="font-size:90%;">
+- Re-plan to obtain new solution of survey-point assignments via LLM-based mission planner: </span><math alttext="\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})" class="ltx_Math" display="inline" id="algorithm1.15.15.m1" intent=":literal"><semantics><mrow><msubsup><mrow><mo maxsize="0.900em" minsize="0.900em">{</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><mo maxsize="0.900em" minsize="0.900em">}</mo></mrow><mrow><mi mathsize="0.900em">i</mi><mo mathsize="0.900em">=</mo><mn mathsize="0.900em">1</mn></mrow><mi mathsize="0.900em">N</mi></msubsup><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">Planner</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.37">
+<span class="ltx_text" id="algorithm1.33.37.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.37.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.37.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.37.4" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.16.16">
+<span class="ltx_text" id="algorithm1.16.16.2" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.16.16.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.16.16.4" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.16.16.5" style="font-size:90%;">else if</span><span class="ltx_text" id="algorithm1.16.16.6" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.16.16.1" style="font-size:90%;"><math alttext="\sum_{i}|\mathcal{A}_{i}|&lt;|\mathcal{S}(t)|" class="ltx_Math" display="inline" id="algorithm1.16.16.1.m1" intent=":literal"><semantics><mrow><mrow><msub><mo>∑</mo><mi>i</mi></msub><mrow><mo lspace="0em" stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mrow><mo>&lt;</mo><mrow><mo stretchy="false">|</mo><mrow><mi class="ltx_font_mathcaligraphic">𝒮</mi><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><mi>t</mi><mo stretchy="false">)</mo></mrow></mrow><mo stretchy="false">|</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{i}|\mathcal{A}_{i}|&lt;|\mathcal{S}(t)|</annotation></semantics></math></em><span class="ltx_text" id="algorithm1.16.16.7" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.16.16.8" style="font-size:90%;">then</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.17.17">
+<span class="ltx_text" id="algorithm1.17.17.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.17.17.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.17.17.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.17.17.4" style="font-size:90%;">
+- Append “You have not assigned all survey points to UAVs. You must allocate all survey points to UAVs.” to </span><math alttext="\mathcal{P}" class="ltx_Math" display="inline" id="algorithm1.17.17.m1" intent=":literal"><semantics><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><annotation encoding="application/x-tex">\mathcal{P}</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.18.18">
+<span class="ltx_text" id="algorithm1.18.18.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.18.18.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.18.18.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.18.18.4" style="font-size:90%;">
+- Re-plan to obtain new solution of survey-point assignments via LLM-based mission planner: </span><math alttext="\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})" class="ltx_Math" display="inline" id="algorithm1.18.18.m1" intent=":literal"><semantics><mrow><msubsup><mrow><mo maxsize="0.900em" minsize="0.900em">{</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><mo maxsize="0.900em" minsize="0.900em">}</mo></mrow><mrow><mi mathsize="0.900em">i</mi><mo mathsize="0.900em">=</mo><mn mathsize="0.900em">1</mn></mrow><mi mathsize="0.900em">N</mi></msubsup><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">Planner</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\{\mathcal{A}_{i}\}_{i=1}^{N}\leftarrow\texttt{Planner}(\mathcal{P})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.38">
+<span class="ltx_text" id="algorithm1.33.38.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.38.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.38.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.38.4" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.39">
+<span class="ltx_text" id="algorithm1.33.39.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.39.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.39.3" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.19.19">
+<span class="ltx_text" id="algorithm1.19.19.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.19.19.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.19.19.3" style="font-size:90%;">- Transmit validated survey-point assignments </span><math alttext="\{\mathcal{A}_{i}\}" class="ltx_Math" display="inline" id="algorithm1.19.19.m1" intent=":literal"><semantics><mrow><mo maxsize="0.900em" minsize="0.900em">{</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><mo maxsize="0.900em" minsize="0.900em">}</mo></mrow><annotation encoding="application/x-tex">\{\mathcal{A}_{i}\}</annotation></semantics></math><span class="ltx_text" id="algorithm1.19.19.4" style="font-size:90%;"> to UAVs via wireless communications links</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.40">
+<span class="ltx_text" id="algorithm1.33.40.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.40.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.40.3" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.41">
+<span class="ltx_text" id="algorithm1.33.41.1" style="font-size:90%;"> end while</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.42">
+</div>
+<div class="ltx_listingline" id="algorithm1.20.20">
+<span class="ltx_text" id="algorithm1.20.20.2" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.20.20.1" style="font-size:90%;">At UAVs (executed in parallel at <math alttext="N" class="ltx_Math" display="inline" id="algorithm1.20.20.1.m1" intent=":literal"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> UAVs):</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.22.22">
+<span class="ltx_text" id="algorithm1.22.22.3" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.22.22.4" style="font-size:90%;">for</span><span class="ltx_text" id="algorithm1.22.22.5" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.22.22.2" style="font-size:90%;"><math alttext="i=1" class="ltx_Math" display="inline" id="algorithm1.21.21.1.m1" intent=":literal"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">i=1</annotation></semantics></math> <span class="ltx_text ltx_font_bold ltx_font_upright" id="algorithm1.22.22.2.1">to</span> <math alttext="N" class="ltx_Math" display="inline" id="algorithm1.22.22.2.m2" intent=":literal"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math></em><span class="ltx_text" id="algorithm1.22.22.6" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.22.22.7" style="font-size:90%;">do</span><span class="ltx_text" id="algorithm1.22.22.8" style="font-size:90%;"> </span>
+</div>
+<div class="ltx_listingline" id="algorithm1.24.24">
+<span class="ltx_text" id="algorithm1.24.24.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.24.24.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.24.24.3" style="font-size:90%;">
+- UAV </span><math alttext="i" class="ltx_Math" display="inline" id="algorithm1.23.23.m1" intent=":literal"><semantics><mi mathsize="0.900em">i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math><span class="ltx_text" id="algorithm1.24.24.4" style="font-size:90%;"> receives assigned survey points </span><math alttext="\mathcal{A}_{i}" class="ltx_Math" display="inline" id="algorithm1.24.24.m2" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><annotation encoding="application/x-tex">\mathcal{A}_{i}</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.25.25">
+<span class="ltx_text" id="algorithm1.25.25.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.25.25.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.25.25.3" style="font-size:90%;">
+- Form local prompt </span><math alttext="\mathcal{P}_{l}=(\mathcal{A}_{i},\text{local perception})" class="ltx_Math" display="inline" id="algorithm1.25.25.m1" intent=":literal"><semantics><mrow><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><mo mathsize="0.900em">=</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒜</mi><mi mathsize="0.900em">i</mi></msub><mo mathsize="0.900em">,</mo><mtext mathsize="0.900em">local perception</mtext><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mathcal{P}_{l}=(\mathcal{A}_{i},\text{local perception})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.26.26">
+<span class="ltx_text" id="algorithm1.26.26.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.26.26.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.26.26.3" style="font-size:90%;">
+- Generate flight route via TinyLLaMA based planner: </span><math alttext="\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})" class="ltx_Math" display="inline" id="algorithm1.26.26.m1" intent=":literal"><semantics><mrow><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒯</mi><mi mathsize="0.900em">i</mi></msub><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">TinyLLaMA</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.27.27">
+<span class="ltx_text" id="algorithm1.27.27.2" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.27.27.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.27.27.4" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.27.27.5" style="font-size:90%;">if</span><span class="ltx_text" id="algorithm1.27.27.6" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.27.27.1" style="font-size:90%;"><math alttext="|\mathcal{T}_{i}|&gt;|\mathcal{A}_{i}|" class="ltx_Math" display="inline" id="algorithm1.27.27.1.m1" intent=":literal"><semantics><mrow><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒯</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow><mo>&gt;</mo><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mrow><annotation encoding="application/x-tex">|\mathcal{T}_{i}|&gt;|\mathcal{A}_{i}|</annotation></semantics></math></em><span class="ltx_text" id="algorithm1.27.27.7" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.27.27.8" style="font-size:90%;">then</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.28.28">
+<span class="ltx_text" id="algorithm1.28.28.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.28.28.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.28.28.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.28.28.4" style="font-size:90%;">
+- Append “You have used more survey points than required. Do not invent, modify, or add any new points.” to </span><math alttext="\mathcal{P}_{l}" class="ltx_Math" display="inline" id="algorithm1.28.28.m1" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><annotation encoding="application/x-tex">\mathcal{P}_{l}</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.29.29">
+<span class="ltx_text" id="algorithm1.29.29.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.29.29.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.29.29.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.29.29.4" style="font-size:90%;">
+- Generate new flight route via TinyLLaMA based planner: </span><math alttext="\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})" class="ltx_Math" display="inline" id="algorithm1.29.29.m1" intent=":literal"><semantics><mrow><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒯</mi><mi mathsize="0.900em">i</mi></msub><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">TinyLLaMA</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.43">
+<span class="ltx_text" id="algorithm1.33.43.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.43.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.43.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.43.4" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.30.30">
+<span class="ltx_text" id="algorithm1.30.30.2" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.30.30.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.30.30.4" style="font-size:90%;">
+</span><span class="ltx_text ltx_font_bold" id="algorithm1.30.30.5" style="font-size:90%;">else if</span><span class="ltx_text" id="algorithm1.30.30.6" style="font-size:90%;"> </span><em class="ltx_emph ltx_font_italic" id="algorithm1.30.30.1" style="font-size:90%;"><math alttext="|\mathcal{T}_{i}|&lt;|\mathcal{A}_{i}|" class="ltx_Math" display="inline" id="algorithm1.30.30.1.m1" intent=":literal"><semantics><mrow><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒯</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow><mo>&lt;</mo><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mrow><annotation encoding="application/x-tex">|\mathcal{T}_{i}|&lt;|\mathcal{A}_{i}|</annotation></semantics></math></em><span class="ltx_text" id="algorithm1.30.30.7" style="font-size:90%;"> </span><span class="ltx_text ltx_font_bold" id="algorithm1.30.30.8" style="font-size:90%;">then</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.31.31">
+<span class="ltx_text" id="algorithm1.31.31.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.31.31.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.31.31.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.31.31.4" style="font-size:90%;">
+- Append “You have generated a flight route not including all assigned survey points. You must visit every assigned survey point.” to </span><math alttext="\mathcal{P}_{l}" class="ltx_Math" display="inline" id="algorithm1.31.31.m1" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><annotation encoding="application/x-tex">\mathcal{P}_{l}</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.32.32">
+<span class="ltx_text" id="algorithm1.32.32.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.32.32.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.32.32.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.32.32.4" style="font-size:90%;">
+- Generate new flight route via TinyLLaMA based planner: </span><math alttext="\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})" class="ltx_Math" display="inline" id="algorithm1.32.32.m1" intent=":literal"><semantics><mrow><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒯</mi><mi mathsize="0.900em">i</mi></msub><mo mathsize="0.900em" stretchy="false">←</mo><mrow><mtext class="ltx_mathvariant_monospace" mathsize="0.900em">TinyLLaMA</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo maxsize="0.900em" minsize="0.900em">(</mo><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒫</mi><mi mathsize="0.900em">l</mi></msub><mo maxsize="0.900em" minsize="0.900em">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">\mathcal{T}_{i}\leftarrow\texttt{TinyLLaMA}(\mathcal{P}_{l})</annotation></semantics></math>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.44">
+<span class="ltx_text" id="algorithm1.33.44.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.44.2" style="font-size:90%;">  </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.44.3" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.44.4" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.45">
+<span class="ltx_text" id="algorithm1.33.45.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.45.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.45.3" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.33">
+<span class="ltx_text" id="algorithm1.33.33.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.33.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.33.3" style="font-size:90%;">- Execute </span><math alttext="\mathcal{T}_{i}" class="ltx_Math" display="inline" id="algorithm1.33.33.m1" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic" mathsize="0.900em">𝒯</mi><mi mathsize="0.900em">i</mi></msub><annotation encoding="application/x-tex">\mathcal{T}_{i}</annotation></semantics></math><span class="ltx_text" id="algorithm1.33.33.4" style="font-size:90%;">: navigate waypoints, survey grids, perform real-time detection, and coordinate with peers</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.46">
+<span class="ltx_text" id="algorithm1.33.46.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.46.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.46.3" style="font-size:90%;">
+- Transmit state information (position, battery, progress, detections) to EGS for task updates</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.47">
+<span class="ltx_text" id="algorithm1.33.47.1" style="font-size:90%;"> </span><span class="ltx_rule" style="width:1px;height:100%;--ltx-bg-color:black;display:inline-block;"> </span><span class="ltx_text" id="algorithm1.33.47.2" style="font-size:90%;"> </span><span class="ltx_text" id="algorithm1.33.47.3" style="font-size:90%;">
+</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.48">
+<span class="ltx_text" id="algorithm1.33.48.1" style="font-size:90%;"> end for</span>
+</div>
+<div class="ltx_listingline" id="algorithm1.33.49">
+<span class="ltx_text" id="algorithm1.33.49.1" style="font-size:90%;">
+</span>
+</div>
+</div>
+<figcaption class="ltx_caption" style="font-size:90%;"><span class="ltx_tag ltx_tag_float"><span class="ltx_text ltx_font_bold" id="algorithm1.37.1.1">Algorithm 1</span> </span>Workflow of Proposed Design</figcaption>
+</figure>
+<div class="ltx_para" id="S4.SS2.p2">
+<p class="ltx_p" id="S4.SS2.p2.1">The proposed framework operates as described below.<span class="ltx_note ltx_role_footnote" id="footnote3"><sup class="ltx_note_mark">3</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">3</sup><span class="ltx_tag ltx_tag_note">3</span>Optimization objectives and constraints for the survey-point assignment and route planning optimization are integrated into the corresponding prompts for the LLMs employed by the EGS and
+UAVs, respectively. Detailed prompt designs are not presented due to the space constraint.</span></span></span>
+Upon receiving wildfire alerts and an image of the region of interest from the satellite system, the EGS is deployed near the affected region to process incoming data and coordinate swarm operations. First,
+the EGS employs the U-Net segmentation
+model<span class="ltx_note ltx_role_footnote" id="footnote4"><sup class="ltx_note_mark">4</sup><span class="ltx_note_outer"><span class="ltx_note_content"><sup class="ltx_note_mark">4</sup><span class="ltx_tag ltx_tag_note">4</span>Available at <span class="ltx_ref ltx_nolink ltx_url ltx_font_typewriter ltx_ref_self">https://github.com/yueureka/WildFireDetection.git</span></span></span></span> to delineate wildfire boundaries. As new satellite data arrives, the fire boundary maps are continuously updated, maintaining situational awareness and supporting adaptive sub-region assignment for UAVs. The delineated region is discretized into uniform grid cells whose centroids serve as survey points for swarm deployment.</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p3">
+<p class="ltx_p" id="S4.SS2.p3.1">Subsequently, the LLM-based mission planner at the EGS analyzes segmented region and system state information such as UAVs’ remaining energy and current locations to assign survey points to different UAVs.
+The prompt of the LLM-based planner is engineered to explicitly optimize the coverage efficiency, travel distance for each UAV, balance workload distribution among UAVs, and prevent overlap of UAVs’ survey points. To tackle the LLM hallucinations, the output of the EGS’s mission planner is validated by comparing the actual number of survey points and the number of survey points assigned to all UAVs.
+When inconsistencies are detected, such as extra or missing points, the prompt is automatically updated to initiate re-planning.
+For instance, when the EGS’s LLM hallucinates by assigning more survey points than are actually available to the UAVs, we append the following statement to the prompt during re-planning:
+“You are hallucinating, creating more survey points than required. Do not invent, modify, or add any new points.” 
+Once validated, each UAV is provided with its subregion map (i.e., assigned survey points), task instructions, and coordination requirements, establishing the foundation for autonomous swarm collaboration.
+</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p4">
+<p class="ltx_p" id="S4.SS2.p4.1">Upon deployment, the UAVs automatically establish a self-organizing wireless network, enabling resilient peer-to-peer communication and communication between UAVs and the EGS.
+Each UAV uses the TinyLLaMA model for onboard planning, enabling it to generate and adjust its flight path based on the survey points assigned by the EGS and real-time sensory data collected onboard.
+This capability enables the UAVs to achieve the mission goals described above. The flight routes generated by TinyLLaMA are verified using the same consistency checks applied to the mission planner’s output, ensuring overall mission reliability.
+</p>
+</div>
+<div class="ltx_para" id="S4.SS2.p5">
+<p class="ltx_p" id="S4.SS2.p5.1">Once the flight route is validated, the execution layer directs UAVs to their waypoints, conducts independent grid surveys, performs real-time fire and survivor detection, adapts to environmental changes, and coordinates with swarm peers as needed. Each UAV continuously transmits telemetry data, including position, battery status, task execution progress, and detection results, to the EGS. These data allow the EGS to perform real-time mission reconfiguration and ensure sustained operational efficiency.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS3.4.1.1">IV-C</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS3.5.2">Performance Metrics</span>
+</h3>
+<div class="ltx_para" id="S4.SS3.p1">
+<p class="ltx_p" id="S4.SS3.p1.1">We now define performance metrics to quantitatively evaluate the proposed design. In our simulation, these performance metrics are based on the specifications of the Skydio X10 drone, which allows human detection up to 1500 m. Accordingly, each grid cell is set to approximately 450 m × 450 m for optimal coverage, dividing the Eaton fire-affected area into about 300 grid cells, corresponding to 300 survey points. The performance metrics are defined as follows:</p>
+<ul class="ltx_itemize" id="S4.I1">
+<li class="ltx_item" id="S4.I1.i1" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S4.I1.i1.p1">
+<p class="ltx_p" id="S4.I1.i1.p1.1"><span class="ltx_text ltx_font_bold" id="S4.I1.i1.p1.1.1">Coverage Rate:</span> Ratio of the number of survey points visited to the total number of survey points.</p>
+</div>
+</li>
+<li class="ltx_item" id="S4.I1.i2" style="list-style-type:none;">
+<span class="ltx_tag ltx_tag_item">•</span>
+<div class="ltx_para" id="S4.I1.i2.p1">
+<p class="ltx_p" id="S4.I1.i2.p1.1"><span class="ltx_text ltx_font_bold" id="S4.I1.i2.p1.1.1">Mission Completion Time:</span>
+Total time elapsed from assigning tasks to the swarm until all SAR objectives—i.e., all grid cells or survey points have been visited by the UAVs—are completed.</p>
+</div>
+</li>
+</ul>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS4.4.1.1">IV-D</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS4.5.2">State-of-the-Art Baseline</span>
+</h3>
+<div class="ltx_para" id="S4.SS4.p1">
+<p class="ltx_p" id="S4.SS4.p1.1">We adopt the baseline <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib42" title="Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?">2</a>]</cite> for performance comparison with our design. In this work,
+the authors proposed an efficient LLM hybrid planning framework, which combines centralized planning with distributed feedback, achieving a high task success rate and desired scalability in various warehouse scenarios.
+Their performance evaluation showed that the hybrid LLM planning framework outperforms other centralized designs.
+We compare this baseline with our proposed design using the two performance metrics described above.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS5">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS5.4.1.1">IV-E</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS5.5.2">Simulation Setting</span>
+</h3>
+<div class="ltx_para" id="S4.SS5.p1">
+<p class="ltx_p" id="S4.SS5.p1.1">Experiments were conducted on an Intel Core i7-10750H CPU (2.60 GHz), 16 GB RAM, and an NVIDIA GeForce GTX 1650 Ti GPU running Windows 11 (64-bit). The software environment used Python 3.11.13 and PyTorch 2.7.1 with CUDA 12.8. To simulate the full-scale LLM at the EGS, we employ GPT-4.1 via the OpenAI API for survey-point assignments, ensuring that survey points assigned for different UAVs are non-overlapping and optimized for route planning efficiency. Each UAV used TinyLLaMA-1.1B (int4) for onboard route planning, enabling it to minimize flight distance over its assigned survey points.
+We assume that each UAV simulates a Skydio X10-class platform with RGB + thermal sensors (1500 m range), a cruise speed of 15 m/s, and a 9600 mAh battery. The onboard processor modeled a Jetson Orin NX (70 TOPS, 10–25 W), with base power 45 W, flight power 8 W per 1 m/s, TinyLLaMA idle power 5 W, and inference power 10 W. Satellite images were obtained from the sped-up NASA video footage. We assume that consecutive satellite images are taken from the video, one image for every interval of 0.37 seconds. These extracted images are segmented by the EGS to identify wildfire boundaries, enabling survey points to be obtained dynamically.
+Note that this interval corresponds to tens of minutes in reality due to the sped-up nature of the video clip.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S4.SS6">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S4.SS6.4.1.1">IV-F</span> </span><span class="ltx_text ltx_font_italic" id="S4.SS6.5.2">Experimental Results</span>
+</h3>
+<figure class="ltx_figure" id="S4.F3">
+<div class="ltx_flex_figure">
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S4.F3.sf1"><img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="114" id="S4.F3.sf1.g1" src="Images/frame_00000_visualization.jpg" width="229"/>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">(a) </span>Initial deployment phase, with all 10 UAVs stationed at the ground control station and the survey-point assignments generated by the EGS, ready for launch.</figcaption>
+</figure>
+</div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S4.F3.sf2"><img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="114" id="S4.F3.sf2.g1" src="Images/frame_00001_visualization.jpg" width="229"/>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">(b) </span>Operation phase, with UAVs dispersed and flying along their planned routes.</figcaption>
+</figure>
+</div>
+<div class="ltx_flex_break"></div>
+<div class="ltx_flex_cell ltx_flex_size_1">
+<figure class="ltx_figure ltx_figure_panel ltx_align_center" id="S4.F3.sf3"><img alt="Refer to caption" class="ltx_graphics ltx_img_landscape" height="114" id="S4.F3.sf3.g1" src="Images/frame_00008_visualization.jpg" width="229"/>
+<figcaption class="ltx_caption"><span class="ltx_tag ltx_tag_figure">(c) </span>
+Fire spread requiring dynamic fire boundary calculation and updated survey-point assignments for UAVs.</figcaption>
+</figure>
+</div>
+</div>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 3: </span>Visualization of survey-point assignments for 10 UAVs across three different phases, shown alongside the expanding wildfire region.</figcaption>
+</figure>
+<div class="ltx_para" id="S4.SS6.p1">
+<p class="ltx_p" id="S4.SS6.p1.1">We demonstrate the wildfire segmentation and GPT-4.1–based survey-point assignment solutions across three different phases: (1) initial phase with all 10 UAVs still stationed at the ground station and survey-point assignment solution generated by the EGS, ready for launch, as shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F3" title="Figure 3 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">3</span></a>(a), (2) operation phase with UAVs dispersed and flying along their planned routes, as shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F3" title="Figure 3 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">3</span></a>(b), and (3) active fire spread requiring dynamic fire boundary calculation and updated survey-point assignments for UAVs, as shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F3" title="Figure 3 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">3</span></a>(c). As demonstrated in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F3" title="Figure 3 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">3</span></a>, the proposed framework effectively segments the wildfire region, assigns survey points in clusters to UAVs, and ensures efficiency, minimal overlap, balanced workload, and adaptive response to wildfire changing conditions and swarm status.</p>
+</div>
+<div class="ltx_para" id="S4.SS6.p2">
+<p class="ltx_p" id="S4.SS6.p2.3">We analyze the coverage rate achieved by the proposed design with different UAV fleet sizes (8 or 12 drones) to assess its scalability, adaptability to dynamic wildfire conditions captured at different satellite image update index <math alttext="t" class="ltx_Math" display="inline" id="S4.SS6.p2.1.m1" intent=":literal"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> (i.e.,
+different time points during the wildfire period).
+As shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F4" title="Figure 4 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">4</span></a>, the number of survey points varies over the satellite image update index <math alttext="t" class="ltx_Math" display="inline" id="S4.SS6.p2.2.m2" intent=":literal"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, reflecting the dynamic evolution of the wildfire region.
+The coverage rate achieved by our design remains high across the satellite image update indices, despite the increasing number of survey points caused by the expanding wildfire region.
+For moderate wildfire regions in small <math alttext="t" class="ltx_Math" display="inline" id="S4.SS6.p2.3.m3" intent=":literal"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>, fewer UAVs (e.g., 8 UAVs) are preferable, as GPT-4.1 allocates survey points to UAVs more efficiently. Over-deployment (e.g., 12 UAVs) can cause hallucinations, generating false survey points, missing survey points, or creating overlaps. Conversely, larger wildfire regions require more UAVs (e.g., 12) to distribute the workload effectively, as too few UAVs overload the onboard TinyLLaMA reasoning model, resulting in inefficient path planning and missed survey points.
+Therefore, selecting an appropriate fleet size relative to the wildfire scale is essential for efficient task allocation and mission planning.
+
+It can be observed that our proposed design significantly outperforms the baseline <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib42" title="Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?">2</a>]</cite> in terms of coverage rate. This improvement is attributed to the efficient coordination between the UAVs and the EGS, as well as the validation, feedback, and adaptive re-planning strategies employed in our framework to mitigate LLM hallucination.</p>
+</div>
+<figure class="ltx_figure" id="S4.F4"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="622" id="S4.F4.g1" src="x3.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 4: </span>Coverage rate of proposed design and the baseline [13]</figcaption>
+</figure>
+<div class="ltx_para" id="S4.SS6.p3">
+<p class="ltx_p" id="S4.SS6.p3.6">To demonstrate the efficiency of our LLM-based strategy for assigning survey points to UAVs, we compare the mission completion time of our proposed design with that of a greedy assignment strategy as well as the baseline in <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib42" title="Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?">2</a>]</cite>.
+This greedy strategy iteratively assigns survey points to UAVs based on an assignment metric, which is a weighted sum of the (UAV, survey point) distance and a UAV’s workload penalty. We define each UAV’s set of assigned survey points as <math alttext="\mathcal{A}_{i}" class="ltx_Math" display="inline" id="S4.SS6.p3.1.m1" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathcal{A}_{i}</annotation></semantics></math> (<math alttext="i=1,2,\dots,N" class="ltx_Math" display="inline" id="S4.SS6.p3.2.m2" intent=":literal"><semantics><mrow><mi>i</mi><mo>=</mo><mrow><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mi mathvariant="normal">…</mi><mo>,</mo><mi>N</mi></mrow></mrow><annotation encoding="application/x-tex">i=1,2,\dots,N</annotation></semantics></math>), which is initially empty. For each assignment, the survey point <math alttext="P_{j}" class="ltx_Math" display="inline" id="S4.SS6.p3.3.m3" intent=":literal"><semantics><msub><mi>P</mi><mi>j</mi></msub><annotation encoding="application/x-tex">P_{j}</annotation></semantics></math> is assigned to UAV <math alttext="U_{i}" class="ltx_Math" display="inline" id="S4.SS6.p3.4.m4" intent=":literal"><semantics><msub><mi>U</mi><mi>i</mi></msub><annotation encoding="application/x-tex">U_{i}</annotation></semantics></math> if the assignment metric <math alttext="C_{ij}" class="ltx_Math" display="inline" id="S4.SS6.p3.5.m5" intent=":literal"><semantics><msub><mi>C</mi><mrow><mi>i</mi><mo lspace="0em" rspace="0em">​</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">C_{ij}</annotation></semantics></math> is the smallest among all available (UAV, survey point) pairs.
+Let <math alttext="\bar{n}=\frac{1}{N}\sum_{i=1}^{N}|\mathcal{A}_{i}|" class="ltx_Math" display="inline" id="S4.SS6.p3.6.m6" intent=":literal"><semantics><mrow><mover accent="true"><mi>n</mi><mo>¯</mo></mover><mo>=</mo><mrow><mfrac><mn>1</mn><mi>N</mi></mfrac><mo lspace="0em" rspace="0em">​</mo><mrow><msubsup><mo rspace="0em">∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow></mrow></mrow></mrow><annotation encoding="application/x-tex">\bar{n}=\frac{1}{N}\sum_{i=1}^{N}|\mathcal{A}_{i}|</annotation></semantics></math> be the average number of survey points assigned per UAV; then the
+workload penalty is defined as</p>
+<table class="ltx_equation ltx_eqn_table" id="S4.E1">
+<tbody><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_eqn_cell ltx_align_center"><math alttext="\text{Penalty}(U_{i})=\max(0,|\mathcal{A}_{i}|-\bar{n})\cdot B," class="ltx_Math" display="block" id="S4.E1.m1" intent=":literal"><semantics><mrow><mrow><mrow><mtext>Penalty</mtext><mo lspace="0em" rspace="0em">​</mo><mrow><mo stretchy="false">(</mo><msub><mi>U</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow></mrow><mo>=</mo><mrow><mrow><mi>max</mi><mo>⁡</mo><mrow><mo stretchy="false">(</mo><mn>0</mn><mo>,</mo><mrow><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow><mo>−</mo><mover accent="true"><mi>n</mi><mo>¯</mo></mover></mrow><mo rspace="0.055em" stretchy="false">)</mo></mrow></mrow><mo rspace="0.222em">⋅</mo><mi>B</mi></mrow></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\text{Penalty}(U_{i})=\max(0,|\mathcal{A}_{i}|-\bar{n})\cdot B,</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right" rowspan="1"><span class="ltx_tag ltx_tag_equation ltx_align_right">(1)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p" id="S4.SS6.p3.10">where <math alttext="B" class="ltx_Math" display="inline" id="S4.SS6.p3.7.m1" intent=":literal"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math> is a coefficient set as <math alttext="B=800" class="ltx_Math" display="inline" id="S4.SS6.p3.8.m2" intent=":literal"><semantics><mrow><mi>B</mi><mo>=</mo><mn>800</mn></mrow><annotation encoding="application/x-tex">B=800</annotation></semantics></math> in the
+simulation, and <math alttext="|\mathcal{A}_{i}|" class="ltx_Math" display="inline" id="S4.SS6.p3.9.m3" intent=":literal"><semantics><mrow><mo stretchy="false">|</mo><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><mo stretchy="false">|</mo></mrow><annotation encoding="application/x-tex">|\mathcal{A}_{i}|</annotation></semantics></math> represents the cardinality of set <math alttext="\mathcal{A}_{i}" class="ltx_Math" display="inline" id="S4.SS6.p3.10.m4" intent=":literal"><semantics><msub><mi class="ltx_font_mathcaligraphic">𝒜</mi><mi>i</mi></msub><annotation encoding="application/x-tex">\mathcal{A}_{i}</annotation></semantics></math>.
+The assignment metric is defined as</p>
+<table class="ltx_equationgroup ltx_eqn_align ltx_eqn_table" id="S6.EGx1">
+<tbody id="S4.E2"><tr class="ltx_equation ltx_eqn_row ltx_align_baseline">
+<td class="ltx_eqn_cell ltx_eqn_center_padleft"></td>
+<td class="ltx_td ltx_align_right ltx_eqn_cell"><math alttext="\displaystyle C_{ij}=" class="ltx_Math" display="inline" id="S4.E2.m1" intent=":literal"><semantics><mrow><msub><mi>C</mi><mrow><mi>i</mi><mo lspace="0em" rspace="0em">​</mo><mi>j</mi></mrow></msub><mo>=</mo><mi></mi></mrow><annotation encoding="application/x-tex">\displaystyle C_{ij}=</annotation></semantics></math></td>
+<td class="ltx_td ltx_align_left ltx_eqn_cell"><math alttext="\displaystyle\&gt;\text{Distance}(U_{i}.\text{current\_pos},P_{j})+\lambda\cdot\text{Penalty}(U_{i})," class="ltx_math_unparsed" display="inline" id="S4.E2.m2" intent=":literal"><semantics><mrow><mtext>Distance</mtext><mrow><mo stretchy="false">(</mo><msub><mi>U</mi><mi>i</mi></msub><mo lspace="0em" rspace="0.167em">.</mo><mtext>current_pos</mtext><mo>,</mo><msub><mi>P</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow><mo>+</mo><mi>λ</mi><mo lspace="0.222em" rspace="0.222em">⋅</mo><mtext>Penalty</mtext><mrow><mo stretchy="false">(</mo><msub><mi>U</mi><mi>i</mi></msub><mo stretchy="false">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\displaystyle\&gt;\text{Distance}(U_{i}.\text{current\_pos},P_{j})+\lambda\cdot\text{Penalty}(U_{i}),</annotation></semantics></math></td>
+<td class="ltx_eqn_cell ltx_eqn_center_padright"></td>
+<td class="ltx_eqn_cell ltx_eqn_eqno ltx_align_middle ltx_align_right" rowspan="1"><span class="ltx_tag ltx_tag_equation ltx_align_right">(2)</span></td>
+</tr></tbody>
+</table>
+<p class="ltx_p" id="S4.SS6.p3.14">where <math alttext="\text{Distance}(U_{i}.\text{current\_pos},P_{j})" class="ltx_math_unparsed" display="inline" id="S4.SS6.p3.11.m1" intent=":literal"><semantics><mrow><mtext>Distance</mtext><mrow><mo stretchy="false">(</mo><msub><mi>U</mi><mi>i</mi></msub><mo lspace="0em" rspace="0.167em">.</mo><mtext>current_pos</mtext><mo>,</mo><msub><mi>P</mi><mi>j</mi></msub><mo stretchy="false">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{Distance}(U_{i}.\text{current\_pos},P_{j})</annotation></semantics></math> denotes the distance between the current position of UAV <math alttext="U_{i}" class="ltx_Math" display="inline" id="S4.SS6.p3.12.m2" intent=":literal"><semantics><msub><mi>U</mi><mi>i</mi></msub><annotation encoding="application/x-tex">U_{i}</annotation></semantics></math> and survey point <math alttext="P_{j}" class="ltx_Math" display="inline" id="S4.SS6.p3.13.m3" intent=":literal"><semantics><msub><mi>P</mi><mi>j</mi></msub><annotation encoding="application/x-tex">P_{j}</annotation></semantics></math>, and <math alttext="\lambda" class="ltx_Math" display="inline" id="S4.SS6.p3.14.m4" intent=":literal"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math> is the weighting parameter.</p>
+</div>
+<div class="ltx_para" id="S4.SS6.p4">
+<p class="ltx_p" id="S4.SS6.p4.1">As shown in Fig. <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.F5" title="Figure 5 ‣ IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">5</span></a>, our design consistently achieves shorter mission completion time across all satellite image update indices <math alttext="t" class="ltx_Math" display="inline" id="S4.SS6.p4.1.m1" intent=":literal"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> compared to that due to the greedy strategy, especially as the number of survey points increases. Moreover, our proposed framework and the baseline in <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib42" title="Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?">2</a>]</cite> achieve similar mission completion time.
+With 8 UAVs, missions finish in under 25 minutes for our design, compared to over 30 minutes for the greedy algorithm. Scaling up to 12 UAVs reduces the completion time to under 17 minutes, compared with over 22 minutes for the greedy baseline.
+These results demonstrate the scalability and efficiency of our approach in dynamic, real-world conditions.</p>
+</div>
+<figure class="ltx_figure" id="S4.F5"><img alt="Refer to caption" class="ltx_graphics ltx_centering ltx_img_landscape" height="584" id="S4.F5.g1" src="x4.png" width="830"/>
+<figcaption class="ltx_caption ltx_centering"><span class="ltx_tag ltx_tag_figure">Figure 5: </span>Mission completion time of proposed design and other baselines</figcaption>
+</figure>
+</section>
+</section>
+<section class="ltx_section" id="S5">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">V </span><span class="ltx_text ltx_font_smallcaps" id="S5.1.1">Open Challenges</span>
+</h2>
+<div class="ltx_para" id="S5.p1">
+<p class="ltx_p" id="S5.p1.1">We outline key open challenges for future research in the following.</p>
+</div>
+<section class="ltx_subsection" id="S5.SS1">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS1.4.1.1">V-A</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS1.5.2">Efficient Onboard LLMs</span>
+</h3>
+<div class="ltx_para" id="S5.SS1.p1">
+<p class="ltx_p" id="S5.SS1.p1.1">Although lightweight LLMs like TinyLLaMA are emerging, achieving reliable, low-latency reasoning on resource-constrained UAVs remains challenging. Future research could explore efficient model design and inference techniques, such as quantization, knowledge distillation, sparsification, and structural optimization, to enable practical onboard reasoning. Additionally, hardware–software co-design offers a promising direction for robust onboard autonomy.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS2">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS2.4.1.1">V-B</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS2.5.2">Hallucination Mitigation</span>
+</h3>
+<div class="ltx_para" id="S5.SS2.p1">
+<p class="ltx_p" id="S5.SS2.p1.1">Hallucination remains a critical challenge in LLMs and LLM-driven agentic AI systems, referring to the generation of factually inaccurate content <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib37" title="Detecting hallucinations in large language models using semantic entropy">3</a>]</cite>. In multi-agent systems, this problem is amplified through inter-agent communication: a hallucination by one agent can propagate across the network, triggering cascades of misinformation. Mitigation requires both detecting and correcting errors at the individual agent level and controlling information flow to prevent systemic error amplification. Thus, addressing hallucination in multi-agent AI demands a combination of local robustness and global coordination.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS3">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS3.4.1.1">V-C</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS3.5.2">Robust Multi-Agent Collaboration</span>
+</h3>
+<div class="ltx_para" id="S5.SS3.p1">
+<p class="ltx_p" id="S5.SS3.p1.1">Real-world disaster zones often feature harsh conditions, such as damaged communication infrastructure, GPS failures, and unpredictable environments. Ensuring resilient UAV swarm coordination, self-organizing mesh networks, and reliable peer-to-peer communication under these circumstances requires further research in decentralized reasoning, self-healing networks, and fault-tolerant protocols.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS4">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS4.4.1.1">V-D</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS4.5.2">Edge Infrastructure Scalability and Reliability</span>
+</h3>
+<div class="ltx_para" id="S5.SS4.p1">
+<p class="ltx_p" id="S5.SS4.p1.1">Deploying mobile edge ground stations that support full-scale LLM inference, situational visualization, and HITL integration—while remaining portable and resilient in extreme conditions—remains a technical challenge. Future designs must balance computational power, energy efficiency, and operational resilience.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS5">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS5.4.1.1">V-E</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS5.5.2">Evaluation and Benchmarks</span>
+</h3>
+<div class="ltx_para" id="S5.SS5.p1">
+<p class="ltx_p" id="S5.SS5.p1.1">Despite growing interest in LLM-based multi-agent AI, most research focuses on evaluating individual agents within narrow contexts <cite class="ltx_cite ltx_citemacro_cite">[<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#bib.bib20" title="MAgIC: investigation of large language model powered multi-agent in cognition, adaptability, rationality and collaboration">11</a>]</cite>. Comprehensive benchmarks for LLM-based UAV swarm autonomy are lacking, with no established metrics for reasoning accuracy, collaboration efficiency, or mission success in realistic SAR scenarios. Developing simulation platforms, conducting field tests, and designing evaluation frameworks are essential for a thorough performance assessment.</p>
+</div>
+</section>
+<section class="ltx_subsection" id="S5.SS6">
+<h3 class="ltx_title ltx_title_subsection">
+<span class="ltx_tag ltx_tag_subsection"><span class="ltx_text" id="S5.SS6.4.1.1">V-F</span> </span><span class="ltx_text ltx_font_italic" id="S5.SS6.5.2">UAV Technical Limitations</span>
+</h3>
+<div class="ltx_para" id="S5.SS6.p1">
+<p class="ltx_p" id="S5.SS6.p1.1">Despite advances in autonomy and swarm coordination, current UAV platforms face several hardware and operational constraints that impact mission performance and scalability. Flight time and energy limitations restrict the coverage area and duration of missions, particularly in dynamic environments. Payload and sensor constraints introduce trade-offs between weight, sensing capabilities, and mission requirements. Communication and computation bottlenecks can reduce responsiveness and efficiency, especially when relying on lightweight edge devices. These constraints affect the planning, execution, and coordination of UAV swarms, influencing mission completion time and reliability. Addressing these limitations through energy-aware planning, adaptive payload management, and hierarchical computation offloading remains critical challenges for practical deployments.</p>
+</div>
+</section>
+</section>
+<section class="ltx_section" id="S6">
+<h2 class="ltx_title ltx_title_section">
+<span class="ltx_tag ltx_tag_section">VI </span><span class="ltx_text ltx_font_smallcaps" id="S6.1.1">Conclusion</span>
+</h2>
+<div class="ltx_para" id="S6.p1">
+<p class="ltx_p" id="S6.p1.1">This paper investigated the integration of agentic AI and edge computing to realize scalable and resilient autonomy in UAV swarms. We discussed three swarm deployment strategies: standalone, edge-enabled, and edge/cloud hybrid UAV swarms. A wildfire SAR use case was studied to demonstrate the efficiency of the edge-enabled architecture, enabling high SAR coverage, reduced mission completion time, and a higher level of autonomy compared to existing approaches.</p>
+</div>
+<div class="ltx_para" id="S6.p2">
+<p class="ltx_p" id="S6.p2.1">The results demonstrate that the edge-enabled architecture effectively adapts to dynamic environments while balancing autonomy and resource efficiency.
+Moreover, we identified essential research challenges to guide future investigations. These findings establish a technical foundation for advancing next-generation intelligent swarm systems and provide guidance for researchers and stakeholders in robotics, edge AI, and disaster response seeking to deploy UAV swarms in real-world missions.</p>
+</div>
+</section>
+<section class="ltx_bibliography" id="bib">
+<h2 class="ltx_title ltx_title_bibliography">References</h2>
+<ul class="ltx_biblist" id="bib.L1">
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib36">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[1]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">L. Abualigah, A. Diabat, P. Sumari, and A. H. Gandomi</span><span class="ltx_text ltx_bib_year"> (2021)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Applications, deployments, and integration of Internet of Drones (IoD): a review</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">IEEE Sens. J.</span> <span class="ltx_text ltx_bib_volume">21</span> (<span class="ltx_text ltx_bib_number">22</span>), <span class="ltx_text ltx_bib_pages"> pp. 25532–25546</span>.
+</span>
+<span class="ltx_bibblock">External Links: <span class="ltx_text ltx_bib_links"><a class="ltx_ref doi ltx_bib_external" href="https://dx.doi.org/10.1109/JSEN.2021.3114266" title="">Document</a></span>
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p1.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib42">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[2]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">Y. Chen, J. Arkin, Y. Zhang, N. Roy, and C. Fan</span><span class="ltx_text ltx_bib_year"> (2024-05)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Scalable Multi-Robot Collaboration with Large Language Models: Centralized or Decentralized Systems?</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. IEEE Int. Conf. Robot. Autom. (ICRA)</span>,
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_pages"> pp. 4311–4317</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS4.p1.1" title="IV-D State-of-the-Art Baseline ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">IV-D</span></span></a>,
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS6.p2.3" title="IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">IV-F</span></span></a>,
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS6.p3.6" title="IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">IV-F</span></span></a>,
+<a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S4.SS6.p4.1" title="IV-F Experimental Results ‣ IV Use Case: Wildfire Search-and-Rescue (SAR) ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">IV-F</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib37">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[3]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">S. Farquhar, J. Kossen, L. Kuhn, and Y. Gal</span><span class="ltx_text ltx_bib_year"> (2024)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Detecting hallucinations in large language models using semantic entropy</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">Nature</span> <span class="ltx_text ltx_bib_volume">630</span> (<span class="ltx_text ltx_bib_number">8017</span>), <span class="ltx_text ltx_bib_pages"> pp. 625–630</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS2.p1.1" title="V-B Hallucination Mitigation ‣ V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">V-B</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib44">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[4]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">P. Feng, T. Yang, M. Liang, L. Wang, and Y. Gao</span><span class="ltx_text ltx_bib_year"> (2025)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">OC-HMAS: dynamic self-organization and self-correction in heterogeneous multiagent systems using multimodal large models</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">IEEE Internet Things J.</span> <span class="ltx_text ltx_bib_volume">12</span> (<span class="ltx_text ltx_bib_number">10</span>), <span class="ltx_text ltx_bib_pages"> pp. 13538–13555</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p2.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib40">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[5]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">Y. He, J. Fang, F. R. Yu, and V. C. Leung</span><span class="ltx_text ltx_bib_year"> (2024)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Large language models (LLMs) inference offloading and resource allocation in cloud-edge computing: an active inference approach</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">IEEE Trans. Mobile Comput.</span> <span class="ltx_text ltx_bib_volume">23</span> (<span class="ltx_text ltx_bib_number">12</span>), <span class="ltx_text ltx_bib_pages"> pp. 11253–11264</span>.
+</span>
+<span class="ltx_bibblock">External Links: <span class="ltx_text ltx_bib_links"><a class="ltx_ref doi ltx_bib_external" href="https://dx.doi.org/10.1109/TMC.2024.3415661" title="">Document</a></span>
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p3.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib34">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[6]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">S. S. Kannan, V. L. Venkatesh, and B. Min</span><span class="ltx_text ltx_bib_year"> (2024)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">SMART-LLM: smart multi-agent robot task planning using large language models</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS)</span>,
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_pages"> pp. 12140–12147</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p2.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib31">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[7]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">M. J. Kim, K. Pertsch, S. Karamcheti, T. Xiao, A. Balakrishna, S. Nair, R. Rafailov, E. P. Foster, P. R. Sanketi, Q. Vuong, T. Kollar, B. Burchfiel, R. Tedrake, D. Sadigh, S. Levine, P. Liang, and C. Finn</span><span class="ltx_text ltx_bib_year"> (2025-06–09 Nov)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">OpenVLA: an open-source vision-language-action model</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Conf. Robot Learn. (CoRL)</span>,
+</span>
+<span class="ltx_bibblock">Vol. <span class="ltx_text ltx_bib_volume">270</span>, <span class="ltx_text ltx_bib_pages"> pp. 2679–2713</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS1.p7.1" title="II-A Background on Agentic AI ‣ II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">II-A</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib22">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[8]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">Y. Wang, K. Chen, H. Tan, and K. Guo</span><span class="ltx_text ltx_bib_year"> (2023-05)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Tabi: an efficient multi-level inference system for large language models</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Eur. Conf. Comput. Syst. (EuroSys)</span>,
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_pages"> pp. 233–248</span>.
+</span>
+<span class="ltx_bibblock">External Links: <span class="ltx_text ltx_bib_links"><a class="ltx_ref doi ltx_bib_external" href="https://dx.doi.org/10.1145/3552326.3587438" title="">Document</a></span>
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S3.SS3.p2.1" title="III-C Edge/Cloud-enabled UAV Swarm ‣ III Multi-Agentic AI for UAV Swarms ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">III-C</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib38">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[9]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">J. Wei, X. Wang, D. Schuurmans, M. Bosma, b. ichter, F. Xia, E. Chi, Q. V. Le, and D. Zhou</span><span class="ltx_text ltx_bib_year"> (2022-12)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Chain-of-thought prompting elicits reasoning in large language models</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Adv. Neural Inf. Process. Syst. (NeurIPS)</span>,
+</span>
+<span class="ltx_bibblock">Vol. <span class="ltx_text ltx_bib_volume">35</span>, <span class="ltx_text ltx_bib_pages"> pp. 24824–24837</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p2.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib30">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[10]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">Q. Wu, G. Bansal, J. Zhang, Y. Wu, B. Li, E. Zhu, L. Jiang, X. Zhang, S. Zhang, J. Liu, <span class="ltx_text ltx_bib_etal">et al.</span></span><span class="ltx_text ltx_bib_year"> (2024-10)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">AutoGen: enabling next-gen LLM applications via multi-agent conversations</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Conf. Lang. Model. (COLM)</span>,
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS2.p3.1" title="II-B Multi-agentic AI Frameworks ‣ II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">II-B</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib20">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[11]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">L. Xu, Z. Hu, D. Zhou, H. Ren, Z. Dong, K. Keutzer, S. Ng, and J. Feng</span><span class="ltx_text ltx_bib_year"> (2024-11)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">MAgIC: investigation of large language model powered multi-agent in cognition, adaptability, rationality and collaboration</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Conf. Empir. Methods Nat. Lang. Process. (EMNLP)</span>,
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_pages"> pp. 7315–7332</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S5.SS5.p1.1" title="V-E Evaluation and Benchmarks ‣ V Open Challenges ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">V-E</span></span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib43">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[12]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">T. Yang, P. Feng, Q. Guo, J. Zhang, X. Zhang, J. Ning, X. Wang, and Z. Mao</span><span class="ltx_text ltx_bib_year"> (2025)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">AutoHMA-LLM: efficient task coordination and execution in heterogeneous multi-agent systems using hybrid large language models</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">IEEE Trans. Cogn. Commun. Netw.</span> <span class="ltx_text ltx_bib_volume">11</span> (<span class="ltx_text ltx_bib_number">2</span>), <span class="ltx_text ltx_bib_pages"> pp. 987–998</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p3.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib39">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[13]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">S. Yao, D. Yu, J. Zhao, I. Shafran, T. Griffiths, Y. Cao, and K. Narasimhan</span><span class="ltx_text ltx_bib_year"> (2023-12)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">Tree of Thoughts: deliberate problem solving with large language models</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Adv. Neural Inf. Process. Syst.</span>,
+</span>
+<span class="ltx_bibblock">Vol. <span class="ltx_text ltx_bib_volume">36</span>, <span class="ltx_text ltx_bib_pages"> pp. 11809–11822</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p2.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_article" id="bib.bib41">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[14]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">M. Zhang, X. Shen, J. Cao, Z. Cui, and S. Jiang</span><span class="ltx_text ltx_bib_year"> (2025)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">EdgeShard: efficient LLM inference via collaborative edge computing</span>.
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_journal">IEEE Internet Things J.</span> <span class="ltx_text ltx_bib_volume">12</span> (<span class="ltx_text ltx_bib_number">10</span>), <span class="ltx_text ltx_bib_pages"> pp. 13119–13131</span>.
+</span>
+<span class="ltx_bibblock">External Links: <span class="ltx_text ltx_bib_links"><a class="ltx_ref doi ltx_bib_external" href="https://dx.doi.org/10.1109/JIOT.2024.3524255" title="">Document</a></span>
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S1.p3.1" title="I Introduction ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§I</span></a>.
+</span>
+</li>
+<li class="ltx_bibitem ltx_bib_inproceedings" id="bib.bib32">
+<span class="ltx_tag ltx_bib_key ltx_role_refnum ltx_tag_bibitem">[15]</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_author">B. Zitkovich, T. Yu, S. Xu, P. Xu, T. Xiao, F. Xia, J. Wu, P. Wohlhart, S. Welker, A. Wahid, <span class="ltx_text ltx_bib_etal">et al.</span></span><span class="ltx_text ltx_bib_year"> (2023-11)</span>
+</span>
+<span class="ltx_bibblock"><span class="ltx_text ltx_bib_title">RT-2: vision-language-action models transfer web knowledge to robotic control</span>.
+</span>
+<span class="ltx_bibblock">In <span class="ltx_text ltx_bib_inbook">Proc. Conf. Robot Learn. (CoRL)</span>,
+</span>
+<span class="ltx_bibblock">Vol. <span class="ltx_text ltx_bib_volume">229</span>, <span class="ltx_text ltx_bib_pages"> pp. 2165–2183</span>.
+</span>
+<span class="ltx_bibblock ltx_bib_cited">Cited by: <a class="ltx_ref" href="https://arxiv.org/html/2601.14437v1#S2.SS1.p7.1" title="II-A Background on Agentic AI ‣ II Agentic AI Systems ‣ Agentic AI Meets Edge Computing in Autonomous UAV Swarms"><span class="ltx_text ltx_ref_tag">§<span class="ltx_text">II-A</span></span></a>.
+</span>
+</li>
+</ul>
+</section>
+</article>
+</div>
+<footer class="ltx_page_footer">
+<div class="ltx_page_logo">Generated  on Tue Jan 20 19:43:16 2026 by <a class="ltx_LaTeXML_logo" href="http://dlmf.nist.gov/LaTeXML/"><span style="letter-spacing:-0.2em; margin-right:0.1em;">L<span class="ltx_font_smallcaps" style="position:relative; bottom:2.2pt;">a</span>T<span class="ltx_font_smallcaps" style="font-size:120%;position:relative; bottom:-0.2ex;">e</span></span><span style="font-size:90%; position:relative; bottom:-0.2ex;">XML</span><img alt="Mascot Sammy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAOCAYAAAD5YeaVAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9wKExQZLWTEaOUAAAAddEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIFRoZSBHSU1Q72QlbgAAAdpJREFUKM9tkL+L2nAARz9fPZNCKFapUn8kyI0e4iRHSR1Kb8ng0lJw6FYHFwv2LwhOpcWxTjeUunYqOmqd6hEoRDhtDWdA8ApRYsSUCDHNt5ul13vz4w0vWCgUnnEc975arX6ORqN3VqtVZbfbTQC4uEHANM3jSqXymFI6yWazP2KxWAXAL9zCUa1Wy2tXVxheKA9YNoR8Pt+aTqe4FVVVvz05O6MBhqUIBGk8Hn8HAOVy+T+XLJfLS4ZhTiRJgqIoVBRFIoric47jPnmeB1mW/9rr9ZpSSn3Lsmir1fJZlqWlUonKsvwWwD8ymc/nXwVBeLjf7xEKhdBut9Hr9WgmkyGEkJwsy5eHG5vN5g0AKIoCAEgkEkin0wQAfN9/cXPdheu6P33fBwB4ngcAcByHJpPJl+fn54mD3Gg0NrquXxeLRQAAwzAYj8cwTZPwPH9/sVg8PXweDAauqqr2cDjEer1GJBLBZDJBs9mE4zjwfZ85lAGg2+06hmGgXq+j3+/DsixYlgVN03a9Xu8jgCNCyIegIAgx13Vfd7vdu+FweG8YRkjXdWy329+dTgeSJD3ieZ7RNO0VAXAPwDEAO5VKndi2fWrb9jWl9Esul6PZbDY9Go1OZ7PZ9z/lyuD3OozU2wAAAABJRU5ErkJggg=="/></a>
+</div></footer>
+</div>
+</body>
+</html>

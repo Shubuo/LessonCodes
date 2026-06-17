@@ -20,3 +20,13 @@
 ## ⚠️ Bilinen Sorunlar / Teknik Borçlar
 - Mininet'te `Reference Controller` TCP paketlerini düşürdüğü için `OVSController` kullanmak zorunludur. `mn -c` komutu ile Mininet ağını her test sonrası temizlemek, arka planda takılı `iperf` süreçlerini temizlemek ve `RTNETLINK File exists` hatasını önlemek için kritiktir.
 - Terminal ortamında kopyala-yapıştır yaparken `nano` editörü Python kodlarında "staircase effect" (girinti kayması) yarattığı için, kodlar VM'e aktarılırken `base64` decode veya raw string output metotları tercih edilmelidir.
+
+## 🚀 Bütünleme İyileştirmeleri (Yeni Versiyon Özeti)
+
+Final Sunumunda Mininet üzerinde UAV kaynaklı kritik TCP trafiğin background UDP trafik altında nasıl etkilendiği incelenmişti. Bütünleme için yapılan teknik iyileştirmeler şunlardır:
+
+1. **İlke Çeşitliliği:** Eski source-side shaping (kaynakta şekillendirme) yaklaşımına ek olarak **switch-side priority** (anahtar taraflı önceliklendirme) ilkesi tasarlandı.
+2. **Kapsamlı Testler:** Background load factor `1x`, `2x`, `3x` olacak şekilde yeni deney seti oluşturuldu (toplam 27 Mininet koşusu).
+3. **Sonuç:** En ağır tıkanıklık koşulu olan `3x` background load altında, baseline FIFO ilkesinde kritik akışın RTT değeri 108 ms ve packet loss %30 iken, yeni `switch-side priority` yaklaşımında RTT 24 ms, packet loss %0 olarak ölçülmüş ve başarısı kanıtlanmıştır.
+
+VM üzerinde yeni deneyi tekrar üretmek için `src/scripts/run_mininet_policy_sweep.py` betiği eklendi. Yapılan tüm iyileştirmeler ve sonuçlar ana `reports/Butunleme-Report.pdf` (IEEE) dosyasına entegre edilmiştir. Ayrıca sunum dosyaları `presentation/` klasöründe yer almaktadır.

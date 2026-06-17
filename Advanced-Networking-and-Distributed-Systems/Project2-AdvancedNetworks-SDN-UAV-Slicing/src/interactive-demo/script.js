@@ -1,5 +1,6 @@
 // DOM Elements
 const btnBestEffort = document.getElementById('btn-besteffort');
+const btnSource = document.getElementById('btn-source');
 const btnSdn = document.getElementById('btn-sdn');
 const btnToggleBg = document.getElementById('btn-toggle-bg');
 const btnSnapshot = document.getElementById('btn-snapshot');
@@ -22,7 +23,7 @@ const packetLayer = document.getElementById('packet-layer');
 const logTbody = document.getElementById('log-tbody');
 
 // State
-let sdnActive = false;
+let mode = 'baseline';
 let bgActive = false;
 let bw = 10;
 let delay = 20;
@@ -52,15 +53,22 @@ function calculateThroughput() {
     // Delay penalty (simple model: higher delay = slightly lower TCP throughput)
     const delayPenalty = 100 / (100 + delay * 0.5); 
 
-    if (sdnActive) {
-        // SDN QoS Limits BG traffic to max 2 Mbps at the switch
+    if (mode === 'switch') {
+        // Switch-side priority: the bottleneck switch protects the critical flow.
+        const bgAllowed = Math.min(2, bw);
+        const uavAllowed = Math.min(8, bw - bgAllowed);
+        
+        targetBg = bgActive ? Math.min(bgDemand, bgAllowed) : 0;
+        targetUav = Math.min(uavDemand, uavAllowed) * Math.min(1, delayPenalty + 0.18);
+    } else if (mode === 'source') {
+        // Source shaping: background sender is limited before traffic enters the bottleneck.
         const bgAllowed = Math.min(2, bw);
         const uavAllowed = bw - bgAllowed;
-        
+
         targetBg = bgActive ? Math.min(bgDemand, bgAllowed) : 0;
         targetUav = Math.min(uavDemand, uavAllowed) * delayPenalty;
     } else {
-        // Best Effort: Proportional sharing if congested
+        // Baseline FIFO: Proportional sharing if congested.
         if (totalDemand <= bw) {
             targetUav = uavDemand * delayPenalty;
             targetBg = actualBgDemand;
@@ -76,16 +84,18 @@ function calculateThroughput() {
 
 // UI Updates
 function updateUI() {
-    btnBestEffort.classList.toggle('active', !sdnActive);
-    btnSdn.classList.toggle('active', sdnActive);
-    sdnShield.classList.toggle('hidden', !sdnActive);
+    btnBestEffort.classList.toggle('active', mode === 'baseline');
+    btnSource.classList.toggle('active', mode === 'source');
+    btnSdn.classList.toggle('active', mode === 'switch');
+    sdnShield.classList.toggle('hidden', mode === 'baseline');
+    sdnShield.innerText = mode === 'switch' ? 'Switch Priority' : 'Source Shaping';
     
     if (bgActive) {
-        btnToggleBg.innerText = "Traffic ON";
+        btnToggleBg.innerText = "Trafik Açık";
         btnToggleBg.classList.replace('btn-primary', 'btn-warning');
         statusH3.classList.add('active-bg');
     } else {
-        btnToggleBg.innerText = "Traffic OFF";
+        btnToggleBg.innerText = "Trafik Kapalı";
         btnToggleBg.classList.replace('btn-warning', 'btn-primary');
         statusH3.classList.remove('active-bg');
     }
@@ -143,10 +153,14 @@ function animatePackets() {
     let bgDrop = 0;
     let bgDropS1 = 0;
 
-    if (sdnActive) {
-        uavDrop = Math.max(0, 1 - (targetH1 / 10)); 
+    if (mode === 'switch') {
+        uavDrop = Math.max(0, 1 - (targetH1 / 10)) * 0.1;
         bgDrop = bgActive ? (targetH3 / 50 > 0 ? 0.1 : 0) : 0;
-        bgDropS1 = bgActive ? 0.95 : 0; // Huge drop at S1 due to SDN
+        bgDropS1 = bgActive ? 0.95 : 0; // Background is heavily limited at S1.
+    } else if (mode === 'source') {
+        uavDrop = Math.max(0, 1 - (targetH1 / 10)) * 0.2;
+        bgDrop = bgActive ? 0.2 : 0;
+        bgDropS1 = bgActive ? 0.75 : 0; // Background is shaped near the source.
     } else {
         const total = 10 + (bgActive ? 50 : 0);
         const dropRate = bw < total ? 1 - (bw / total) : 0;
@@ -190,8 +204,9 @@ function animatePackets() {
 }
 
 // Event Listeners
-btnBestEffort.addEventListener('click', () => { sdnActive = false; updateUI(); });
-btnSdn.addEventListener('click', () => { sdnActive = true; updateUI(); });
+btnBestEffort.addEventListener('click', () => { mode = 'baseline'; updateUI(); });
+btnSource.addEventListener('click', () => { mode = 'source'; updateUI(); });
+btnSdn.addEventListener('click', () => { mode = 'switch'; updateUI(); });
 btnToggleBg.addEventListener('click', () => { bgActive = !bgActive; updateUI(); });
 
 inputBw.addEventListener('input', (e) => { bw = parseInt(e.target.value); updateUI(); });
@@ -200,8 +215,13 @@ inputQueue.addEventListener('input', (e) => { queue = parseInt(e.target.value); 
 
 btnSnapshot.addEventListener('click', () => {
     const time = new Date().toLocaleTimeString();
-    const stateStr = sdnActive ? '<span class="log-state-sdn">SDN Slicing</span>' : '<span class="log-state-best">Best Effort</span>';
-    const bgStr = bgActive ? 'ON' : 'OFF';
+    const labels = {
+        baseline: '<span class="log-state-best">Baseline FIFO</span>',
+        source: '<span class="log-state-sdn">Source shaping</span>',
+        switch: '<span class="log-state-sdn">Switch priority</span>',
+    };
+    const stateStr = labels[mode];
+    const bgStr = bgActive ? 'Açık' : 'Kapalı';
     
     const tr = document.createElement('tr');
     tr.innerHTML = `

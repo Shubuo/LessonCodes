@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SDN Priority Slicing Simulation</title>
+    <title>UAV-Edge Kritik Trafik Koruma Demosu</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -17,12 +17,13 @@
     <div class="app-container">
         <header class="glass-panel header">
             <div class="title-area">
-                <h1>SDN Network Slicing & QoS Management</h1>
-                <p>Interactive Parameter Simulation</p>
+                <h1>UAV-Edge Kritik Trafik Koruma Demosu</h1>
+                <p>Final sunumu sonrası eklenen ilke karşılaştırması</p>
             </div>
             <div class="controls">
-                <button id="btn-besteffort" class="btn btn-danger">Best-Effort (No QoS)</button>
-                <button id="btn-sdn" class="btn btn-success">Enable SDN Slicing</button>
+                <button id="btn-besteffort" class="btn btn-danger">Baseline FIFO</button>
+                <button id="btn-source" class="btn btn-primary">Source Shaping</button>
+                <button id="btn-sdn" class="btn btn-success">Switch Priority</button>
             </div>
         </header>
 
@@ -31,17 +32,17 @@
             <!-- Left Column: Topology & Logs -->
             <div class="left-col">
                 <section class="glass-panel topology-section">
-                    <h2>Network Topology Visualization</h2>
+                    <h2>Ağ Topolojisi</h2>
                     <div class="topology-canvas" id="topology-canvas">
                         <div class="node host uav" id="node-h1">
                             <div class="node-icon">🚁</div>
                             <div class="node-label">h1 (UAV)</div>
-                            <div class="node-sub">Critical TCP</div>
+                            <div class="node-sub">Kritik TCP</div>
                         </div>
                         <div class="node host bg-source" id="node-h3">
                             <div class="node-icon">💻</div>
                             <div class="node-label">h3 (Source)</div>
-                            <div class="node-sub">Heavy UDP</div>
+                            <div class="node-sub">Ağır UDP</div>
                         </div>
                         <div class="node switch s1" id="node-s1">
                             <div class="node-icon">🖧</div>
@@ -69,8 +70,8 @@
                         </svg>
 
                         <div class="bottleneck-label">
-                            <span class="label-text">Bottleneck (<span id="canvas-bw">10</span> Mbps)</span>
-                            <div id="sdn-shield" class="sdn-shield hidden">QoS Active</div>
+                            <span class="label-text">Darboğaz (<span id="canvas-bw">10</span> Mbps)</span>
+                            <div id="sdn-shield" class="sdn-shield hidden">Öncelik Aktif</div>
                         </div>
 
                         <div id="packet-layer"></div>
@@ -79,16 +80,16 @@
 
                 <section class="glass-panel log-section">
                     <div class="log-header">
-                        <h2>Simulation Snapshots</h2>
-                        <button id="btn-snapshot" class="btn btn-primary">📸 Save Snapshot</button>
+                        <h2>Demo Anlık Kayıtları</h2>
+                        <button id="btn-snapshot" class="btn btn-primary">Snapshot Al</button>
                     </div>
                     <div class="table-container">
                         <table id="log-table">
                             <thead>
                                 <tr>
-                                    <th>Time</th>
-                                    <th>SDN State</th>
-                                    <th>BG Traffic</th>
+                                    <th>Zaman</th>
+                                    <th>İlke</th>
+                                    <th>BG Trafik</th>
                                     <th>BW (Mbps)</th>
                                     <th>Delay (ms)</th>
                                     <th>Queue</th>
@@ -132,25 +133,25 @@
                 </div>
 
                 <section class="glass-panel params-section">
-                    <h3>Environment Parameters</h3>
+                    <h3>Deney Parametreleri</h3>
                     
                     <div class="param-group toggle-group">
-                        <label>Background UDP Traffic</label>
-                        <button id="btn-toggle-bg" class="btn btn-warning">Traffic ON</button>
+                        <label>Background UDP Trafik</label>
+                        <button id="btn-toggle-bg" class="btn btn-warning">Trafik Açık</button>
                     </div>
 
                     <div class="param-group">
-                        <label>Bottleneck Bandwidth: <span class="val-highlight" id="val-bw">10</span> Mbps</label>
+                        <label>Darboğaz Kapasitesi: <span class="val-highlight" id="val-bw">10</span> Mbps</label>
                         <input type="range" id="input-bw" min="1" max="100" value="10">
                     </div>
                     
                     <div class="param-group">
-                        <label>Link Delay: <span class="val-highlight" id="val-delay">20</span> ms</label>
+                        <label>Link Gecikmesi: <span class="val-highlight" id="val-delay">20</span> ms</label>
                         <input type="range" id="input-delay" min="1" max="100" value="20">
                     </div>
                     
                     <div class="param-group">
-                        <label>Queue Size: <span class="val-highlight" id="val-queue">20</span> pkts</label>
+                        <label>Kuyruk Boyutu: <span class="val-highlight" id="val-queue">20</span> paket</label>
                         <input type="range" id="input-queue" min="10" max="1000" value="20">
                     </div>
                 </section>

@@ -1,0 +1,298 @@
+# Sunum 1 — slayt metni, kaynaklar ve konuşmacı notları (tek kaynak).
+# Biçim: _{...} alt simge, ^{...} üst simge, **...** kalın. Kaynak sayfaları: notes/evidence_matrix.md.
+# Hedef süre: 15 dk (slayt başına ≈ 55 sn).
+
+meta:
+  title: ["Karmaşık Ağ Perspektifinden", "İHA Sürüleri"]
+  subtitle: "Literatür İncelemesi · 2022–2026"
+  author: "Burak Yörük"
+  course: "Karmaşık Ağlar için Algoritmalar · Doç. Dr. Züleyha Akusta Dağdeviren"
+  place_date: "Ege Üniversitesi · 2 Kasım 2026"
+  sections: ["Çerçeve", "Metrikler", "Literatür", "Karşılaştırma", "Boşluklar"]
+
+slides:
+  - layout: cover
+    notes: |
+      (≈30 sn) Merhaba. Bu sunumda İHA sürülerini bir karmaşık ağ olarak ele alan son beş yıldaki literatürü inceliyorum.
+      Önce sürünün nasıl bir graf olarak modellendiğini ve hangi metriklerle ölçüldüğünü göstereceğim, sonra beş makaleyi
+      ve aralarındaki boşluğu tartışacağım. Bu boşluk ikinci sunumdaki araştırma önerimin çıkış noktası olacak.
+
+  - layout: cards
+    section: Çerçeve
+    title: "Sürünün değeri bağlantılarından gelir"
+    cards:
+      - {title: "Endüstriyel denetim", text: "Tesis, hat ve depo; insan erişimi zor", highlight: true}
+      - {title: "Afet ve acil iletişim", text: "Altyapı çökünce havadan ağ"}
+      - {title: "GNSS'siz ortamlar", text: "Orman, kapalı alan, afet bölgesi"}
+      - {title: "Geniş alan kapsama", text: "Gözetim ve haritalama"}
+    takeaway: ["Ortak gereksinim: ", "sürü görev boyunca bağlı kalmalı → bu bir ağ problemi"]
+    source: "Alam vd. 2022 s. 2–3 · Gaydamaka vd. 2024 s. 1 · Huang vd. 2025 s. 1"
+    notes: |
+      (≈60 sn) İHA sürüleri tek bir İHA'nın kapsayamayacağı alanları paralel olarak tarayabiliyor ve bir İHA kaybında görevi
+      sürdürebiliyor. Uygulamalar endüstriyel denetimden afet sonrası acil iletişime, GPS'in olmadığı orman ya da kapalı
+      alanlara kadar uzanıyor. Benim motivasyonum Meshine'de üzerinde çalıştığımız endüstriyel denetim senaryosu: tesis içinde
+      İHA'lar hem birbirleriyle hem yer istasyonuyla bağlantıda kalmak zorunda. Bu uygulamaların ortak noktası şu: sürü
+      ancak bağlı kaldığı sürece sürü gibi davranabiliyor. Dolayısıyla soru bir ağ sorusuna dönüşüyor.
+
+  - layout: figure_bullets
+    section: Çerçeve
+    title: "İHA sürüsü, zamanla değişen bir graftır"
+    figure: figures/out/graph_snapshots.png
+    bullets:
+      - "Düğüm = İHA, kenar = iletişim bağlantısı"
+      - "Kenar kuralı: d_{ij}(t) ≤ R"
+      - "Hareket bağlantı koparır ve kurar"
+      - "FANET: uçan tasarsız ağ"
+    source: "Birim disk grafı (unit disk graph) bizim çerçevemiz; aynı kural: Alam vd. s. 10 · Gaydamaka vd. s. 5–6 · Li vd. s. 8"
+    notes: |
+      (≈60 sn) Sürüyü bir graf G(t) olarak modelliyoruz: her İHA bir düğüm, iki İHA arasındaki iletişim bağlantısı bir kenar.
+      İncelediğim makalelerin çoğu aynı kuralı kullanıyor: iki İHA arasındaki mesafe iletişim menzili R'den küçükse kenar var.
+      Bu literatürde birim disk grafı (unit disk graph) olarak bilinen modeldir; makaleler terimi kullanmasa da kural aynı.
+      Kritik nokta zaman: şekilde tek bir İHA sağa uçtuğunda iki bağlantı kopuyor ve bir yenisi kuruluyor. Yani graf her
+      zaman adımında değişiyor. Bu ağlara FANET, yani uçan tasarsız ağ (flying ad hoc network) deniyor.
+
+  - layout: cards
+    section: Çerçeve
+    title: "Sürü ağı, karmaşık ağın dört özelliğini taşır"
+    cards:
+      - {title: "Büyük", text: "Onlarca–binlerce İHA; 1000 düğüme kadar"}
+      - {title: "Ne düzenli ne rastgele", text: "Bağlantıyı konum ve menzil belirler"}
+      - {title: "Dinamik", text: "Hareket kenarları her adımda değiştirir"}
+      - {title: "Sistemin omurgası", text: "Görev verisi bu ağ üzerinden akar"}
+    takeaway: ["Sonuç: ", "derece, merkezilik, bağlılık ve kümeleme araçları doğrudan uygulanır"]
+    source: "Ders notları Bölüm 1.1 (karmaşık ağ özellikleri) · Huang vd. 2025 s. 11 (n = 200–1000)"
+    notes: |
+      (≈50 sn) Derste karmaşık ağları dört özellikle tanımladık: büyükler, bağlantı desenleri ne düzenli ne tamamen rastgele,
+      dinamik olarak değişiyorlar ve bir sistemin omurgasını oluşturuyorlar. İHA sürüsü dördünü de taşıyor. Huang ve
+      arkadaşlarının deneyleri 1000 İHA'ya kadar çıkıyor; bağlantıyı konum ve menzil belirlediği için yapı ne kafes gibi düzenli
+      ne de tamamen rastgele; hareket topolojiyi sürekli değiştiriyor ve görev verisi bu ağ üzerinden akıyor. Bu yüzden
+      dersteki araçları, yani derece, merkezilik, bağlılık ve kümelemeyi doğrudan uygulayabiliyoruz.
+
+  - layout: figure
+    section: Çerçeve
+    title: "Mimari, hangi İHA'nın kritik olduğunu belirler"
+    figure: figures/out/architectures.png
+    takeaway: ["Kritik düğüm: ", "çıkarıldığında ağı bölen İHA (kesme düğümü)"]
+    source: "Alam vd. 2022 s. 15–16 · Drone Industry Insights 2024 infografiğinden uyarlandı"
+    notes: |
+      (≈60 sn) Alam ve arkadaşlarının derlemesi kontrol mimarilerini merkezi, dağıtık, hibrit ve hiyerarşik olarak ayırıyor;
+      burada ilk üçünü çizdim, hibrit ise merkezi kurulumla yerel ayarı birleştiriyor. Merkezi yapıda yer istasyonu tek hata
+      noktası: o düşerse tüm sürü kopuyor. Dağıtık yapıda her İHA yalnızca komşularını biliyor; ölçeklenebiliyor ve bu örnekte
+      kritik düğüm yok. Hiyerarşik yapıda küme başları omurgayı kuruyor ve her biri kendi kümesi için kritik. Turuncu düğümler,
+      çıkarıldığında ağı bölen düğümler; ders terimiyle kesme düğümleri.
+
+  - layout: figure
+    section: Metrikler
+    title: "Altı metrik yapıyı ve sağlamlığı ölçer"
+    figure: figures/out/metric_cards.png
+    takeaway: ["Turuncu şeritli üç metrik ", "kritik İHA'yı ve ağın bölünmesini ölçer"]
+    source: "Ders notları Bölüm 2 · Alam vd. s. 24 · Zhang & Liu s. 7–9 · Li vd. s. 9"
+    notes: |
+      (≈70 sn) Literatürde ve derste kullanılan altı metriği iki gruba ayırdım. Üst sıra yapıyı anlatıyor: derece bir İHA'nın
+      kaç komşusu olduğunu, kümelenme katsayısı komşularının da birbirine bağlı olup olmadığını, ortalama yol uzunluğu bir
+      mesajın kaç sekmede ulaştığını ölçüyor. Alt sıra sağlamlığı ölçüyor: arasındalık en kısa yolların ne kadarının bir
+      İHA'dan geçtiğini, yani trafiği kimin taşıdığını gösteriyor. Laplasyen matrisin ikinci en küçük özdeğeri λ₂ sıfırdan
+      büyükse graf bağlı; düğüm bağlılığı κ en az 2 ise tek bir İHA kaybı ağı bölemiyor. Bir sonraki slaytta bu üçünü
+      somut bir örnekte göstereceğim.
+
+  - layout: figure
+    section: Metrikler
+    title: "Tek bir röle İHA düşerse sürü ikiye bölünür"
+    figure: figures/out/critical_uav_example.png
+    takeaway: ["Kesme düğümü = tek hata noktası. ", "Literatür bunu nasıl ele alıyor?"]
+    source: "Kendi örneğimiz · NetworkX ile hesaplandı (figures/make_figures.py)"
+    notes: |
+      (≈60 sn) Bu, NetworkX ile hesapladığım 12 İHA'lık bir örnek. Solda bir denetim kümesi, sağda yer istasyonu tarafı var ve
+      ikisini tek bir röle İHA bağlıyor. Düğüm boyutu arasındalığı gösteriyor: röle İHA en büyük, çünkü iki taraf arasındaki
+      bütün en kısa yollar ondan geçiyor; arasındalığı 0,55. Bu graf bağlı, λ₂ = 0,26. Röle düştüğünde ağ iki bileşene
+      ayrılıyor ve λ₂ sıfıra iniyor. Yani röle bir kesme düğümü ve tek hata noktası. Şimdi literatürün bu sorunu nasıl ele
+      aldığına bakalım.
+
+  - layout: timeline
+    section: Literatür
+    title: "2022–2026: beş çalışma, beş graf problemi"
+    items:
+      - {year: "2022", theme: "Topoloji kontrolü", venue: "Alam vd. · JNCA (derleme)"}
+      - {year: "2024", theme: "Dayanıklılık ölçümü", venue: "Zhang & Liu · Sensors"}
+      - {year: "2024", theme: "Dinamik topoloji", venue: "Gaydamaka vd. · IEEE TMC"}
+      - {year: "2025", theme: "Graf tabanlı kümeleme", venue: "Huang vd. · IEEE TNSE"}
+      - {year: "2026", theme: "2-bağlılığı koruma", venue: "Li vd. · Complex Intell. Syst."}
+    takeaway: ["Seçim ölçütü: ", "2022–2026, hakemli dergi, sürüyü graf olarak modelleyen"]
+    source: "Künyeler: kaynakça slaytı"
+    notes: |
+      (≈45 sn) Beş çalışmayı son beş yıldan, hakemli dergilerden ve sürüyü açıkça bir graf olarak modelleyenlerden seçtim.
+      2022'deki derleme alanın haritasını çiziyor. 2024'te iki farklı yön var: biri dayanıklılığı ölçüyor, diğeri GPS'siz
+      ortamda topolojiyi kuruyor. 2025'teki çalışma graf tabanlı kümeleme, 2026'daki ise 2-bağlılığı korumaya odaklanıyor.
+      Sırayla her birine bir slayt ayırıyorum.
+
+  - layout: paper
+    section: Literatür
+    title: "Arıza toleransı topoloji kontrolünde geri planda"
+    chip: "Ders: λ_{2} · baskın küme · kapsayan ağaç"
+    figure: figures/out/p1_failure_tolerance.png
+    bullets:
+      - "Ağ: G(t); kenar varsa d_{ij}(t) ≤ R"
+      - "Taksonomi: 4 mimari × matematiksel model"
+      - "Bağlılık ölçütü: λ_{2}(L) > 0"
+      - "28 algoritmadan yalnız 10'u arıza toleranslı"
+    source: "[1] Alam vd., JNCA 207, 2022 · s. 10, 24, 34–36 · grafik: Tablo 11'den bizim sayımımız"
+    notes: |
+      (≈60 sn) Alam ve arkadaşlarının 47 sayfalık derlemesi FANET topoloji kontrol algoritmalarını mimariye ve matematiksel
+      modele göre sınıflandırıyor. Ağı, menzil içindeki İHA'ları bağlayan zamanla değişen bir graf olarak tanımlıyorlar;
+      algoritma bundan bağlı bir sanal omurga alt grafı üretiyor. Graf teorisi en açık konsensüs yöntemlerinde görülüyor:
+      Laplasyenin λ₂ değeri sıfırdan büyükse ağ bağlı ve λ₂ formasyonun ne kadar hızlı oluştuğunu da belirliyor. Karşılaştırma
+      tablosundaki 28 algoritmanın hepsi bağlantıyı destekliyor ama yalnız 10'u İHA arızasına toleranslı işaretlenmiş; grafikte
+      bunu mimariye göre saydım. Merkezi ve hibrit yöntemlerin hiçbiri arızaya toleranslı değil.
+
+  - layout: paper
+    section: Literatür
+    title: "Dayanıklılık topolojiye ve kurtarmaya bağlı"
+    chip: "Ders: derece dağılımı · kümelenme · verimlilik"
+    figure: figures/out/papers/p2_fig1.png
+    bullets:
+      - "İki katman: iletişim + yapısal, 55 İHA"
+      - "R(t): ortalama derece, C ve E bileşimi"
+      - "Dereceye göre hedefli saldırıda BA en hızlı çöker"
+      - "Eksik: menzil, hareket, bağlantı arızası"
+    source: "[2] Zhang & Liu, Sensors 24(1):11, 2024 · CC BY 4.0 · Şekil 1 sağ panel (kırpıldı, s. 4) · s. 10, 13–16"
+    notes: |
+      (≈60 sn) Zhang ve Liu sürüyü iki katmanlı bir ağ olarak modelliyor: iletişim katmanı ve fiziksel yapı katmanı. Bir İHA
+      fiziksel olarak hasar görürse iki katmandaki düğümü birlikte düşüyor; şekilde bu birebir eşleşme görülüyor. Dayanıklılığı
+      tek bir eğri R(t) ile izliyorlar: ortalama derece, kümelenme katsayısı ve ağ verimliliğinin ağırlıklı birleşimi. Küme,
+      rastgele ve Barabási–Albert topolojilerini karşılaştırdıklarında, dereceye göre hedefli saldırıda BA ağı en hızlı çöküyor;
+      çünkü yüksek dereceli merkezler önce gidiyor. Ancak modelde iletişim menzili ve hareket yok, yalnız düğüm siliniyor.
+
+  - layout: paper
+    section: Literatür
+    title: "GPS'siz sürü topolojiyi komşu uzaklığıyla kurar"
+    chip: "Ders: komşuluk · bağlı bileşen"
+    figure: figures/out/papers/p3_fig1_top.png
+    bullets:
+      - "Girdi: 1- ve 2-sekme komşular, uzaklık"
+      - "Ceza fonksiyonu → 3B sanal koordinat"
+      - "%30 uzaklık hatasında benzerlik > %90"
+      - "Arıza: yalnız geçici, rastgele, tek düğüm"
+    source: "[3] Gaydamaka vd., IEEE TMC 23(5), 2024 · CC BY 4.0 · Şekil 1 üst panel (kırpıldı) · s. 5–11 · kod: github.com/gaydamanya/GAR"
+    notes: |
+      (≈60 sn) Gaydamaka ve arkadaşları GPS'in olmadığı ortamlara odaklanıyor. Her İHA yalnızca bir ve iki sekme uzaklıktaki
+      komşularını ve onlara olan tahmini uzaklığı biliyor. Bir ceza fonksiyonunu küçülterek kendine üç boyutlu bir sanal
+      koordinat atıyor; sürüler birleştiğinde koordinatlar yeniden hizalanıyor. Elli İHA'lık simülasyonda uzaklık ölçümünde
+      yüzde 30 hata olsa bile sanal ve gerçek topoloji arasındaki benzerlik yüzde 90'ın üstünde. Beş makale içinde kodunu açık
+      paylaşan tek çalışma bu. Ancak arıza modeli dar: her adımda rastgele bir İHA yalnızca bir adımlığına kopuyor.
+
+  - layout: paper
+    section: Literatür
+    title: "Öğrenilen kenar ağırlığı kümelemeyi güçlendirir"
+    chip: "Ders: graf tabanlı kümeleme"
+    figure: figures/out/papers/p4_fig3.png
+    bullets:
+      - "Kenar ağırlığı α_{ij}: hız + mesafe benzerliği"
+      - "Aşağıdan yukarı birleştirme: α_{ij} > η"
+      - "Modülerlik Q ≈ 0,74 (spektral ≈ 0,55)"
+      - "Sınır: menzil tanımsız, arıza testi yok"
+    source: "[4] Huang vd., IEEE TNSE 12(4), 2025 · © IEEE, yalnız sınıf içi · Şekil 3 (s. 6) · s. 5–7, 13–15"
+    notes: |
+      (≈60 sn) Huang ve arkadaşlarının çalışması dersteki graf tabanlı kümelemenin doğrudan bir uygulaması. Her kenara, iki
+      İHA'nın hız ve konum benzerliğinden graf dikkat ağıyla öğrenilen bir ağırlık α veriliyor. Şekildeki gibi her İHA tek
+      başına bir küme olarak başlıyor ve ağırlığı eşiği aşan komşu kümelerle birleşiyor; sonuç bir dendrogram. Orta
+      hareketlilikte modülerlik yaklaşık 0,74, spektral kümeleme 0,55 civarında; ancak pekiştirmeli öğrenme tabanlı bir rakip
+      aynı seviyede. Ağ ömrü kazancı ise kümelemeden değil küme başı seçiminden geliyor: ilk İHA 487. turda ölüyor, en iyi
+      rakipte 269. turda. Makale iletişim menzilini tanımlamıyor ve düğüm ya da bağlantı arızasını test etmiyor.
+
+  - layout: paper
+    section: Literatür
+    title: "Yerel alt graflar küresel 2-bağlılığı koruyor"
+    chip: "Ders: kesme düğümü · Menger · λ_{2}"
+    figure: figures/out/papers/p5_fig3.png
+    bullets:
+      - "Kritik komşu: Menger + max-flow, yalnız 1-sekme"
+      - "Teorem 1: yerel kural → küresel 2-bağlılık"
+      - "15 İHA: 1200 denemenin 4'ünde kayıp"
+      - "Sınır: hiçbir İHA bilerek düşürülmüyor"
+    source: "[5] Li vd., Complex Intell. Syst., 2026 (baskıda) · CC BY-NC-ND 4.0 · Şekil 3 (s. 11) · s. 11–13, 26–27"
+    notes: |
+      (≈70 sn) Li ve arkadaşları engelli bir ortamda sürüyü hiç kesme düğümü oluşturmadan, yani her an 2-bağlı tutarak hedefe
+      götürmeyi amaçlıyor. Her İHA yalnızca komşularının konumundan kendi indüklenmiş alt grafını kuruyor; şekildeki 5 numaralı
+      düğüm bunun örneği. Menger teoremi ve maksimum akışla uzak komşularına kaç düğüm-ayrık yol kaldığını sayıyor ve
+      alternatifi olmayan kritik komşulara doğru çekiliyor. Teorem 1 bu yerel kuralların tüm ağın 2-bağlılığını koruduğunu
+      gösteriyor. On beş İHA ile 1200 denemenin yalnızca 4'ünde 2-bağlılık kaybolmuş. Ama 2-bağlılığın asıl vaadi olan
+      "bir İHA düşerse ağ yaşar" senaryosu hiç denenmemiş.
+
+  - layout: table
+    section: Karşılaştırma
+    title: "Hepsi sentetik veri; yalnız biri kod paylaşıyor"
+    columns: ["Makale", "Araç", "Ölçek", "Arıza modeli", "Kod"]
+    widths: [2.55, 2.45, 2.3, 2.8, 2.03]
+    rows:
+      - ["[1] Alam", "Derleme", "28 algoritma", "İkili sütun", "—"]
+      - ["[2] Zhang", "NetworkX", "55 İHA", "Hedefli düğüm", "Talep üzerine"]
+      - ["[3] Gaydamaka", "Belirtilmemiş", "30–100 İHA", "Geçici, rastgele", "GitHub"]
+      - ["[4] Huang", "Belirtilmemiş", "200–1000 İHA", "Enerji tükenmesi", "—"]
+      - ["[5] Li", "Python, PyTorch", "5–25 İHA", "Yok", "—"]
+    highlight_rows: [2]
+    takeaway: ["Sunum II için: ", "açık kod + kontrollü sentetik G(t) + (izinle) Meshine telemetrisi"]
+    source: "Notlar: notes/evidence_matrix.md §3 · gerçek uçuş verisi kullanan çalışma yok"
+    notes: |
+      (≈50 sn) Veri tarafında tablo net: beş çalışmanın hiçbiri gerçek uçuş verisi ya da açık etiketli bir veri seti kullanmıyor,
+      hepsi simülasyon. Ölçek 5 İHA'dan 1000 İHA'ya kadar değişiyor. Arıza modeli çalışmadan çalışmaya çok farklı: hedefli düğüm
+      silme yalnız Zhang ve Liu'da var, Li'de hiç arıza yok. Kodunu paylaşan tek çalışma Gaydamaka. Bu yüzden ikinci sunumda veri
+      seçimi başlı başına bir tasarım kararı olacak: kontrollü sentetik veri, açık kod ve izin alınabilirse Meshine telemetrisi.
+
+  - layout: table
+    section: Karşılaştırma
+    title: "Kesme düğümü ve hedefli arıza hiç birleşmiyor"
+    columns: ["Ders kavramı", "[1]", "[2]", "[3]", "[4]", "[5]"]
+    widths: [4.6, 1.5, 1.5, 1.5, 1.5, 1.53]
+    symbols: true
+    rows:
+      - ["Dinamik graf G(t)", "●", "○", "●", "●", "●"]
+      - ["Merkezilik", "○", "●", "○", "–", "–"]
+      - ["Kesme düğümü / 2-bağlılık", "○", "–", "–", "–", "●"]
+      - ["Cebirsel bağlılık λ_{2}", "●", "–", "–", "–", "●"]
+      - ["Graf tabanlı kümeleme", "○", "–", "–", "●", "–"]
+      - ["Hedefli arıza deneyi", "–", "●", "–", "–", "–"]
+    takeaway: ["", "● çekirdek     ○ dolaylı     – yok"]
+    source: "Notlar: notes/evidence_matrix.md §2 (her hücre sayfa referanslı)"
+    notes: |
+      (≈60 sn) Bu tablo beş makaleyi ders kavramlarıyla eşliyor. Dolu daire yöntemin çekirdeğinde olduğunu, boş daire dolaylı
+      geçtiğini gösteriyor. Dikkat çeken iki satır var: kesme düğümü ve 2-bağlılık yalnızca Li'de çekirdek, hedefli arıza deneyi
+      ise yalnızca Zhang ve Liu'da. Yani kritik düğümü yapısal olarak tanımlayan çalışma arızayı test etmiyor, arızayı test eden
+      çalışma ise kritik düğümü yalnızca dereceyle seçiyor ve hareket modellemiyor. Kümeleme de yalnızca Huang'da var.
+
+  - layout: gap
+    section: Boşluklar
+    title: "Hareket ve dayanıklılık birlikte ölçülmüyor"
+    quadrants:
+      top_left: "[3] [4] [5]"
+      bottom_right: "[2]"
+      bottom_left: ""
+      top_right: "Sunum II"
+    axis_x: ["Dayanıklılık ölçümü yok", "Hedefli arıza + ölçüm var"]
+    axis_y: ["Statik graf", "Hareketli G(t)"]
+    question: "Kritik İHA'lara hedefli arızalar bağlılığı ne kadar hızlı bozar? Yerel onarım ağı ne sürede yeniden 2-bağlı yapar?"
+    bullets:
+      - "Model: hareketli G(t), birim disk grafı"
+      - "Saldırı: kesme düğümü, arasındalık, rastgele"
+      - "Ölçüm: λ_{2}, en büyük bileşen, onarım süresi"
+    source: "[1] 28 algoritmanın 10'u arıza toleranslı · [2] hareket yok · [3] geçici arıza · [4] arıza yok · [5] onarım yok"
+    notes: |
+      (≈70 sn) Son slaytta boşluğu iki eksende özetliyorum: ağ hareketli mi ve dayanıklılık hedefli arızayla ölçülüyor mu.
+      Gaydamaka, Huang ve Li hareketli sürüyle çalışıyor ama hedefli arızayı ölçmüyor; Zhang ve Liu dayanıklılığı ölçüyor ama
+      hareket yok. Derleme de 28 algoritmadan yalnız 10'unun arıza toleranslı olduğunu gösteriyor. Sağ üst köşe boş ve ikinci
+      sunumdaki önerimin yeri burası: hareketli bir sürüde kesme düğümü ve arasındalığa göre hedefli arızaların bağlılığı ne kadar
+      hızlı bozduğunu ve yerel bir onarım kuralının ağı ne sürede yeniden 2-bağlı yaptığını ölçmek. Teşekkürler, sorularınızı
+      alabilirim.
+
+  - layout: references
+    section: Boşluklar
+    title: "Kaynakça"
+    items:
+      - "[1] M. M. Alam, M. Y. Arafat, S. Moh, and J. Shen, \"Topology control algorithms in multi-unmanned aerial vehicle networks: An extensive survey,\" J. Netw. Comput. Appl., vol. 207, Art. no. 103495, 2022."
+      - "[2] X. Zhang and J. Liu, \"Research on UAV swarm network modeling and resilience assessment methods,\" Sensors, vol. 24, no. 1, Art. no. 11, 2024."
+      - "[3] A. Gaydamaka, A. Samuylov, D. Moltchanov, M. Ashraf, B. Tan, and Y. Koucheryavy, \"Dynamic topology organization and maintenance algorithms for autonomous UAV swarms,\" IEEE Trans. Mobile Comput., vol. 23, no. 5, pp. 4423–4439, 2024."
+      - "[4] S. Huang, H. Yao, X. Wang, T. Mai, Z. Wang, and S. Guo, \"Graph attentional based agglomerative cluster for UAV swarm networks,\" IEEE Trans. Netw. Sci. Eng., vol. 12, no. 4, pp. 3311–3327, 2025."
+      - "[5] J. Li, T. Duan, P. Yi, Z. Zhang, P. Zhang, and Z. Zhai, \"Distributed biconnectivity-preserving flocking with fast obstacle avoidance for UAV swarms,\" Complex Intell. Syst., 2026, in press."
+      - "[6] K. Erciyes, Complex Networks: An Algorithmic Perspective. Boca Raton, FL, USA: CRC Press, 2014."
+      - "[7] Drone Industry Insights, \"Types of drone swarms and how to tell them apart,\" infographic, Sep. 2024."
+    notes: |
+      Kaynakça; sunumda üzerinde durulmaz.

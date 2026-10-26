@@ -28,5 +28,10 @@ An automated literature curation and presentation pipeline.
 *   Aims to automatically download, summarize, and curate academic papers on Multi-Agent Systems and Swarm Drones.
 *   Uses LLMs and the `Marp` framework to automatically compile research findings into presentation-ready markdown slides and PDF reports.
 
+### 4. [Complex Network Analysis of UAV Swarms](./Complex-Networks-UAV-Swarms/)
+Algorithms for Complex Networks (Ege University) presentation work on UAV swarms as dynamic graphs.
+*   **Presentation 1 (Literature Review):** Evidence matrix of five 2022–2026 papers with page-referenced notes.
+*   Reproducible figures (NetworkX), YAML-driven `python-pptx` deck builder, and a font-metric preview/overflow checker.
+
 ---
 *Note: Large model weights (e.g., PyTorch `.pt` files) and extensive datasets are tracked via `.gitignore` and are excluded from this repository due to size limits. Please refer to individual project READMEs for instructions on downloading required models/data.*
